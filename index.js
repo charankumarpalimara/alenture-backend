@@ -1,7 +1,15 @@
 const express = require('express');
 const app = express();
 const mySqlpool = require('./db')
-const router = require('./routes/RegistrationRout')
+
+const registrationRoutes = require('./routes/RegistrationRout');
+const LoginRouter = require('./routes/LoginRoute');
+const updateRoutes = require('./routes/UpdateRoute');
+const DeleteRoute = require('./routes/DeleteRoute');
+const GetRoute = require('./routes/GetRoute');
+const getAssignrouter = require('./routes/AssignTaskRoute');
+const chatRoutes = require('./routes/ChatRoute');
+
 
 const cors = require('cors');
 const multer = require('multer');
@@ -14,6 +22,12 @@ const WebSocket = require('ws'); // Add this line to import the WebSocket module
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 const { setWebSocketServer } = require('./WebSocketUtils'); // Import setWebSocketServer
+
+
+// const http = require('http');
+const socketIo = require('socket.io');
+// const server = http.createServer(app);
+const io = socketIo(server, { cors: { origin: "*" } }); 
 
 app.use(express.json());    
 
@@ -49,11 +63,46 @@ const broadcast = (data) => {
     });
 };
 
+
+io.on('connection', (socket) => {
+  console.log('User connected:', socket.id);
+
+  socket.on('joinRoom', ({ experienceid, crmid }) => {
+    socket.join(`${experienceid}_${crmid}`);
+  });
+
+  socket.on('sendMessage', async (data) => {
+    // Save to DB as before
+    // ...insert into DB logic...
+    // After saving, emit to room
+    io.to(`${data.experienceid}_${data.crmid}`).emit('receiveMessage', data);
+  });
+
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id);
+  });
+});
+
+
 // Serve static files from the 'uploads' directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-app.use("/api/v1", router)
+app.use("/api/v1", registrationRoutes)
 
+app.use("/api/v1", LoginRouter)
+
+app.use('/api/v1', updateRoutes);
+
+app.use("/api/v1", DeleteRoute)
+
+app.use("/api/v1", GetRoute)
+
+
+app.use("/api/v1", getAssignrouter)
+
+app.use("/api/v1", chatRoutes);
+
+// app.use("api/v1",)
 
 app.get('/', (req, res) => {
     res.status(200).send('<h1>Node.js MySQL App</h1>');

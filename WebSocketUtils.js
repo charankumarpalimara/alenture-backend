@@ -18,4 +18,20 @@ function broadcast(data) {
     });
 }
 
-module.exports = { setWebSocketServer, broadcast };
+function broadcastNotification({ title, message }) {
+    if (wss && wss.clients) {
+        const notification = {
+            type: 'notification',
+            title,
+            message,
+            timestamp: new Date().toISOString()
+        };
+        wss.clients.forEach(client => {
+            if (client.readyState === 1) {
+                client.send(JSON.stringify(notification));
+            }
+        });
+    }
+}
+
+module.exports = { setWebSocketServer, broadcast, broadcastNotification };

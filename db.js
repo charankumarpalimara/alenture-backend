@@ -7,4 +7,5 @@ const mySqlpool = mysql.createPool({
     database: "yukthitech",
 });
 
+
 module.exports = mySqlpool;

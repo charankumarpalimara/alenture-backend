@@ -44,7 +44,7 @@ const ResolvedExperiencesCount = async (req, res) => {
 const NewExperiencesCount = async (req, res) => {
     try{
 
-        const [data] = await mySqlpool.query("SELECT COUNT(experienceid) AS totalNew FROM experiences WHERE status = 'Open'");
+        const [data] = await mySqlpool.query("SELECT COUNT(experienceid) AS totalNew FROM experiences WHERE status = 'New'");
         if (!data || data.length === 0) {
             return res.status(404).json({ error: "No Records Found" });
         }

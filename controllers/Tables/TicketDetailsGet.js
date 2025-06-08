@@ -122,7 +122,7 @@ const getNewTicketsbyCmid = async (req, res) => {
         }
 
         const [rows] = await mySqlpool.query(
-            "SELECT * FROM experiences WHERE cmid = ? AND status = 'Open'",
+            "SELECT * FROM experiences WHERE cmid = ? AND status = 'New'",
             [CmId]
         );
         if (!rows || rows.length === 0) {
@@ -206,7 +206,7 @@ const getNewTicketsbyCrmid = async (req, res) => {
          if (!CrmId) {
             return res.status(400).json({ error: "No organization name received" });
         }
-         const status = 'Open';
+         const status = 'New';
         const [rows] = await mySqlpool.query(
             "SELECT * FROM experiences WHERE extraind1 = ? AND status = ?",
             [CrmId, status]

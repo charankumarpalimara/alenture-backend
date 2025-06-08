@@ -55,7 +55,7 @@ const getNewExperiencesCountByCmId = async (req, res) => {
         if (!cmId) {
             return res.status(400).json({ error: "CM ID is required" });
         }
-        const [data] = await mySqlpool.query("SELECT COUNT(experienceid) AS totalNew FROM experiences WHERE cmid = ? AND status = 'Open'", [cmId]);
+        const [data] = await mySqlpool.query("SELECT COUNT(experienceid) AS totalNew FROM experiences WHERE cmid = ? AND status = 'New'", [cmId]);
         if (!data || data.length === 0) {
             return res.status(404).json({ error: "No Records Found" });
         }

@@ -45,7 +45,8 @@ const updateCmProfile = async (req, res) => {
 
 const updateCmProfileByAdminHob = async (req, res) => {
     try {
-        const { cmid, firstName, password, lastName, PhoneNo, email, gender, crmid, crmname, organizationid, organizationname, branch, status } = req.body;
+        const { cmid, firstName, lastName, password, PhoneNo, email, gender, crmid, crmname, organizationid, organizationname, branch, status } = req.body;
+        console.log("Received request to update CM profile by Admin:", req.body);
         let updateFields = [firstName,  lastName, email, PhoneNo, organizationid, organizationname, branch, status, gender, password, crmid, crmname];
         let sql = `UPDATE listofcm SET firstname = ?, lastname = ?,  email = ?, mobile = ?, organizationid = ?, organizationname = ?, branch = ?, extraind3 = ?, extraind2 = ?, passwords = ?, crmid = ?, crmname = ?`;
         // If file is present, update extraind1 (profile image)

@@ -60,6 +60,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 const io = socketIo(server, {
+  path: "/socket.io/",
   cors: {
     origin: allowedOrigins,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -68,7 +69,7 @@ const io = socketIo(server, {
 });
 
 // ----- WebSocket Setup (For live updates) ----- //
-const wss = new WebSocket.Server({ server });
+const wss = new WebSocket.Server({ server, path: "/ws/" });
 
 // Import custom utility to set the WebSocket server (if needed)
 const { setWebSocketServer } = require('./WebSocketUtils');

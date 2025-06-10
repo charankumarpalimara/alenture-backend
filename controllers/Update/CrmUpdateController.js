@@ -44,7 +44,7 @@ const updateCustomerRelationshipManager = async (req, res) => {
 
 
         if (imageFile) {
-            imageUrl = `${req.protocol}://${req.get('host')}/uploads/crm/${imageFile}`;
+            imageUrl = `${req.protocol}://${req.get('host')}/api/uploads/crm/${imageFile}`;
         };
 
 

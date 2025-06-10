@@ -13,7 +13,7 @@ const getAllHobs = async (req, res) => {
         // Add image URL to each record
         const updatedData = data.map((record) => ({
             ...record,
-            imageUrl: `${req.protocol}://${req.get('host')}/uploads/hob/${record.extraind1}`, // Construct image URL
+            imageUrl: `${req.protocol}://${req.get('host')}/api/uploads/hob/${record.extraind1}`, // Construct image URL
         }));
 
         res.status(200).json({ message: "All User Records", data: updatedData });

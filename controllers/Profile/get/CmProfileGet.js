@@ -20,7 +20,7 @@ const getCmProfile = async (req, res) => {
         // Construct image URL if profile image exists
         let imageUrl = null;
         if (cmProfile.extraind1) {
-            imageUrl = `${req.protocol}://${req.get('host')}/uploads/cm/${crmProfile.extraind1}`;
+            imageUrl = `${req.protocol}://${req.get('host')}/api/uploads/cm/${crmProfile.extraind1}`;
         }
 
         res.status(200).json({

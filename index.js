@@ -1,6 +1,10 @@
+/**********************************
+ *   Updated Backend Index File   *
+ **********************************/
+
 const express = require('express');
 const app = express();
-const mySqlpool = require('./db')
+const mySqlpool = require('./db');
 
 const registrationRoutes = require('./routes/RegistrationRout');
 const LoginRouter = require('./routes/LoginRoute');
@@ -10,133 +14,126 @@ const GetRoute = require('./routes/GetRoute');
 const getAssignrouter = require('./routes/AssignTaskRoute');
 const chatRoutes = require('./routes/ChatRoute');
 
-
 const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 const dotenv = require('dotenv');
 
-// for live data updates
-const http = require('http'); // Add this line to import the http module
-const WebSocket = require('ws'); // Add this line to import the WebSocket module
-// const server = http.createServer(app);
-const { setWebSocketServer } = require('./WebSocketUtils'); // Import setWebSocketServer
+// Load environment variables
+dotenv.config();
+
+// Import modules for HTTP Server and WebSocket
+const http = require('http');
+const WebSocket = require('ws');
+
+// Create an HTTP server based on Express app
 const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
 
-
-// const http = require('http');
+// ----- Socket.IO Setup ----- //
 const socketIo = require('socket.io');
-// const server = http.createServer(app);
-// const io = socketIo(server, {
-//   cors: {
-//     origin: ["http://localhost:3000", "http://161.35.54.196"], // add your frontend URLs here
-//     methods: ["GET", "POST"]
-//   }
-// });
-
-const io = require("socket.io")(server, {
+const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:3000", // or "*" for all origins (not recommended for production)
+    origin: ["http://localhost:3000", "http://161.35.54.196", "http://localhost:3001" ],
     methods: ["GET", "POST"],
     credentials: true
   }
 });
 
+// ----- WebSocket Setup (For live updates) ----- //
+const wss = new WebSocket.Server({ server });
 
-app.use(express.json());    
+// Import custom utility to set the WebSocket server (if needed)
+const { setWebSocketServer } = require('./WebSocketUtils');
 
-// Enable CORS for all origins
+// Middleware setup
+app.use(express.json());
 app.use(cors());
 
-// Set up Global configuration access
-dotenv.config();
+// Serve static files from 'uploads' folder
+app.use('/uploads/', express.static(path.join(__dirname, 'uploads')));
 
+// Register API routes
+app.use("/v1", registrationRoutes);
+app.use("/v1", LoginRouter);
+app.use("/v1", updateRoutes);
+app.use("/v1", DeleteRoute);
+app.use("/v1", GetRoute);
+app.use("/v1", getAssignrouter);
+app.use("/v1", chatRoutes);
 
-// live data updates
-wss.on('connection', (ws) => {
-    console.log('WebSocket client connected');
-
-    ws.on('close', (code, reason) => {
-        console.warn(`WebSocket client disconnected. Code: ${code}, Reason: ${reason}`);
-    });
-
-    ws.on('error', (error) => {
-        console.error('WebSocket error:', error);
-    });
+// Default landing route
+app.get('/', (req, res) => {
+  res.status(200).send('<h1>Node.js MySQL App</h1>');
 });
 
-// Initialize WebSocket server
+/**********************************
+ *  WebSocket (wss) Connections   *
+ **********************************/
+wss.on('connection', (ws) => {
+  console.log('WebSocket client connected');
+
+  ws.on('close', (code, reason) => {
+    console.warn(`WebSocket client disconnected. Code: ${code}, Reason: ${reason}`);
+  });
+
+  ws.on('error', (error) => {
+    console.error('WebSocket error:', error);
+  });
+});
+
+// Initialize custom WebSocket server functions (if any)
 setWebSocketServer(wss);
 
-// Broadcast function
+// Broadcast function using native WebSocket
 const broadcast = (data) => {
-    wss.clients.forEach((client) => {
-        if (client.readyState === WebSocket.OPEN) {
-            client.send(JSON.stringify(data));
-        }
-    });
+  wss.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify(data));
+    }
+  });
 };
 
-
+/**********************************
+ *       Socket.IO Connections    *
+ **********************************/
 io.on('connection', (socket) => {
-  console.log('User connected:', socket.id);
+  console.log('User connected via Socket.IO:', socket.id);
 
+  // Join a room based on provided identifiers
   socket.on('joinRoom', ({ experienceid, crmid }) => {
     socket.join(`${experienceid}_${crmid}`);
   });
 
+  // Handle sending messages to a room
   socket.on('sendMessage', async (data) => {
-    // Save to DB as before
-    // ...insert into DB logic...
-    // After saving, emit to room
+    // Insert database save logic here if needed
+
+    // Emit the message to all clients in the room
     io.to(`${data.experienceid}_${data.crmid}`).emit('receiveMessage', data);
   });
 
   socket.on('disconnect', () => {
-    console.log('User disconnected:', socket.id);
+    console.log('User disconnected from Socket.IO:', socket.id);
   });
 });
 
-
-// Serve static files from the 'uploads' directory
-app.use('/uploads/', express.static(path.join(__dirname, 'uploads')));
-
-app.use("/v1", registrationRoutes)
-
-app.use("/v1", LoginRouter)
-
-app.use('/v1', updateRoutes);
-
-app.use("/v1", DeleteRoute)
-
-app.use("/v1", GetRoute)
-
-
-app.use("/v1", getAssignrouter)
-
-app.use("/v1", chatRoutes);
-
-// app.use("api/v1",)
-
-app.get('/', (req, res) => {
-    res.status(200).send('<h1>Node.js MySQL App</h1>');
-});
-
-
+/**********************************
+ *       Database Check &         *
+ *       Server Start-up          *
+ **********************************/
 const PORT = 8080;
 
 mySqlpool.query('SELECT 1')
-    .then(() => {
-        console.log('MySQL connected successfully');
-    })
-    .catch((error) => {
-        console.error('Database connection failed:', error.message);
-    });
+  .then(() => {
+    console.log('MySQL connected successfully');
+  })
+  .catch((error) => {
+    console.error('Database connection failed:', error.message);
+  });
 
-// Start the server and listen on port 8080
+// Start the HTTP server (handling Express, Socket.IO, and WebSocket)
 server.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server is running on http://0.0.0.0:${PORT}`);
+  console.log(`Server is running on http://0.0.0.0:${PORT}`);
 });
 
 module.exports = { app, server, broadcast };

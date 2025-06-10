@@ -18,12 +18,13 @@ function broadcast(data) {
     });
 }
 
-function broadcastNotification({ title, message }) {
+function broadcastNotification({ title, message, crmid }) {
     if (wss && wss.clients) {
         const notification = {
             type: 'notification',
             title,
             message,
+            crmid, // Include crmid for targeted notification
             timestamp: new Date().toISOString()
         };
         wss.clients.forEach(client => {

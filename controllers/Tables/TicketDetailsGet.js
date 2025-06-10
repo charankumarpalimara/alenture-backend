@@ -152,7 +152,7 @@ const getAllTicketsbyCrmid = async (req, res) => {
         }
 
         const [rows] = await mySqlpool.query(
-            "SELECT * FROM experiences WHERE extraind1 = ?",
+            "SELECT * FROM experiences WHERE extraind1 = ? order by experienceid desc",
             [CrmId]
         );
         if (!rows || rows.length === 0) {
@@ -180,7 +180,7 @@ const getPendingTicketsbyCrmid = async (req, res) => {
         }
          const status = 'Processing';
         const [rows] = await mySqlpool.query(
-            "SELECT * FROM experiences WHERE extraind1 = ? AND status = ?",
+            "SELECT * FROM experiences WHERE extraind1 = ? AND status = ? order by experienceid desc ",
             [CrmId, status]
         );
         if (!rows || rows.length === 0) {
@@ -208,7 +208,7 @@ const getNewTicketsbyCrmid = async (req, res) => {
         }
          const status = 'New';
         const [rows] = await mySqlpool.query(
-            "SELECT * FROM experiences WHERE extraind1 = ? AND status = ?",
+            "SELECT * FROM experiences WHERE extraind1 = ? AND status = ? order by experienceid desc",
             [CrmId, status]
         );
         if (!rows || rows.length === 0) {

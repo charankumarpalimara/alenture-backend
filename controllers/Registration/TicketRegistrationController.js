@@ -105,7 +105,9 @@ const TicketRegistration = async (req, res) => {
             type: 'notification',
             title: 'New Experience Registered',
             message: `EXPERIENCE ID ${finalExperienceid} Experience "${cmname}" registered successfully.`,
-            timestamp: new Date().toISOString()
+            crmid // Pass crmid for targeted notification
+            
+
         });
         
         console.log("User registered successfully with experienceid:", finalExperienceid);

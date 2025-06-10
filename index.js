@@ -31,10 +31,38 @@ const server = http.createServer(app);
 
 // ----- Socket.IO Setup ----- //
 const socketIo = require('socket.io');
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://localhost:3001",
+  "http://161.35.54.196",
+  "https://161.35.54.196",
+  "http://161.35.54.196:3000",
+  "https://161.35.54.196:3000",
+  "http://161.35.54.196:3001",
+  "https://161.35.54.196:3001",
+  "*"
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin) || allowedOrigins.includes("*")) {
+      return callback(null, true);
+    } else {
+      return callback(new Error('Not allowed by CORS: ' + origin));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+
 const io = socketIo(server, {
   cors: {
-    origin: ["http://localhost:3000", "http://161.35.54.196", "http://localhost:3001" ],
-    methods: ["GET", "POST"],
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true
   }
 });
@@ -47,7 +75,6 @@ const { setWebSocketServer } = require('./WebSocketUtils');
 
 // Middleware setup
 app.use(express.json());
-app.use(cors());
 
 // Serve static files from 'uploads' folder
 app.use('/uploads/', express.static(path.join(__dirname, 'uploads')));

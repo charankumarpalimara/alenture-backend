@@ -15,7 +15,7 @@ const ChatInsert = async (req, res) => {
         const date = currentDate.toISOString().split('T')[0];
 
         await mySqlpool.query(
-            "INSERT INTO chat (cmid, crmid, experienceid, messege, sender, time, date, extraind1) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            "INSERT INTO chat (cmid, crmid, experienceid, messege, sender, time, date, extraind1, extraind2, extraind3, extraind4, extraind5) VALUES (?, ?, ?, ?, ?, ?, ?, ?, '', '', '', '')",
             [cmid, crmid, experienceid, message, sender, time, date, crmname ]
         );
 

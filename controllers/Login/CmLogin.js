@@ -27,7 +27,7 @@ const CmLogin = async (req, res) => {
 
         const updatedData = data.map((record) => ({
             ...record,
-            imageUrl: `${req.protocol}://${req.get('host')}/uploads/cm/${record.extraind1}`, // Construct image URL
+            imageUrl: `${req.protocol}://${req.get('host')}/api/uploads/cm/${record.extraind1}`, // Construct image URL
         }));
           
         res.status(200).json({ 

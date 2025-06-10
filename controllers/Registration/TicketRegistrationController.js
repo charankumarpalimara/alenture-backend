@@ -1,5 +1,6 @@
 const mySqlpool = require('../../db');
 const express = require('express');
+const path = require('path');
 
 const { wss } = require('../../index'); // Adjust path if needed
 const { broadcast, broadcastNotification } = require('../../WebSocketUtils'); // Adjust path if needed
@@ -44,10 +45,16 @@ const TicketRegistration = async (req, res) => {
         const { cmid, cmname, organizationid, organizationname, branch, subject, experience, experienceDetails, impact, priority, status } = req.body;
         console.log("Received data:", req.body);
         console.log("Received file:", req.file);
-        const file = req.file; 
+        
+        // Handle file upload
+        let filename = '';
+        if (req.file) {
+            filename = req.file.filename; // This is the saved filename with unique suffix
+            console.log("File uploaded successfully:", filename);
+        }
+        
         if (!cmid || !cmname || !organizationid || !organizationname || !branch || !subject || !experience || !experienceDetails || !impact || !priority || !status) {
             return res.status(400).json({ error: "Please provide all required fields." });
-            console.log({ error: "Please provide all required fields." });
         }
 
         const id = '1';
@@ -72,8 +79,8 @@ const TicketRegistration = async (req, res) => {
         if (!crmDetails || crmDetails.length === 0) {
             [data] = await mySqlpool.query(
                 `INSERT INTO experiences (experienceid, experience, subject, experiencedetails, impact, priority, status, filename, cmid, cmname, organizationid, organizationname, branch, date, time, extraind1, extraind2, extraind3, extraind4, extraind5, extraind6, extraind7, extraind8, extraind9, extraind10) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, '', ?, ?, ?, ?, ?, ?, ?, '', '', '', '', '', '', '', '', '', '')`,
-                [finalExperienceid, experience, subject, experienceDetails, impact, priority, status, cmid, cmname, organizationid, organizationname, branch, date, time]
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', '', '', '', '', '', '', '', '', '')`,
+                [finalExperienceid, experience, subject, experienceDetails, impact, priority, status, filename, cmid, cmname, organizationid, organizationname, branch, date, time]
             );
         } else {
             const CrmId = crmDetails[0].crmid;
@@ -84,24 +91,30 @@ const TicketRegistration = async (req, res) => {
 
             [data] = await mySqlpool.query(
                 `INSERT INTO experiences (experienceid, experience, subject, experiencedetails, impact, priority, status, filename, cmid, cmname, organizationid, organizationname, branch, date, time, extraind1, extraind2, extraind3, extraind4, extraind5, extraind6, extraind7, extraind8, extraind9, extraind10) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, '', ?, ?, ?, ?, ?, ?, ?, ?, ?, '', '', '', '', '', '', '', '')`,
-                [finalExperienceid, experience, subject, experienceDetails, impact, priority, status, cmid, cmname, organizationid, organizationname, branch, date, time, CrmId, CrmName]
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', '', '', '', '', '', '', '')`,
+                [finalExperienceid, experience, subject, experienceDetails, impact, priority, status, filename, cmid, cmname, organizationid, organizationname, branch, date, time, CrmId, CrmName]
             );
         }
 
         await mySqlpool.query(`UPDATE indicators SET experience = ? WHERE id = ?`, [nextExperienceid, id]);
 
-            const crmid = crmDetails && crmDetails[0] ? crmDetails[0].crmid : null;
-            await broadcastExperienceCounts(mySqlpool, cmid, crmid);
+        const crmid = crmDetails && crmDetails[0] ? crmDetails[0].crmid : null;
+        await broadcastExperienceCounts(mySqlpool, cmid, crmid);
 
         broadcastNotification({
             type: 'notification',
             title: 'New Experience Registered',
-            message: ` EXPERIENCE ID ${finalExperienceid} Experience "${firstname} ${lastname}" registered successfully.`,
+            message: `EXPERIENCE ID ${finalExperienceid} Experience "${cmname}" registered successfully.`,
             timestamp: new Date().toISOString()
         });
+        
         console.log("User registered successfully with experienceid:", finalExperienceid);
-        res.status(200).json({ message: "User registered successfully", data });
+        res.status(200).json({ 
+            message: "User registered successfully", 
+            data,
+            experienceid: finalExperienceid,
+            filename: filename || null
+        });
 
     } catch (error) {
         console.error("Error during TicketRegistration:", error);

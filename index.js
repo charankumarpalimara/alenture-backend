@@ -85,22 +85,22 @@ io.on('connection', (socket) => {
 
 
 // Serve static files from the 'uploads' directory
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads/', express.static(path.join(__dirname, 'uploads')));
 
-app.use("/api/v1", registrationRoutes)
+app.use("/v1", registrationRoutes)
 
-app.use("/api/v1", LoginRouter)
+app.use("/v1", LoginRouter)
 
-app.use('/api/v1', updateRoutes);
+app.use('/v1', updateRoutes);
 
-app.use("/api/v1", DeleteRoute)
+app.use("/v1", DeleteRoute)
 
-app.use("/api/v1", GetRoute)
+app.use("/v1", GetRoute)
 
 
-app.use("/api/v1", getAssignrouter)
+app.use("/v1", getAssignrouter)
 
-app.use("/api/v1", chatRoutes);
+app.use("/v1", chatRoutes);
 
 // app.use("api/v1",)
 

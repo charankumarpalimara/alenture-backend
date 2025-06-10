@@ -160,8 +160,8 @@ mySqlpool.query('SELECT 1')
   });
 
 // Start the HTTP server (handling Express, Socket.IO, and WebSocket)
-server.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server is running on http://0.0.0.0:${PORT}`);
+server.listen(PORT, () => {
+  console.log(`Server is running on http://127.0.0.1:${PORT}`);
 });
 
 module.exports = { app, server, broadcast };

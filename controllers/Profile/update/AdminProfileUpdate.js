@@ -32,7 +32,7 @@ const updateAdminProfile = async (req, res) => {
             }
         }
         if (imageFile) {
-            imageUrl = `${req.protocol}://${req.get('host')}/uploads/admin/${imageFile}`;
+            imageUrl = `${req.protocol}://${req.get('host')}/api/uploads/admin/${imageFile}`;
         }
         res.status(200).json({ message: "admin profile updated successfully", imageUrl: imageUrl });
         console.log("admin profile updated successfully", imageUrl);

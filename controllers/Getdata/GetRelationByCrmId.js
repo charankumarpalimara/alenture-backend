@@ -27,7 +27,7 @@ const getRelationByCrmId = async (req, res) => {
                     ...relation,
                     cmDetails: {
                         ...cmDetails[0],
-                        imageUrl: `${req.protocol}://${req.get('host')}/uploads/cm/${cmDetails[0].extraind1}`
+                        imageUrl: `${req.protocol}://${req.get('host')}/api/uploads/cm/${cmDetails[0].extraind1}`
                     }
                 };
             } else {

@@ -19,15 +19,31 @@ const dotenv = require('dotenv');
 // for live data updates
 const http = require('http'); // Add this line to import the http module
 const WebSocket = require('ws'); // Add this line to import the WebSocket module
+// const server = http.createServer(app);
+const { setWebSocketServer } = require('./WebSocketUtils'); // Import setWebSocketServer
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
-const { setWebSocketServer } = require('./WebSocketUtils'); // Import setWebSocketServer
 
 
 // const http = require('http');
 const socketIo = require('socket.io');
+const { useEffect } = require('react');
 // const server = http.createServer(app);
-const io = socketIo(server, { cors: { origin: "*" } }); 
+// const io = socketIo(server, {
+//   cors: {
+//     origin: ["http://localhost:3000", "http://161.35.54.196"], // add your frontend URLs here
+//     methods: ["GET", "POST"]
+//   }
+// });
+
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "http://localhost:3000", // or "*" for all origins (not recommended for production)
+    methods: ["GET", "POST"],
+    credentials: true
+  }
+});
+
 
 app.use(express.json());    
 

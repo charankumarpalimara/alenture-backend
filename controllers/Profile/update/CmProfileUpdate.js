@@ -70,7 +70,7 @@ const updateCmProfileByAdminHob = async (req, res) => {
             }
         }
         if (imageFile) {
-            imageUrl = `${req.protocol}://${req.get('host')}/uploads/cm/${imageFile}`;
+            imageUrl = `${req.protocol}://${req.get('host')}/api/uploads/cm/${imageFile}`;
         }
         res.status(200).json({ message: "Cm profile updated successfully", imageUrl: imageUrl });
         console.log("Cm profile updated successfully", imageUrl);

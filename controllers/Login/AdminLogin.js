@@ -27,7 +27,7 @@ const AdminLogin = async (req, res) => {
 
         const updatedData = data.map((record) => ({
             ...record,
-            imageUrl: `${req.protocol}://${req.get('host')}/api/uploads/admin/${record.extraind1}`, // Construct image URL
+            imageUrl: `${req.protocol}://${req.get('host')}/uploads/admin/${record.extraind1}`, // Construct image URL
         }));
           
         res.status(200).json({ 

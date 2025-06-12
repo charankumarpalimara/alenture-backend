@@ -44,7 +44,7 @@ const updateHob = async (req, res) => {
 
 
         if (imageFile) {
-            imageUrl = `${req.protocol}://${req.get('host')}/api/uploads/hob/${imageFile}`;
+            imageUrl = `${req.protocol}://${req.get('host')}/uploads/hob/${imageFile}`;
         };
 
 

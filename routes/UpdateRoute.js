@@ -16,6 +16,7 @@ const { NoteUpdate } = require('../controllers/Update/NoteUpdate');
 const { updateExperienceStatus, updateExperienceStatusToResolve } = require('../controllers/Update/ExperienceStatusUpdate');
 const { updateTaskStatus } = require('../controllers/Update/TaskStatusUpdate');
 const { updateExperiencePriority } = require('../controllers/Update/ExperiencePriorityUpdate');
+const { updateHobProfile } = require('../controllers/Profile/update/HobProfileUpdate');
 // const { Upload } = require('antd');
 
 const router = express.Router();
@@ -94,6 +95,18 @@ router.post('/UpdateHobDetails', multer({
         }
     })
 }).single('hobProfileImage'), updateHob);
+
+router.post('/HobUpdateByitsSelf', multer({
+    storage: multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, path.join(__dirname, '../uploads/hob'));
+        },
+        filename: (req, file, cb) => {
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+            cb(null, uniqueSuffix + path.extname(file.originalname));
+        }
+    })
+}).single('hobProfileImageBySelf'), updateHobProfile);
 
 
 router.post('/UpdateOrganizationDetails', OrganizationUpdate);

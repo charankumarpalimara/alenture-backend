@@ -1,20 +1,15 @@
-const mySqlpool = require('../../db');
 const express = require('express');
+const multer = require('multer');
 
 
+const mySqlpool = require('../../../db'); // Adjust the path as necessary
 
-const updateHob = async (req, res) => {
+
+const updateHobProfile = async (req, res) => {
     try {
-        const { hobid, firstname, lastname, email, phoneCode, mobile, status, gender, createrrole, createrid } = req.body;
-
-        if (!hobid) {
-           return res.status(400).json({ error: "hob is required" });
-           console.error("hobid is required");
-       }
-
-        // Fix: updateFields should match SQL order and cmid only at the end
-        let updateFields = [firstname, lastname, email, phoneCode, mobile, gender, status];
-        let sql = `UPDATE listofhob SET firstname = ?, lastname = ?, email = ?, phonecode = ?, mobile = ?, extraind2 = ?, extraind6 = ?`;
+        const { hobid, firstName,lastName, password, email, PhoneNo, gender } = req.body;
+        let updateFields = [password];
+        let sql = `UPDATE listofhob SET passwords = ?`;
         // If file is present, update extraind1 (profile image)
         if (req.file && req.file.filename) {
             sql += ', extraind1 = ?';
@@ -22,15 +17,10 @@ const updateHob = async (req, res) => {
         }
         sql += ' WHERE hobid = ?';
         updateFields.push(hobid);
-        // Debug log to help diagnose 404 issues
-        console.log("[DEBUG] hobid:", hobid, "updateFields:", updateFields, "SQL:", sql);
         const [result] = await mySqlpool.query(sql, updateFields);
         if (result.affectedRows === 0) {
-            return res.status(404).json({ error: "hob not found or no changes made" });
+            return res.status(404).json({ error: "Admin not found or no changes made" });
         }
-
-
-
         // Construct imageUrl if image was updated, else fetch current image
         let imageUrl = null;
         let imageFile = req.file && req.file.filename ? req.file.filename : null;
@@ -41,20 +31,17 @@ const updateHob = async (req, res) => {
                 imageFile = rows[0].extraind1;
             }
         }
-
-
         if (imageFile) {
             imageUrl = `${req.protocol}://${req.get('host')}/uploads/hob/${imageFile}`;
-        };
-
-
-
-        res.status(200).json({ message: "Hob profile updated successfully", imageUrl: imageUrl });
-        console.log("Hob profile updated successfully", imageUrl);
+        }
+        res.status(200).json({ message: "admin profile updated successfully", imageUrl: imageUrl });
+        console.log("admin profile updated successfully", imageUrl);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Internal server error" });
     }
 }
 
-module.exports = { updateHob };
+module.exports = {
+    updateHobProfile
+};

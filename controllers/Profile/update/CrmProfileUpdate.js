@@ -35,7 +35,7 @@ const updateCrmProfile = async (req, res) => {
             }
         }
         if (imageFile) {
-            imageUrl = `${req.protocol}://${req.get('host')}/api/uploads/crm/${imageFile}`;
+            imageUrl = `${req.protocol}://${req.get('host')}/uploads/crm/${imageFile}`;
         }
         res.status(200).json({ message: "Crm profile updated successfully", imageUrl: imageUrl });
         console.log("Crm profile updated successfully", imageUrl);

@@ -40,6 +40,8 @@ async function broadcastExperienceCounts(mySqlpool, cmid, crmid) {
     }
 }
 
+
+
 const TicketRegistration = async (req, res) => {
     try {
         const { cmid, cmname, organizationid, organizationname, branch, subject, experience, experienceDetails, impact, priority, status } = req.body;

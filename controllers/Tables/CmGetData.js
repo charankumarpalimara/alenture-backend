@@ -62,7 +62,7 @@ const getCmDataById = async (req, res) => {
         }
         const updatedData = cmname.map((record) => ({
             ...record,
-            imageUrl: `${req.protocol}://${req.get('host')}/api/uploads/cm/${record.extraind1}`, // Construct image URL
+            imageUrl: `${req.protocol}://${req.get('host')}/uploads/cm/${record.extraind1}`, // Construct image URL
         }));
         res.status(200).json({ message: "Cm details found", updatedData });
         console.log({ message: "Cm details found", updatedData });

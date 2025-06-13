@@ -21,7 +21,7 @@ const dotenv = require("dotenv");
 
 // Load environment variables
 dotenv.config();
-console.log("JWT_SECRET:", process.env.JWT_SECRET);
+console.log("JWT_SECRET:", process.env.JWT_SECRET_KEY);
 
 // Import modules for HTTP Server and WebSocket
 const http = require("http");

@@ -17,11 +17,12 @@ const chatRoutes = require("./routes/ChatRoute");
 const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
-const dotenv = require("dotenv");
+require("dotenv").config();
 
 // Load environment variables
-dotenv.config();
+
 console.log("JWT_SECRET:", process.env.JWT_SECRET_KEY);
+console.log("port", process.env.PORT);
 
 // Import modules for HTTP Server and WebSocket
 const http = require("http");

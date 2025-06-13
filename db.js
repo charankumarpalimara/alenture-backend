@@ -1,10 +1,10 @@
-const mysql = require('mysql2/promise');
+const mysql = require("mysql2/promise");
 
 const mySqlpool = mysql.createPool({
-  host: "161.35.54.196",  // Keep your actual host/IP
-  user: "charan",   // Replace with actual MySQL user
-  password: "Charan@786!",  // Replace with actual password
-  database: "yukthitech",
+  host: "147.182.163.213",
+  user: "alanadmin",
+  password: "Alantur@123",
+  database: "alantur",
 });
 
 module.exports = mySqlpool;

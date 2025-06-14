@@ -106,7 +106,7 @@ const organizationRegister = async (req, res) => {
     broadcastNotification({
       type: "notification",
       title: "New ORGANIZATION Registered",
-      message: `ORGANIZATION ID ${finalOrgid} ORGANIZATION "${firstname} ${lastname}" registered successfully.`,
+      message: `ORGANIZATION ID ${finalOrgid} ORGANIZATION "${organizationname}" registered successfully.`,
       timestamp: new Date().toISOString(),
     });
     res

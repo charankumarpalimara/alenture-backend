@@ -71,7 +71,8 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-const io = socketIo(server, {
+const ioServer = http.createServer();
+const io = socketIo(ioServer, {
   path: "/socket.io/",
   cors: {
     origin: allowedOrigins,
@@ -177,6 +178,9 @@ mySqlpool
 // Start the HTTP server (handling Express, Socket.IO, and WebSocket)
 server.listen(PORT, () => {
   console.log(`Server is running on http://127.0.0.1:${PORT}`);
+});
+ioServer.listen(8082, () => {
+  console.log(`Socket.IO server running on http://127.0.0.1:8082`);
 });
 
 module.exports = { app, server, broadcast };

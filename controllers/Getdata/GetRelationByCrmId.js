@@ -9,7 +9,7 @@ const getRelationByCrmId = async (req, res) => {
         }
 
         const [data] = await mySqlpool.query(
-            "SELECT id, crmid, crmname, cmid, cmname, organizationid, organizationname, branch, date FROM assignedrelations WHERE crmid = ? order by id desk ", 
+            "SELECT id, crmid, crmname, cmid, cmname, organizationid, organizationname, branch, date FROM assignedrelations WHERE crmid = ? order by id desc ", 
             [crmId]
         );
         if (!data || data.length === 0) {
@@ -19,7 +19,7 @@ const getRelationByCrmId = async (req, res) => {
         // For each assigned relation, fetch and attach CM details
         const combinedData = await Promise.all(data.map(async (relation) => {
             const [cmDetails] = await mySqlpool.query(
-                "SELECT firstname, lastname, email, phonecode, mobile, extraind2, extraind3, extraind1, passwords FROM listofcm WHERE cmid = ? order by id desk ", 
+                "SELECT firstname, lastname, email, phonecode, mobile, extraind2, extraind3, extraind1, passwords FROM listofcm WHERE cmid = ? order by id desc ", 
                 [relation.cmid]
             );
             if (cmDetails && cmDetails.length > 0) {

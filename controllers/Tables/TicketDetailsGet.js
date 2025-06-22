@@ -13,7 +13,7 @@ const getAllTickets = async (req, res) => {
         // Add image URL to each record
         const updatedData = data.map((record) => ({
             ...record,
-            imageUrl: `${req.protocol}://${req.get('host')}/uploads/cm/${record.extraind1}`, // Construct image URL
+            imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
         }));
 
         res.status(200).json({ message: "All User Records", data: updatedData });
@@ -235,7 +235,7 @@ const getReslveTicketsbyCrmid = async (req, res) => {
         }
          const status = 'Resolved';
         const [rows] = await mySqlpool.query(
-            "SELECT * FROM experiences WHERE extraind1 = ? AND status = ?",
+            "SELECT * FROM experiences WHERE extraind1 = ? AND status = ? order by id desc",
             [CrmId, status]
         );
         if (!rows || rows.length === 0) {

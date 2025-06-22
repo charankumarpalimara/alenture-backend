@@ -5,7 +5,7 @@ const express = require('express');
 
 const getAllOrgs = async (req, res) => {
     try {
-        const [data] = await mySqlpool.query("SELECT * FROM listoforganizations WHERE branchtype = 'Parent' order by organizationname asc");
+        const [data] = await mySqlpool.query("SELECT * FROM listoforganizations WHERE branchtype = 'Parent' order by id desc ");
         if (!data || data.length === 0) {
             return res.status(404).json({ error: "No Records Found" });
         }

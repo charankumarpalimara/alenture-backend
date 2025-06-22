@@ -6,7 +6,7 @@ const express = require('express');
 
 const getAllCrm = async (req, res) => {
     try {
-        const [data] = await mySqlpool.query("SELECT * FROM listofcrm order by crmid desc");
+        const [data] = await mySqlpool.query("SELECT * FROM listofcrm  order by id desc ");
         if (!data || data.length === 0) {
             return res.status(404).json({ error: "No Records Found" });
         }

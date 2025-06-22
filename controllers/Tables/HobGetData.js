@@ -5,7 +5,7 @@ const express = require('express');
 
 const getAllHobs = async (req, res) => {
     try {
-        const [data] = await mySqlpool.query("SELECT * FROM listofhob order by hobid asc");
+        const [data] = await mySqlpool.query("SELECT * FROM listofhob order by id desc");
         if (!data || data.length === 0) {
             return res.status(404).json({ error: "No Records Found" });
         }

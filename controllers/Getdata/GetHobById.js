@@ -10,7 +10,7 @@ const getHobById = async (req, res) => {
             return res.status(402).json({ error: "we not recieved any id value" })
         }
 
-        const [data] = await mySqlpool.query(`SELECT * FROM listofhob WHERE id=?`, [userId]);
+        const [data] = await mySqlpool.query(`SELECT * FROM listofhob WHERE id=? order by id desc `, [userId]);
         if (!data || data.length === 0) {
             return res.status(404).json({ error: "No user found" });
         }

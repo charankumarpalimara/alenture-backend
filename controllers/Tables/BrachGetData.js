@@ -8,7 +8,7 @@ const getBranchbyOrganizationname = async (req, res) => {
         }
 
         const [rows] = await mySqlpool.query(
-            "SELECT branch FROM listoforganizations WHERE organizationname = ?",
+            "SELECT branch FROM listoforganizations WHERE organizationname = ? order by id desc ",
             [orgName]
         );
         if (!rows || rows.length === 0) {

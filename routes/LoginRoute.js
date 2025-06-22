@@ -19,7 +19,6 @@ router.post('/adminLogin', AdminLogin);
 router.post('/cmlogin', CmLogin)
 
 router.post('/crmLogin', CrmLogin);
-
 router.post('/hobLogin', HobLogin);
 
 

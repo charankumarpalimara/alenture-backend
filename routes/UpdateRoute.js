@@ -96,9 +96,6 @@ router.post('/UpdateHobDetails', multer({
     })
 }).single('hobProfileImage'), updateHob);
 
-
-
-
 router.post('/HobUpdateByitsSelf', multer({
     storage: multer.diskStorage({
         destination: (req, file, cb) => {
@@ -110,7 +107,6 @@ router.post('/HobUpdateByitsSelf', multer({
         }
     })
 }).single('hobProfileImageBySelf'), updateHobProfile);
-
 
 
 router.post('/UpdateOrganizationDetails', OrganizationUpdate);

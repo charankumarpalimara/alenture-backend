@@ -54,7 +54,7 @@ const getCmDataById = async (req, res) => {
     try {
         const userId = req.params.cmid;
         const [cmname] = await mySqlpool.query(
-            "SELECT * FROM listofcm WHERE cmid = ? ",
+            "SELECT * FROM listofcm WHERE cmid = ? order by id desc ",
             [userId]
         );
         if (!cmname || cmname.length === 0) {

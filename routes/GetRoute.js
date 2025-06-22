@@ -10,7 +10,7 @@ const { getRelationByCrmId } = require('../controllers/Getdata/GetRelationByCrmI
 const { getHobById } = require('../controllers/Getdata/GetHobById');
 const { getAllCrm, getAllCrmid, getCrmName } = require('../controllers/Tables/CrmGetData');
 const { getAllHobs } = require('../controllers/Tables/HobGetData');
-const { getAllOrgs, getAllOrgId, getOrgNamebyOrgId, getOrgDetailsById, getOrganizationBranchesByOrgid } = require('../controllers/Getdata/OrganizationGetData');
+const { getAllOrgs, getAllOrgId, GetOrganizationName, getOrgNamebyOrgId, getOrgDetailsById, getOrganizationBranchesByOrgid } = require('../controllers/Getdata/OrganizationGetData');
 const { getAllCm, getCmDataById } = require('../controllers/Tables/CmGetData');
 
 
@@ -50,6 +50,8 @@ router.get('/getAllOrgId', getAllOrgId);
 router.get('/getAllCm', getAllCm);
 
 router.get('/getAllOrgs', getAllOrgs);
+
+router.get('/getAllOrganizationnames', GetOrganizationName);
 
 router.get('/getCrmProfile/:crmid', getCrmProfile);
 

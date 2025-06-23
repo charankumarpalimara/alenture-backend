@@ -80,6 +80,8 @@ const updateCmProfileByAdminHob = async (req, res) => {
       crmname,
     ];
     let sql = `UPDATE listofcm SET firstname = ?, lastname = ?,  email = ?, mobile = ?, organizationid = ?, organizationname = ?, branch = ?, extraind3 = ?, extraind2 = ?, passwords = ?, crmid = ?, crmname = ?`;
+
+
     // If file is present, update extraind1 (profile image)
     if (req.file && req.file.filename) {
       sql += ", extraind1 = ?";
@@ -91,6 +93,14 @@ const updateCmProfileByAdminHob = async (req, res) => {
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: "Cm not found or no changes made" });
     }
+    let updateFields2 = [
+      crmid,
+      crmname,
+      cmid
+    ];
+    let sql2 = `UPDATE assignedrelations SET  crmid = ?, crmname = ? WHERE cmid = ?`;
+    const [result2] = await mySqlpool.query(sql2, updateFields2);
+
     // Construct imageUrl if image was updated, else fetch current image
     let imageUrl = null;
     let imageFile = req.file && req.file.filename ? req.file.filename : null;

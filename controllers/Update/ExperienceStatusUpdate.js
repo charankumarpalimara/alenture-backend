@@ -54,7 +54,7 @@ const updateExperienceStatusToResolve = async (req, res) => {
 
 
            const [existingstatus] = await mySqlpool.query(
-                "SELECT * FROM experiencesWHERE experienceid = ?",
+                "SELECT * FROM experiences WHERE experienceid = ?",
                 [experienceid]
             );
 

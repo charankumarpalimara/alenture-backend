@@ -142,6 +142,7 @@ const organizationAdding = async (req, res) => {
       createrid,
       createrrole,
     } = req.body;
+    console.log("Received data:", req.body); // Log incoming text fieldss
     if (
       !organizationid ||
       !organizationname ||
@@ -169,7 +170,7 @@ const organizationAdding = async (req, res) => {
     if (existingUser.length > 0) {
       return res
         .status(409)
-        .json({ error: "Organization Already Excist", branch: branch });
+        .json({ error: "Branch Already Exicist", branch: branch });
     }
 
     const currentDate = new Date();
@@ -214,7 +215,7 @@ const organizationAdding = async (req, res) => {
     broadcastNotification({
       type: "notification",
       title: "New ORGANIZATION BRANCH Registered",
-      message: `ORGANIZATION BRANCH"${firstname} ${lastname}" registered successfully.`,
+      message: `ORGANIZATION"${organizationname}'s BRACH ${branch}" registered successfully.`,
       timestamp: new Date().toISOString(),
     });
     res

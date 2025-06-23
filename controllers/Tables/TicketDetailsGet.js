@@ -13,7 +13,7 @@ const getAllTickets = async (req, res) => {
         // Add image URL to each record
         const updatedData = data.map((record) => ({
             ...record,
-            imageUrl: `${req.protocol}://${req.get('host')}/uploads/cm/${record.extraind1}`, // Construct image URL
+            imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
         }));
 
         res.status(200).json({ message: "All User Records", data: updatedData });
@@ -25,6 +25,79 @@ const getAllTickets = async (req, res) => {
         res.status(500).json({ error: "Error in Get All Students API" });
     }
 };
+
+
+const getPendingTickets = async (req, res) => {
+    try {
+        const [data] = await mySqlpool.query("SELECT * FROM experiences WHERE status = 'Processing' order by experienceid desc");
+        if (!data || data.length === 0) {
+            return res.status(404).json({ error: "No Records Found" });
+        }
+
+        // Add image URL to each record
+        const updatedData = data.map((record) => ({
+            ...record,
+            imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
+        }));
+
+        res.status(200).json({ message: "All User Records", data: updatedData });
+        console.log({message: "All Experiences get successfully", data: updatedData  });
+        // console.log(updatedData);
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error in Get All Students API" });
+    }
+};
+
+
+const getNewTickets = async (req, res) => {
+    try {
+        const [data] = await mySqlpool.query("SELECT * FROM experiences WHERE status = 'New' order by experienceid desc ");
+        if (!data || data.length === 0) {
+            return res.status(404).json({ error: "No Records Found" });
+        }
+
+        // Add image URL to each record
+        const updatedData = data.map((record) => ({
+            ...record,
+            imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
+        }));
+
+        res.status(200).json({ message: "All User Records", data: updatedData });
+        console.log({message: "All Experiences get successfully", data: updatedData  });
+        // console.log(updatedData);
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error in Get All Students API" });
+    }
+};
+
+
+const getResolvedTickets = async (req, res) => {
+    try {
+        const [data] = await mySqlpool.query("SELECT * FROM experiences WHERE status = 'Resolved' order by experienceid desc ");
+        if (!data || data.length === 0) {
+            return res.status(404).json({ error: "No Records Found" });
+        }
+
+        // Add image URL to each record
+        const updatedData = data.map((record) => ({
+            ...record,
+            imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
+        }));
+
+        res.status(200).json({ message: "All User Records", data: updatedData });
+        console.log({message: "All Experiences get successfully", data: updatedData  });
+        // console.log(updatedData);
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error in Get All Students API" });
+    }
+};
+
 
 
 const getAllTicketsbyCmid = async (req, res) => {
@@ -252,4 +325,4 @@ const getReslveTicketsbyCrmid = async (req, res) => {
     }
 };
 
-module.exports = { getAllTickets, getAllTicketsbyCrmid, getAllTicketsbyCmid, getPendingTicketsbyCmid, getNewTicketsbyCmid, getResolvedTicketsbyCmid, getPendingTicketsbyCrmid, getNewTicketsbyCrmid, getReslveTicketsbyCrmid };
+module.exports = { getAllTickets, getPendingTickets, getNewTickets, getResolvedTickets, getAllTicketsbyCrmid, getAllTicketsbyCmid, getPendingTicketsbyCmid, getNewTicketsbyCmid, getResolvedTicketsbyCmid, getPendingTicketsbyCrmid, getNewTicketsbyCrmid, getReslveTicketsbyCrmid };

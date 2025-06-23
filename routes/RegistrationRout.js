@@ -54,7 +54,7 @@ const cmimage = multer.diskStorage({
 
 const uploadhob = multer({ storage: hobimage });
 const uploadcrm = multer({ storage: crmimage });
-const uploadcm = multer({ storage: cmimage });
+// const uploadcm = multer({ storage: cmimage });
 // const uploadfile = multer({ storage: fileupload });
 const upload = multer();
 
@@ -65,13 +65,40 @@ const router = express.Router();
 router.post('/createHob', uploadhob.single('hobimage'), HobRegistration);
 
 // Create CRM
-router.post('/createCrm', uploadcrm.single('crmimage'), CrmRegister);
+
 
 // Organization Registration
 router.post('/createOrganization', upload.none(), organizationRegister);
 
-// Create CM
-router.post('/createCm', uploadcm.single('cmimage'), CmRegister);
+
+
+router.post('/createCrm', multer({
+    storage: multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, path.join(__dirname, '../uploads/crm'));
+        },
+        filename: (req, file, cb) => {
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+            cb(null, uniqueSuffix + path.extname(file.originalname));
+        }
+    })
+}).single('crmimage'), CrmRegister);
+
+
+router.post('/createCm', multer({
+    storage: multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, path.join(__dirname, '../uploads/cm'));
+        },
+        filename: (req, file, cb) => {
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+            cb(null, uniqueSuffix + path.extname(file.originalname));
+        }
+    })
+}).single('cmimage'), CmRegister);
+
+
+
 
 // Create Ticket (no file upload)
 router.post('/createTicket', multer({

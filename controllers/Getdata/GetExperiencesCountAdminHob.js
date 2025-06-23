@@ -4,22 +4,25 @@ const mySqlpool = require('../../db');
 
 
 const AllExperiencesCount = async (req, res) => {
-    try{
+    try {
+        const [total] = await mySqlpool.query("SELECT COUNT(experienceid) AS total FROM experiences");
+        const [resolved] = await mySqlpool.query("SELECT COUNT(experienceid) AS resolved FROM experiences WHERE status = 'Resolved'");
+        const [newCount] = await mySqlpool.query("SELECT COUNT(experienceid) AS newCount FROM experiences WHERE status = 'New'");
+        const [processing] = await mySqlpool.query("SELECT COUNT(experienceid) AS processing FROM experiences WHERE status = 'Processing'");
 
-        const [data] = await mySqlpool.query("SELECT COUNT(experienceid) AS total FROM experiences");
-        if (!data || data.length === 0) {
-            return res.status(404).json({ error: "No Records Found" });
-        }
-
-        res.status(200).json({ message: "Total Experience Count", count: data[0].total });
-        console.log("Total Experience Count:", data[0].total);
-
-    }
-    catch (error) {
+        res.status(200).json({
+            message: "Total Experience Count",
+            total: total[0].total,
+            resolved: resolved[0].resolved,
+            new: newCount[0].newCount,
+            processing: processing[0].processing
+        });
+        console.log("Total Experience Count:", total[0].total);
+    } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Internal server error" });
     }
-}
+}; 
 
 
 const ResolvedExperiencesCount = async (req, res) => {

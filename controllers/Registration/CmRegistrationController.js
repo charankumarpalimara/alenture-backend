@@ -26,8 +26,8 @@ const uploadcm = multer({ cmimage });
 
 const CmRegister = async (req, res) => {
   try {
-    console.log("Incoming body:", req.body); // Log incoming text fields
-    console.log("Incoming file:", req.file); // Log incoming file
+   
+    // console.log("Incoming file:", req.file); // Log incoming file
     const {
       firstname,
       lastname,
@@ -45,18 +45,22 @@ const CmRegister = async (req, res) => {
       createrid,
       createrrole,
     } = req.body;
+     console.log("Incoming body:", req.body); // Log incoming text fields
 
     // Validate required fields
     // if (!firstname || !lastname || !phonecode || !mobile || !email || !gender || !designation || !organization || !branch || !username || !passwords || !createrid || !createrrole) {
     //     return res.status(400).json({ error: "Please provide firstname, lastname, and other required fields" });
     //     console.log("Please provide firstname, lastname, and other required fields");
     // }
-    if (!req.file) {
-      return res.status(400).json({ error: "Please upload an image" });
-      console.log("image is required");
-    }
+    // if (!req.file) {
+    //   return res.status(400).json({ error: "Please upload an image" });
+    //   console.log("image is required");
+    // }
 
-    const imagePath = req.file.filename;
+
+
+
+    const imagePath = req.file ? req.file.filename : "";
     const id = "1";
     const extraind10 = "cm";
     const extraind3 = "Active";

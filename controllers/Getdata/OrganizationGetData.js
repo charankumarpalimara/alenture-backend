@@ -56,18 +56,17 @@ const getAllOrgId = async (req, res) => {
 
 const GetOrganizationName = async(req, res) => {
     try {
-        const [data] = await mySqlpool.query("SELECT DISTINCT organizationname FROM listoforganizations ");
+        const [data] = await mySqlpool.query("SELECT DISTINCT organizationname, organizationid FROM listoforganizations ");
         if (!data || data.length === 0) {
             return res.status(404).json({ error: "No Records Found" });
         }
 
-        // Add image URL to each record
-        // const updatedData = data.map((record) => ({
-        //     ...record,
-        //     imageUrl: `${req.protocol}://${req.get('host')}/uploads/hob/${record.extraind1}`, // Construct image URL
-        // }));
-
-        res.status(200).json({ message: "All User Records", data: data });
+        const OrganizationDetails = data.map(organization => ({
+        organizationname: organization.organizationname,
+        organizationid: organization.organizationid
+        }));
+        
+        res.status(200).json({ message: "All User Records", data: OrganizationDetails });
         console.log("All students get successfully");
         console.log(data);
 
@@ -128,8 +127,6 @@ const getOrgDetailsById = async (req, res) => {
         res.status(500).json({ error: "Something went wrong in this API" });
     }
 };
-
-
 
 
 

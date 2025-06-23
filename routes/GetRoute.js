@@ -15,6 +15,7 @@ const { getAllCm, getCmDataById } = require('../controllers/Tables/CmGetData');
 
 
 
+
 const { getAllTickets, getPendingTickets, getNewTickets, getResolvedTickets, getAllTicketsbyCrmid, getAllTicketsbyCmid, getPendingTicketsbyCrmid, getNewTicketsbyCrmid, getReslveTicketsbyCrmid, getPendingTicketsbyCmid, getNewTicketsbyCmid, getResolvedTicketsbyCmid } = require('../controllers/Tables/TicketDetailsGet');
 const { getAllExperiencesCountByCrmId, getResolvedExperiencesCountByCrmId, getNewExperiencesCountByCrmId, getPendingExperiencesCountByCrmId } = require('../controllers/Getdata/GetExperiencesCountByCrmId');
 const { getAllExperiencesCountByCmId, getResolvedExperiencesCountByCmId, getNewExperiencesCountByCmId, getPendingExperiencesCountByCmId } = require('../controllers/Getdata/GetExperiencesCountByCmId');
@@ -25,7 +26,8 @@ const { getCmProfile } = require('../controllers/Profile/get/CmProfileGet');
 const { noteGetByid } = require('../controllers/Tables/notesController');
 
 const { getTaskDataByExpId } = require('../controllers/Getdata/TaskDataGetByExpId');
-
+const { GetCrmNames } = require('../controllers/Getdata/GetCrmNames');
+const { GetCmNames } = require('../controllers/Getdata/GetCmNames');
 
 const { AllExperiencesCount, ResolvedExperiencesCount, NewExperiencesCount, PendingExperiencesCount } = require('../controllers/Getdata/GetExperiencesCountAdminHob');
 
@@ -60,6 +62,9 @@ router.get('/getCmProfile/:cmid', getCmProfile);
 router.get('/getHob/:id', getHobById);
 
 
+router.get('/GetCrmNames', GetCrmNames);
+
+router.post('/GetCmNames', GetCmNames);
 
 router.get('/getCrmNamebyId/:crmid', getCrmName);
 
@@ -106,6 +111,10 @@ router.get('/getNewTicketsbyCrmid/:crmid', getNewTicketsbyCrmid);
 router.get('/getResolvedTicketsbyCrmid/:crmid', getReslveTicketsbyCrmid);
 
 router.get('/getRelationByCrmId/:crmid', getRelationByCrmId);
+
+
+
+
 
 router.get('/getAllExperienceCount', AllExperiencesCount);
 

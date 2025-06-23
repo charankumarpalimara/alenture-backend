@@ -34,11 +34,11 @@ const CrmRegister = async (req, res) => {
             return res.status(400).json({ error: "Please provide firstname, lastname, and other required fields" });
             console.log( "error to data insert" );
         }
-        if (!req.file) {
-            return res.status(400).json({ error: "Please upload an image" });
-        }
+        // if (!req.file) {
+        //     return res.status(400).json({ error: "Please upload an image" });
+        // }
 
-        const imagePath = req.file.filename;
+    const imagePath = req.file ? req.file.filename : "";
         const id = '1';
         const extraind10 = 'crm';
         const extraind7 = 'Active';

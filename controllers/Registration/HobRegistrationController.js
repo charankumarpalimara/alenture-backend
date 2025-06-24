@@ -36,6 +36,9 @@ const HobRegistration = async (req, res) => {
     const imagePath = req.file ? req.file.filename : "";
         const id = '1';
         const extraind10 = 'hob';
+        const extraind6 = 'Active';
+        const createrid = '1'; // Assuming a static creator ID for now
+        const createrrole = 'admin'; // Assuming a static creator role for now
 
         const [newid] = await mySqlpool.query("SELECT * FROM indicators WHERE id = ?", [id]);
         if (!newid || newid.length === 0) {
@@ -56,8 +59,8 @@ const HobRegistration = async (req, res) => {
 
         const data = await mySqlpool.query(
             `INSERT INTO listofhob (hobid, firstname, lastname, organizationid, organizationname, phonecode, mobile, email, username, passwords, createrid, createrrole, date, time, extraind1, extraind2, extraind3, extraind4, extraind5, extraind6, extraind7, extraind8, extraind9, extraind10) 
-            VALUES (?, ?, ?, '', '', ?, ?, ?, ?, ?, '', '', ?, ?, ?, ?, ?, ?, ?, '', '', '', '', ?)`,
-            [finalHobid, firstname, lastname, phonecode, mobile, email, username, passwords, date, time, imagePath, gender, country, state, city, extraind10 ]
+            VALUES (?, ?, ?, '', '', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', '', '', ?)`,
+            [finalHobid, firstname, lastname, phonecode, mobile, email, username, passwords, createrid, createrrole, date, time, imagePath, gender, country, state, city, extraind6, extraind10 ]
         );
 
         if (!data) {

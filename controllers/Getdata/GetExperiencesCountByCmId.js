@@ -61,7 +61,7 @@ const getNewExperiencesCountByCmId = async (req, res) => {
         }
         res.status(200).json({ message: "New Experience Count for CM ID", count: data[0].totalNew });
         broadcastCount('new', cmId, data[0].totalNew);
-    }catch (error) {
+    } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Internal server error" });
     }
@@ -79,7 +79,7 @@ const getPendingExperiencesCountByCmId = async (req, res) => {
         }
         res.status(200).json({ message: "Pending Experience Count for CM ID", count: data[0].totalPending });
         broadcastCount('pending', cmId, data[0].totalPending);
-    }catch (error) {
+    } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Internal server error" });
     }

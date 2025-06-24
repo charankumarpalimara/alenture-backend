@@ -53,7 +53,6 @@ const getAllOrgId = async (req, res) => {
     }
 };
 
-
 const GetOrganizationName = async(req, res) => {
     try {
         const [data] = await mySqlpool.query("SELECT DISTINCT organizationname, organizationid FROM listoforganizations ");
@@ -75,6 +74,28 @@ const GetOrganizationName = async(req, res) => {
         res.status(500).json({ error: "Error in Get All Students API" });
     }
 };
+
+// const GetOrganizationName = async(req, res) => {
+//     try {
+//         const [data] = await mySqlpool.query("SELECT DISTINCT organizationname, organizationid FROM listoforganizations ");
+//         if (!data || data.length === 0) {
+//             return res.status(404).json({ error: "No Records Found" });
+//         }
+
+//         const OrganizationDetails = data.map(organization => ({
+//         organizationname: organization.organizationname,
+//         organizationid: organization.organizationid
+//         }));
+        
+//         res.status(200).json({ message: "All User Records", data: OrganizationDetails });
+//         console.log("All students get successfully");
+//         console.log(data);
+
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ error: "Error in Get All Students API" });
+//     }
+// };
 
 
 const getOrgNamebyOrgId = async (req, res) => {

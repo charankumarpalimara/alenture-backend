@@ -47,6 +47,12 @@ const updateCmProfile = async (req, res) => {
   }
 };
 
+
+
+
+
+
+
 const updateCmProfileByAdminHob = async (req, res) => {
   try {
     const {
@@ -63,6 +69,8 @@ const updateCmProfileByAdminHob = async (req, res) => {
       organizationname,
       branch,
       status,
+      createrid,
+      createrrole
     } = req.body;
     console.log("Received request to update CM profile by Admin:", req.body);
     let updateFields = [
@@ -98,8 +106,36 @@ const updateCmProfileByAdminHob = async (req, res) => {
       crmname,
       cmid
     ];
-    let sql2 = `UPDATE assignedrelations SET  crmid = ?, crmname = ? WHERE cmid = ?`;
-    const [result2] = await mySqlpool.query(sql2, updateFields2);
+
+      const currentDate = new Date();
+      const date = currentDate.toISOString().split("T")[0];
+      const time = currentDate.toTimeString().split(" ")[0];
+
+
+      const  CmFullName = firstName + " " + lastName;
+
+  let sql2 = `UPDATE assignedrelations SET crmid = ?, crmname = ? WHERE cmid = ?`;
+  const [result2] = await mySqlpool.query(sql2, updateFields2);
+
+if (result2.affectedRows === 0) {
+    const [result3] = await mySqlpool.query(
+        `INSERT INTO assignedrelations (id, crmid, crmname, cmid, cmname, organizationid, organizationname, branch, phonecode, mobile, email, username, passwords, createrid, createrrole, date, time, extraind1, extraind2, extraind3, extraind4, extraind5, extraind6, extraind7, extraind8, extraind9, extraind10)
+            VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, '', '', '', '', '', ?, ?, ?, ?, '', '', '', '', '', '', '', '', '', '')`,
+        [
+            crmid,
+            crmname,
+            cmid,
+            CmFullName,
+            organizationid,
+            organizationname,
+            branch,
+            createrid,
+            createrrole,
+            date,
+            time
+        ]
+    );
+}
 
     // Construct imageUrl if image was updated, else fetch current image
     let imageUrl = null;

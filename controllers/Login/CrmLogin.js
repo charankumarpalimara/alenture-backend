@@ -19,6 +19,11 @@ const CrmLogin = async (req, res) => {
       [email, password]
     );
 
+            if (!data || data.length === 0) {
+            return res.status(401).json({ error: "Invalid email or password" });
+        }
+
+
     const token = jwt.sign(
       { id: data[0].id, email: data[0].email }, // Payload
       process.env.JWT_SECRET_KEY, // Secret key

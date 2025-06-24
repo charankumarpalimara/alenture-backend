@@ -7,7 +7,7 @@ const multer = require('multer');
 
 const { updateAdminProfile } = require('../controllers/Profile/update/AdminProfileUpdate');
 const  { updateCmProfile, updateCmProfileByAdminHob } = require('../controllers/Profile/update/CmProfileUpdate');
-const { updateCrmProfile } = require('../controllers/Profile/update/CrmProfileUpdate');
+const { updateCrmProfile, updateCrmProfileByAdminAndHob } = require('../controllers/Profile/update/CrmProfileUpdate');
 const { updateCustomerManager } = require('../controllers/Update/CmUpdateController');
 const { updateCustomerRelationshipManager } = require('../controllers/Update/CrmUpdateController');
 const { updateHob } = require('../controllers/Update/HobUpdateController');
@@ -81,6 +81,21 @@ router.post('/UpdatecrmProfileDetailsByitsSelf', multer({
         }
     })
 }).single('crmProfileImageBySelf'), updateCrmProfile);
+
+
+
+router.post('/UpdatecrmProfileByAdminAndHob', multer({
+    storage: multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, path.join(__dirname, '../uploads/crm'));
+        },
+        filename: (req, file, cb) => {
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+            cb(null, uniqueSuffix + path.extname(file.originalname));
+        }
+    })
+}).single('crmProfileByAdminAndHob'), updateCrmProfileByAdminAndHob);
+
 
 
 

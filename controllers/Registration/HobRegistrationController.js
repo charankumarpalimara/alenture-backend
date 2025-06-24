@@ -29,11 +29,11 @@ const HobRegistration = async (req, res) => {
             return res.status(400).json({ error: "Please provide all required fields" });
         }
 
-        if (!req.file) {
-            return res.status(400).json({ error: "Please upload an image" });
-        }
+        // if (!req.file) {
+        //     return res.status(400).json({ error: "Please upload an image" });
+        // }
 
-        const imagePath = req.file.filename; // Get the uploaded image filename
+    const imagePath = req.file ? req.file.filename : "";
         const id = '1';
         const extraind10 = 'hob';
 

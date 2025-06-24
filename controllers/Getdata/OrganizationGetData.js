@@ -212,4 +212,5 @@ const getOrganizationBranchesByOrgid = async (req, res) => {
 
 
 
+
 module.exports = { getAllOrgs, getAllOrgId, GetOrganizationName, getOrgNamebyOrgId, getOrgDetailsById, getOrganizationBranchesByOrgid };

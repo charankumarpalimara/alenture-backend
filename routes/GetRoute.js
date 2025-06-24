@@ -28,6 +28,8 @@ const { noteGetByid } = require('../controllers/Tables/notesController');
 const { GetCrmNames } = require('../controllers/Getdata/GetCrmNames');
 const { GetCmNames } = require('../controllers/Getdata/GetCmNames');
 
+
+
 const { getTaskDataByExpId } = require('../controllers/Getdata/TaskDataGetByExpId');
 // const { GetCrmNames } = require('../controllers/Getdata/GetCrmNames');
 // const { GetCmNames } = require('../controllers/Getdata/GetCmNames');
@@ -55,6 +57,8 @@ router.get('/getAllOrgId', getAllOrgId);
 router.get('/getAllCm', getAllCm);
 
 router.get('/getAllOrgs', getAllOrgs);
+
+router.get('/getAllOrganizationnames', GetOrganizationName);
 
 router.get('/getAllOrganizationnames', GetOrganizationName);
 
@@ -95,6 +99,7 @@ router.get('/getOrgNamebyOrgId/:orgId', getOrgNamebyOrgId);
 router.get('/getCmDataById/:cmid', getCmDataById);
 
 router.get('/noteGetByid/:createrid', noteGetByid);
+
 
 
 
@@ -174,3 +179,4 @@ router.post('/getTaskDataByExpId', getTaskDataByExpId);
 
 
 module.exports = router;
+

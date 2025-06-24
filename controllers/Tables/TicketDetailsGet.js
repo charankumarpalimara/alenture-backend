@@ -29,7 +29,7 @@ const getAllTickets = async (req, res) => {
 
 const getPendingTickets = async (req, res) => {
     try {
-        const [data] = await mySqlpool.query("SELECT * FROM experiences WHERE status = 'Processing' order by experienceid desc");
+        const [data] = await mySqlpool.query("SELECT * FROM experiences WHERE status = 'Pending' order by experienceid desc");
         if (!data || data.length === 0) {
             return res.status(404).json({ error: "No Records Found" });
         }

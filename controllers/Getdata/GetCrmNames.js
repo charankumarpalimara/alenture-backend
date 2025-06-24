@@ -1,3 +1,4 @@
+
 const express = require('express');
 const mySqlpool = require('../../db');
 
@@ -5,7 +6,7 @@ const GetCrmNames = async (req, res) => {
     try {
         const [data] = await mySqlpool.query("SELECT firstname, lastname,crmid FROM listofcrm ORDER BY id DESC");
         if (!data || data.length === 0) {
-            return res.status(404).json({ error: "No CRM names found" });
+            return res.status(400).json({ error: "No CRM names found" });
         }
 
         // Map each record to a full name
@@ -23,3 +24,5 @@ const GetCrmNames = async (req, res) => {
 
 
 module.exports = { GetCrmNames };
+
+

@@ -52,7 +52,6 @@ const cmimage = multer.diskStorage({
 //     }
 // });
 
-// const uploadhob = multer({ storage: hobimage });
 const uploadcrm = multer({ storage: crmimage });
 // const uploadcm = multer({ storage: cmimage });
 // const uploadfile = multer({ storage: fileupload });
@@ -62,9 +61,6 @@ const upload = multer();
 const router = express.Router();
 
 // Create HOB with image upload
-// router.post('/createHob', uploadhob.single('hobimage'), HobRegistration);
-
-
 router.post('/createHob', multer({
     storage: multer.diskStorage({
         destination: (req, file, cb) => {

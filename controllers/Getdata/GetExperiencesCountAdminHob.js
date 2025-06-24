@@ -25,13 +25,6 @@ const AllExperiencesCount = async (req, res) => {
 }; 
 
 
-
-
-
-
-
-
-
 const ResolvedExperiencesCount = async (req, res) => {
     try {
 

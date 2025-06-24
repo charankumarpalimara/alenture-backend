@@ -25,9 +25,12 @@ const { getCrmProfile } = require('../controllers/Profile/get/CrmProfileGet');
 const { getCmProfile } = require('../controllers/Profile/get/CmProfileGet');
 const { noteGetByid } = require('../controllers/Tables/notesController');
 
-const { getTaskDataByExpId } = require('../controllers/Getdata/TaskDataGetByExpId');
 const { GetCrmNames } = require('../controllers/Getdata/GetCrmNames');
 const { GetCmNames } = require('../controllers/Getdata/GetCmNames');
+
+const { getTaskDataByExpId } = require('../controllers/Getdata/TaskDataGetByExpId');
+// const { GetCrmNames } = require('../controllers/Getdata/GetCrmNames');
+// const { GetCmNames } = require('../controllers/Getdata/GetCmNames');
 
 const { AllExperiencesCount, ResolvedExperiencesCount, NewExperiencesCount, PendingExperiencesCount } = require('../controllers/Getdata/GetExperiencesCountAdminHob');
 
@@ -61,6 +64,12 @@ router.get('/getCmProfile/:cmid', getCmProfile);
 
 router.get('/getHob/:id', getHobById);
 
+router.get('/GetCrmNames', GetCrmNames);
+
+router.post('/GetCmNames', GetCmNames);
+
+
+
 
 router.get('/GetCrmNames', GetCrmNames);
 
@@ -86,6 +95,7 @@ router.get('/getOrgNamebyOrgId/:orgId', getOrgNamebyOrgId);
 router.get('/getCmDataById/:cmid', getCmDataById);
 
 router.get('/noteGetByid/:createrid', noteGetByid);
+
 
 
 router.get('/getAllExperiences', getAllTickets);

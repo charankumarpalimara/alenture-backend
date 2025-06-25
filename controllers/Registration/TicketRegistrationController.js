@@ -200,7 +200,7 @@ const TicketRegistration = async (req, res) => {
     await broadcastExperienceCounts(mySqlpool, cmid, crmid);
     await mySqlpool.query(
       `INSERT INTO notifications (finalExperienceid,title, message, crmid, cmid,type,is_read, created_at)
-   VALUES (?,?, ?, ?, ?,?  ?, NOW())`,
+   VALUES (?,?, ?, ?, ?,?,  ?, NOW())`,
       [
         finalExperienceid,
         "New Experience Registered",

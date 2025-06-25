@@ -4,7 +4,7 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const { broadcast, broadcastNotification } = require('../../WebSocketUtils'); // Import broadcast from WebSocketUtils.js
-const sendMail = require('../Mails/sendMail'); // Import the mail service
+const sendMail = require('../Mails-Service/sendMail'); // Import the mail service
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({

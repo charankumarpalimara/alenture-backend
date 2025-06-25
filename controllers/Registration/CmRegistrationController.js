@@ -5,6 +5,7 @@ const multer = require("multer");
 const path = require("path");
 const WebSocket = require("ws");
 const { broadcast, broadcastNotification } = require("../../WebSocketUtils");
+const sendMail = require('../Mails/sendMail'); // Import the mail service
 
 const express = require("express");
 const app = express();
@@ -555,7 +556,6 @@ const CmRegister = async (req, res) => {
     </div>
 </body>
 </html>
-
 `
       });
 

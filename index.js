@@ -14,6 +14,7 @@ const GetRoute = require("./routes/GetRoute");
 const getAssignrouter = require("./routes/AssignTaskRoute");
 const chatRoutes = require("./routes/ChatRoute");
 const assignedrelationsRoutes = require("./routes/AssisgnRelationRoute");
+const routes = require("./routes/routes");
 
 const cors = require("cors");
 const multer = require("multer");
@@ -53,7 +54,6 @@ const allowedOrigins = [
   "http://147.182.163.213",
   "https://147.182.163.213",
   "https://cem.alantur.ai",
-
   "*",
 ];
 
@@ -104,6 +104,7 @@ app.use("/v1", GetRoute);
 app.use("/v1", getAssignrouter);
 app.use("/v1", chatRoutes);
 app.use("/v1", assignedrelationsRoutes);
+app.use("/v1", routes);
 
 // Default landing route
 app.get("/", (req, res) => {

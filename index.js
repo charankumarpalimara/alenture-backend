@@ -53,7 +53,6 @@ const allowedOrigins = [
   "http://147.182.163.213",
   "https://147.182.163.213",
   "https://cem.alantur.ai",
-
   "*",
 ];
 

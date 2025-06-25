@@ -1,8 +1,7 @@
-function hobRegistrationTemplate({ firstname, email, extraind10 }) {
-    return `
-    <!DOCTYPE html>
-        <html lang="en">
-        <head>
+function cmRegistrationTemplate({ firstname, email, extraind10 }) {
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to Alantur</title>
@@ -258,29 +257,29 @@ function hobRegistrationTemplate({ firstname, email, extraind10 }) {
                 <h4>What's next for you:</h4>
                 <p>As a <strong>${extraind10}</strong>, you can:</p>
                 
-                <!-- Head of Business Role -->
-                <div class="feature-item" data-role="hob">
-                    <span class="checkmark">✅</span>
-                    <span><strong>Head of Business</strong> – Oversee business performance, access key reports, and manage high-level strategy</span>
-                </div>
+                 <!-- Head of Business Role 
+                // <div class="feature-item" data-role="hob">
+                //     <span class="checkmark">✅</span>
+                //     <span><strong>Head of Business</strong> – Oversee business performance, access key reports, and manage high-level strategy</span>
+                // </div> -->
                 
-                <!-- CRM Role
-                 <div class="feature-item" data-role="crm">
+                <!-- CRM Role 
+                // <div class="feature-item" data-role="crm">
                 //     <span class="checkmark">✅</span>
                 //     <span><strong>CRM</strong> – Track customer interactions, manage leads, and build stronger relationships</span>
-                // </div>-->
+                // </div> -->
                 
                  <!-- Admin Role 
                 // <div class="feature-item" data-role="admin">
                 //     <span class="checkmark">✅</span>
                 //     <span><strong>Admin</strong> – Control user permissions, manage platform settings, and maintain security</span>
-                // </div>   -->
-                
-                 <!-- Customer Manager Role 
-                // <div class="feature-item" data-role="cm">
-                //     <span class="checkmark">✅</span>
-                //     <span><strong>Customer Manager</strong> – Submit customer feedback and manage customer experiences</span>
                 // </div> -->
+                
+                <!-- Customer Manager Role -->
+                <div class="feature-item" data-role="cm">
+                    <span class="checkmark">✅</span>
+                    <span><strong>Customer Manager</strong> – Submit customer feedback and manage customer experiences</span>
+                </div>
             </div>
 
             <div class="main-text">
@@ -303,9 +302,7 @@ function hobRegistrationTemplate({ firstname, email, extraind10 }) {
     </div>
 </body>
 </html>
-
 `
 
 }
-
-module.exports = hobRegistrationTemplate;
+module.exports = cmRegistrationTemplate;

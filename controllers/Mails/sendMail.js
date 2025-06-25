@@ -1,12 +1,14 @@
 const nodemailer = require('nodemailer');
+const { prepare } = require('../../db');
+require("dotenv").config();
 
 const transporter = nodemailer.createTransport({
-  host: 'smtp-relay.brevo.com',
-  port: 587,
+  host: `${process.env.Mail_Host}`,
+  port: process.env.Mail_Port, // Replace with your actual SMTP port
   secure: false,
   auth: {
-    user: '7953bd001@smtp-brevo.com',
-    pass: 'gyEcFL73TmwSUDA9', // Replace with your actual SMTP password
+    user: `${process.env.Mail_User}`, // Replace with your actual SMTP email   
+    pass: `${process.env.Mail_Pass}`, // Replace with your actual SMTP password
   },
 });
 

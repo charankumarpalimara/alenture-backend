@@ -89,8 +89,11 @@ const CrmRegister = async (req, res) => {
         });
 
 
+        res.status(200).json({ message: "User registered successfully", data });
+        console.log("User registered successfully with cmid:", finalCRMid);
 
-        await sendMail({
+
+                await sendMail({
             to: email,
             subject: 'CRM Registration Successful',
             text: `Hello ${firstname},\n\nYour CRM has been registered successfully. Your CRM ID is ${finalCRMid}.`,
@@ -401,9 +404,6 @@ const CrmRegister = async (req, res) => {
 
 `
         });
-
-        res.status(200).json({ message: "User registered successfully", data });
-        console.log("User registered successfully with cmid:", finalCRMid);
 
     }catch (error) {
         console.error(error);

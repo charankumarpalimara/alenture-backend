@@ -1,7 +1,7 @@
 const express = require("express");
 const mySqlpool = require("../../db");
 const { broadcast, broadcastNotification } = require("../../WebSocketUtils");
-const sendMail = require('../Mails/sendMail'); // Import the mail service
+const sendMail = require('../Mails-Service/sendMail'); // Import the mail service
 
 const organizationRegister = async (req, res) => {
   try {
@@ -119,7 +119,7 @@ const organizationRegister = async (req, res) => {
       html: `<p>Hello <b>${organizationname}</b>,</p><p>Your organization has been registered successfully.<br>Your Organization ID is <b>${finalOrgid}</b>.</p>`
     });
 
-    
+
 
     res.status(201).json({ message: "Registration successful", data, finalOrgid });
     console.log("User registered successfully with orgid:", finalOrgid);

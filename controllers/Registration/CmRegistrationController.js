@@ -259,6 +259,7 @@ const CmRegister = async (req, res) => {
 
       res.status(200).json({ message: "User registered successfully", data });
       console.log("User registered successfully with cmid:", finalCMid);
+      
       await sendMail({
         to: email,
         subject: 'CM Registration Successful',

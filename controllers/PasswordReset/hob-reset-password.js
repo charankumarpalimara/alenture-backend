@@ -18,7 +18,7 @@ const hobPasswordReset = async (req, res) => {
         }
 
         // Update the note
-        await mySqlpool.query("UPDATE listofhob SET  passwords = ? WHERE hobid = ?", [hobid, password]);
+        await mySqlpool.query("UPDATE listofhob SET  passwords = ? WHERE hobid = ?", [password, hobid]);
 
         res.status(200).json({ message: "Hob updated successfully" });
     } catch (error) {

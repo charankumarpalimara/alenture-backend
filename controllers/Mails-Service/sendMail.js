@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
 
 async function sendMail({ to, subject, text, html }) {
   return transporter.sendMail({
-    from: '"Alentur " <alantur.ai2000@gmail.com>',
+    from: '"Alentur " <no_reply@alantur.ai>',
     to,
     subject,
     text,

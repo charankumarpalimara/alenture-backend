@@ -89,7 +89,7 @@ const getResolvedTickets = async (req, res) => {
         }));
 
         res.status(200).json({ message: "All User Records", data: updatedData });
-        console.log({message: "All Experiences get successfully", data: updatedData  });
+        console.log({message: "All Experiences get successfully", updatedData  });
         // console.log(updatedData);
 
     } catch (error) {

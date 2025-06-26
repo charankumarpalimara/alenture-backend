@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.post('/cmPasswordReset', cmPasswordReset);
 router.post('/crmPasswordReset', crmPasswordReset);
-router.post('/crmPasswohobPasswordResetrdReset', hobPasswordReset);
+router.post('/hobPasswordReset', hobPasswordReset);
 
 
 

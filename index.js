@@ -106,6 +106,7 @@ app.use("/v1", getAssignrouter);
 app.use("/v1", chatRoutes);
 app.use("/v1", assignedrelationsRoutes);
 app.use("/v1", routes);
+app.use("/v1", passwordResetRoutes);
 
 // Default landing route
 app.get("/", (req, res) => {

@@ -6,6 +6,7 @@ const crmPasswordReset = async (req, res) => {
     try {
         // const noteId = req.params.id;
         const {  crmid, password } = req.body;
+        console.log("Received data:", req.body);
 
         if (!crmid || !password ) {
             return res.status(400).json({ error: "crmid ID, title, and content are required" });

@@ -104,7 +104,7 @@ const HobRegistration = async (req, res) => {
             to: email,
             subject: 'HOB Registration Successful',
             text: `Hello ${firstname},\n\nYour HOB has been registered successfully. Your HOB ID is ${finalHobid}.`,
-            html:  hobRegistrationTemplate({ firstname, email, extraind10 })
+            html:  hobRegistrationTemplate({ finalHobid, firstname, email, extraind10 })
         });
 
 

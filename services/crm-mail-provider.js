@@ -1,4 +1,4 @@
-function crmRegistrationTemplate({ firstname, email, extraind10 }) {
+function crmRegistrationTemplate({finalCRMid, firstname, email, extraind10 }) {
   return  `
             <!DOCTYPE html>
             <html lang="en">
@@ -233,7 +233,7 @@ function crmRegistrationTemplate({ firstname, email, extraind10 }) {
             </div>
 
             <div style="text-align: center;">
-                <a href="[PASSWORD_SETUP_LINK]" class="cta-button">
+                <a href="https://cem.alantur.ai/crm/reset-password/${finalCRMid}" class="cta-button">
                     🔐 Set Your Password Now
                 </a>
             </div>

@@ -98,7 +98,9 @@ const CrmRegister = async (req, res) => {
             subject: 'CRM Registration Successful',
             text: `Hello ${firstname},\n\nYour CRM has been registered successfully. Your CRM ID is ${finalCRMid}.`,
             html: crmRegistrationTemplate({ finalCRMid, firstname, email, extraind10 }),
-        });
+        }).catch(err => {
+            console.error('Mail error:', err);
+            });
 
     } catch (error) {
         console.error(error);

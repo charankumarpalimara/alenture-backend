@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer');
-const { prepare } = require('../../db');
+// const { prepare } = require('../../db');
 const SibApiV3Sdk = require('sib-api-v3-sdk');
 require('dotenv').config();
 
@@ -54,6 +54,25 @@ async function sendMail({ to, subject, text, html }) {
 }
 
 
+// async function sendMailForForGotPassword({ to, subject, text, html }) {
+//   const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+
+//   const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
+//   sendSmtpEmail.subject = subject;
+//   sendSmtpEmail.htmlContent = html;
+//   sendSmtpEmail.sender = { name: 'Alantur', email: 'no_reply@alantur.ai' };
+//   sendSmtpEmail.to = [{ email: to }];
+//   sendSmtpEmail.textContent = text;
+
+//   try {
+//     const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
+//     console.log('Mail sent:', data);
+//     return data;
+//   } catch (error) {
+//     console.error('Mail error:', error);
+//     throw error;
+//   }
+// }
 
 
 
@@ -61,4 +80,6 @@ async function sendMail({ to, subject, text, html }) {
 
 
 
-module.exports = sendMail;
+
+
+module.exports = {sendMail};

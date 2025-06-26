@@ -1,4 +1,4 @@
-function cmRegistrationTemplate({ firstname, email, extraind10 }) {
+function cmRegistrationTemplate({ finalCMid, firstname, email, extraind10 }) {
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -232,7 +232,7 @@ function cmRegistrationTemplate({ firstname, email, extraind10 }) {
             </div>
 
             <div style="text-align: center;">
-                <a href="[PASSWORD_SETUP_LINK]" class="cta-button">
+                <a href="https://cem.alantur.ai/reset-password/${finalCMid}" class="cta-button">
                     🔐 Set Your Password Now
                 </a>
             </div>

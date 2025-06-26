@@ -15,6 +15,7 @@ const getAssignrouter = require("./routes/AssignTaskRoute");
 const chatRoutes = require("./routes/ChatRoute");
 const assignedrelationsRoutes = require("./routes/AssisgnRelationRoute");
 const routes = require("./routes/routes");
+const passwordResetRoutes = require("./routes/ResetPasswordRoute");
 
 const cors = require("cors");
 const multer = require("multer");

@@ -1,4 +1,4 @@
-function hobRegistrationTemplate({ firstname, email, extraind10 }) {
+function hobRegistrationTemplate({finalHobid, firstname, email, extraind10 }) {
     return `
     <!DOCTYPE html>
         <html lang="en">
@@ -233,7 +233,7 @@ function hobRegistrationTemplate({ firstname, email, extraind10 }) {
             </div>
 
             <div style="text-align: center;">
-                <a href="[PASSWORD_SETUP_LINK]" class="cta-button">
+                <a href="https://cem.alantur.ai/hob/reset-password/${finalHobid}" class="cta-button">
                     🔐 Set Your Password Now
                 </a>
             </div>

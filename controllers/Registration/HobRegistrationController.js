@@ -98,6 +98,7 @@ const HobRegistration = async (req, res) => {
 
 
 
+        res.status(201).json({ message: "HOB registered successfully", hobid: finalHobid });
 
         await sendMail({
             to: email,
@@ -115,7 +116,6 @@ const HobRegistration = async (req, res) => {
 
 
 
-        res.status(201).json({ message: "HOB registered successfully", hobid: finalHobid });
     } catch (error) {
         console.error("Error during user registration:", error);
         res.status(500).json({ error: "Internal server error", details: error.message });

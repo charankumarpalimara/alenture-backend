@@ -84,10 +84,10 @@ const updateExperienceStatusToResolve = async (req, res) => {
         `INSERT INTO notifications (finalExperienceid,title, message, crmid, cmid,type,is_read, created_at)
    VALUES (?,?, ?, ?, ?,?,  ?, NOW())`,
         [
-          rows[0].finalExperienceid,
+          rows[0].experienceid,
           "Experience Resolved",
-          `EXPERIENCE ID ${rows[0].finalExperienceid} of "${rows[0].cmid}" resolved successfully.`,
-          rows[0].crmid,
+          `EXPERIENCE ID ${rows[0].experienceid} of "${rows[0].cmid}" resolved successfully.`,
+          rows[0].extraind1,
           rows[0].cmid,
           "experience_resolved",
           0,
@@ -97,7 +97,7 @@ const updateExperienceStatusToResolve = async (req, res) => {
       broadcastNotification({
         type: "notification",
         title: "Experience Resolved",
-        message: `EXPERIENCE ID ${rows[0].finalExperienceid} of "${rows[0].cmid}" resolved successfully.`,
+        message: `EXPERIENCE ID ${rows[0].experienceid} of "${rows[0].cmid}" resolved successfully.`,
         cmid: rows[0].cmid,
       });
     }

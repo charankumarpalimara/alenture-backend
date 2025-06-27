@@ -89,7 +89,7 @@ const getResolvedTickets = async (req, res) => {
         }));
 
         res.status(200).json({ message: "All User Records", data: updatedData });
-        console.log({message: "All Experiences get successfully", data: updatedData  });
+        console.log({message: "All Experiences get successfully", updatedData  });
         // console.log(updatedData);
 
     } catch (error) {
@@ -110,16 +110,19 @@ const getAllTicketsbyCmid = async (req, res) => {
         }
 
         const [rows] = await mySqlpool.query(
-            "SELECT * FROM experiences WHERE cmid = ?",
+            "SELECT * FROM experiences WHERE cmid = ? order by id desc",
             [CmId]
         );
         if (!rows || rows.length === 0) {
             return res.status(404).json({ error: "No Experiences found" });
         }
-        const experienceDetails = rows;
+        const updatedData = rows.map((record) => ({
+            ...record,
+            imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
+        }));
         // const branchDetails = rows[0].branch;
-        res.status(200).json({ message: "Experience details found", experienceDetails });
-        console.log({ message: "Experience details found", experienceDetails });
+        res.status(200).json({ message: "Experience details found", updatedData });
+        console.log({ message: "Experience details found", updatedData });
 
     } catch (error) {
         console.error(error);
@@ -138,16 +141,19 @@ const getPendingTicketsbyCmid = async (req, res) => {
         }
 
         const [rows] = await mySqlpool.query(
-            "SELECT * FROM experiences WHERE cmid = ? AND status = 'Processing'",
+            "SELECT * FROM experiences WHERE cmid = ? AND status = 'Processing' order by id desc ",
             [CmId]
         );
         if (!rows || rows.length === 0) {
             return res.status(404).json({ error: "No Experiences found" });
         }
-        const experienceDetails = rows;
+        const updatedData = rows.map((record) => ({
+            ...record,
+            imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
+        }));
         // const branchDetails = rows[0].branch;
-        res.status(200).json({ message: "Experience details found", experienceDetails });
-        console.log({ message: "Experience details found", experienceDetails });
+        res.status(200).json({ message: "Experience details found", updatedData });
+        console.log({ message: "Experience details found", updatedData });
 
     } catch (error) {
         console.error(error);
@@ -167,16 +173,19 @@ const getResolvedTicketsbyCmid = async (req, res) => {
         }
 
         const [rows] = await mySqlpool.query(
-            "SELECT * FROM experiences WHERE cmid = ? AND status = 'Resolved'",
+            "SELECT * FROM experiences WHERE cmid = ? AND status = 'Resolved' order by id desc ",
             [CmId]
         );
         if (!rows || rows.length === 0) {
             return res.status(404).json({ error: "No Experiences found" });
         }
-        const experienceDetails = rows;
+        const updatedData = rows.map((record) => ({
+            ...record,
+            imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
+        }));
         // const branchDetails = rows[0].branch;
-        res.status(200).json({ message: "Experience details found", experienceDetails });
-        console.log({ message: "Experience details found", experienceDetails });
+        res.status(200).json({ message: "Experience details found", updatedData });
+        console.log({ message: "Experience details found", updatedData });
 
     } catch (error) {
         console.error(error);
@@ -195,16 +204,19 @@ const getNewTicketsbyCmid = async (req, res) => {
         }
 
         const [rows] = await mySqlpool.query(
-            "SELECT * FROM experiences WHERE cmid = ? AND status = 'New'",
+            "SELECT * FROM experiences WHERE cmid = ? AND status = 'New' order by id desc ",
             [CmId]
         );
         if (!rows || rows.length === 0) {
             return res.status(404).json({ error: "No Experiences found" });
         }
-        const experienceDetails = rows;
+        const updatedData = rows.map((record) => ({
+            ...record,
+            imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
+        }));
         // const branchDetails = rows[0].branch;
-        res.status(200).json({ message: "Experience details found", experienceDetails });
-        console.log({ message: "Experience details found", experienceDetails });
+        res.status(200).json({ message: "Experience details found", updatedData });
+        console.log({ message: "Experience details found", updatedData });
 
     } catch (error) {
         console.error(error);
@@ -231,10 +243,13 @@ const getAllTicketsbyCrmid = async (req, res) => {
         if (!rows || rows.length === 0) {
             return res.status(404).json({ error: "No organization found" });
         }
-        const experienceDetails = rows
+        const updatedData = rows.map((record) => ({
+            ...record,
+            imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
+        }));
         // const branchDetails = rows[0].branch;
-        res.status(200).json({ message: "Experience details found", experienceDetails });
-        console.log({ message: "Experience details found", experienceDetails });
+        res.status(200).json({ message: "Experience details found", updatedData });
+        console.log({ message: "Experience details found", updatedData });
 
     } catch (error) {
         console.error(error);
@@ -259,10 +274,13 @@ const getPendingTicketsbyCrmid = async (req, res) => {
         if (!rows || rows.length === 0) {
             return res.status(404).json({ error: "No organization found" });
         }
-        const experienceDetails = rows
+        const updatedData = rows.map((record) => ({
+            ...record,
+            imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
+        }));
         // const branchDetails = rows[0].branch;
-        res.status(200).json({ message: "Experience details found", experienceDetails });
-        console.log({ message: "Experience details found", experienceDetails });
+        res.status(200).json({ message: "Experience details found", updatedData });
+        console.log({ message: "Experience details found", updatedData });
 
     } catch (error) {
         console.error(error);
@@ -287,10 +305,13 @@ const getNewTicketsbyCrmid = async (req, res) => {
         if (!rows || rows.length === 0) {
             return res.status(404).json({ error: "No organization found" });
         }
-        const experienceDetails = rows
+        const updatedData = rows.map((record) => ({
+            ...record,
+            imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
+        }));
         // const branchDetails = rows[0].branch;
-        res.status(200).json({ message: "Experience details found", experienceDetails });
-        console.log({ message: "Experience details found", experienceDetails });
+        res.status(200).json({ message: "Experience details found", updatedData });
+        console.log({ message: "Experience details found", updatedData });
 
     } catch (error) {
         console.error(error);
@@ -314,10 +335,13 @@ const getReslveTicketsbyCrmid = async (req, res) => {
         if (!rows || rows.length === 0) {
             return res.status(404).json({ error: "No organization found" });
         }
-        const experienceDetails = rows
+        const updatedData = rows.map((record) => ({
+            ...record,
+            imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
+        }));
         // const branchDetails = rows[0].branch;
-        res.status(200).json({ message: "Experience details found", experienceDetails });
-        console.log({ message: "Experience details found", experienceDetails });
+        res.status(200).json({ message: "Experience details found", updatedData });
+        console.log({ message: "Experience details found", updatedData });
 
     } catch (error) {
         console.error(error);

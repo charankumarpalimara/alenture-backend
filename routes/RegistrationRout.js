@@ -6,7 +6,7 @@ const { HobRegistration } = require('../controllers/Registration/HobRegistration
 const { CrmRegister } = require('../controllers/Registration/CrmRegistrationController');
 const { CmRegister } = require('../controllers/Registration/CmRegistrationController');
 const { organizationRegister, organizationAdding } = require('../controllers/Registration/OrganizationRegisterController');
-const { TicketRegistration } = require('../controllers/Registration/TicketRegistrationController');
+const { TicketRegistration, updateTicket } = require('../controllers/Registration/TicketRegistrationController');
 const { noteRegister } = require('../controllers/Tables/notesController');
 const { TaskRegister } = require('../controllers/Registration/TaskRegisterController');
 
@@ -121,6 +121,26 @@ router.post('/createTicket', multer({
         }
     })
 }).single('fileupload'), TicketRegistration);
+
+
+router.post('/updateTicket', multer({
+    storage: multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, path.join(__dirname, '../uploads/experience'));
+        },
+        filename: (req, file, cb) => {
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+            cb(null, uniqueSuffix + path.extname(file.originalname));
+        }
+    })
+}).single('fileupload'), updateTicket);
+
+
+
+
+
+
+
 
 router.post('/organizationAdding', upload.none(), organizationAdding);
 

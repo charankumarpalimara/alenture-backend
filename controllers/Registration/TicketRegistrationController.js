@@ -235,4 +235,63 @@ const TicketRegistration = async (req, res) => {
   }
 };
 
-module.exports = { TicketRegistration };
+
+
+
+
+
+
+
+const updateTicket = async (req, res) => {
+  try {
+    const {
+      experience,
+      subject,
+      experienceDetails,
+      impact,
+      experienceid, // This is the unique identifier for the ticket
+    } = req.body;
+    console.log("Received data for update:", req.body);
+
+    let filename = "";
+    if (req.file) {
+      filename = req.file.filename;
+    }
+
+    // Build the update query and parameters
+    const updateFields = [
+      experience,
+      subject,
+      experienceDetails,
+      impact,
+    ];
+    let query = `
+      UPDATE experiences
+      SET experience = ?, subject = ?, experiencedetails = ?, impact = ?
+    `;
+
+    if (filename) {
+      query += `, filename = ?`;
+      updateFields.push(filename);
+    }
+
+    query += ` WHERE experienceid = ?`;
+    updateFields.push(experienceid);
+
+    // Execute the update
+    const [result] = await mySqlpool.query(query, updateFields);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Experience not found" });
+    }
+
+    res.status(200).json({ message: "Experience updated successfully" });
+  } catch (error) {
+    console.error("Error updating experience:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// module.exports = { updateTicket };
+
+module.exports = { TicketRegistration, updateTicket };

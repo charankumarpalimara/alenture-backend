@@ -18,7 +18,7 @@ const hobForgotPassword = async (req, res) => {
     }
 
     const firstname = hob[0].firstname;
-    const hobid = hob[0].hob;
+    const hobid = hob[0].hobid;
 
     // Generate a reset link (for production, use a
      const resetLink = `https://cem.alantur.ai/hob/reset-password/${hobid}`;

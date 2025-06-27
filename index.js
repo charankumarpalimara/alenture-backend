@@ -15,6 +15,8 @@ const getAssignrouter = require("./routes/AssignTaskRoute");
 const chatRoutes = require("./routes/ChatRoute");
 const assignedrelationsRoutes = require("./routes/AssisgnRelationRoute");
 const routes = require("./routes/routes");
+const passwordResetRoutes = require("./routes/ResetPasswordRoute");
+const forgotPasswordRoutes = require("./routes/ForgotPasswordRoute");
 
 const cors = require("cors");
 const multer = require("multer");
@@ -105,6 +107,9 @@ app.use("/v1", getAssignrouter);
 app.use("/v1", chatRoutes);
 app.use("/v1", assignedrelationsRoutes);
 app.use("/v1", routes);
+app.use("/v1", passwordResetRoutes);
+app.use("/v1", forgotPasswordRoutes);
+
 
 // Default landing route
 app.get("/", (req, res) => {

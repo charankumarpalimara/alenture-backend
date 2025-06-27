@@ -112,14 +112,12 @@ const organizationRegister = async (req, res) => {
     });
 
 
-    await sendMail({
-      to: email,
-      subject: 'Organization Registration Successful',
-      text: `Hello ${organizationname},\n\nYour organization has been registered successfully. Your Organization ID is ${finalOrgid}.`,
-      html: `<p>Hello <b>${organizationname}</b>,</p><p>Your organization has been registered successfully.<br>Your Organization ID is <b>${finalOrgid}</b>.</p>`
-    });
-
-
+    // await sendMail({
+    //   to: email,
+    //   subject: 'Organization Registration Successful',
+    //   text: `Hello ${organizationname},\n\nYour organization has been registered successfully. Your Organization ID is ${finalOrgid}.`,
+    //   html: `<p>Hello <b>${organizationname}</b>,</p><p>Your organization has been registered successfully.<br>Your Organization ID is <b>${finalOrgid}</b>.</p>`
+    // });
 
     res.status(201).json({ message: "Registration successful", data, finalOrgid });
     console.log("User registered successfully with orgid:", finalOrgid);

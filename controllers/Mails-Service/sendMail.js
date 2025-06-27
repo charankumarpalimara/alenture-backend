@@ -82,4 +82,4 @@ async function sendMail({ to, subject, text, html }) {
 
 
 
-module.exports = {sendMail};
+module.exports = sendMail;

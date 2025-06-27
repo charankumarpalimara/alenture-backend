@@ -78,13 +78,14 @@ const updateExperienceStatusToResolve = async (req, res) => {
           .status(404)
           .json({ error: "Experience data missing after update" });
       }
+      console.log("row in experience resolve", rows[0]);
 
       await mySqlpool.query(
         `INSERT INTO notifications (finalExperienceid,title, message, crmid, cmid,type,is_read, created_at)
    VALUES (?,?, ?, ?, ?,?,  ?, NOW())`,
         [
           rows[0].finalExperienceid,
-          "Experience Registered",
+          "Experience Resolved",
           `EXPERIENCE ID ${rows[0].finalExperienceid} of "${rows[0].cmid}" resolved successfully.`,
           rows[0].crmid,
           rows[0].cmid,

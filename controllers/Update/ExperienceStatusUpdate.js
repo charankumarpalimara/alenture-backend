@@ -1,5 +1,6 @@
 const express = require("express");
 const mySqlpool = require("../../db");
+const { broadcastNotification } = require("../../WebSocketUtils");
 
 const updateExperienceStatus = async (req, res) => {
   try {

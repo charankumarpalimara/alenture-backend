@@ -135,7 +135,6 @@ const getAllTicketsbyCmid = async (req, res) => {
     }));
     // const branchDetails = rows[0].branch;
     res.status(200).json({ message: "Experience details found", updatedData });
-    console.log({ message: "Experience details found", updatedData });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Something went wrong in this API" });
@@ -165,7 +164,6 @@ const getPendingTicketsbyCmid = async (req, res) => {
     }));
     // const branchDetails = rows[0].branch;
     res.status(200).json({ message: "Experience details found", updatedData });
-    console.log({ message: "Experience details found", updatedData });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Something went wrong in this API" });
@@ -195,7 +193,6 @@ const getResolvedTicketsbyCmid = async (req, res) => {
     }));
     // const branchDetails = rows[0].branch;
     res.status(200).json({ message: "Experience details found", updatedData });
-    console.log({ message: "Experience details found", updatedData });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Something went wrong in this API" });
@@ -225,7 +222,6 @@ const getNewTicketsbyCmid = async (req, res) => {
     }));
     // const branchDetails = rows[0].branch;
     res.status(200).json({ message: "Experience details found", updatedData });
-    console.log({ message: "Experience details found", updatedData });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Something went wrong in this API" });
@@ -255,7 +251,6 @@ const getAllTicketsbyCrmid = async (req, res) => {
     }));
     // const branchDetails = rows[0].branch;
     res.status(200).json({ message: "Experience details found", updatedData });
-    console.log({ message: "Experience details found", updatedData });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Something went wrong in this API" });
@@ -285,7 +280,6 @@ const getPendingTicketsbyCrmid = async (req, res) => {
     }));
     // const branchDetails = rows[0].branch;
     res.status(200).json({ message: "Experience details found", updatedData });
-    console.log({ message: "Experience details found", updatedData });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Something went wrong in this API" });
@@ -314,8 +308,6 @@ const getNewTicketsbyCrmid = async (req, res) => {
       }`, // Construct image URL
     }));
     // const branchDetails = rows[0].branch;
-    res.status(200).json({ message: "Experience details found", updatedData });
-    console.log({ message: "Experience details found", updatedData });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Something went wrong in this API" });
@@ -345,7 +337,6 @@ const getReslveTicketsbyCrmid = async (req, res) => {
     }));
     // const branchDetails = rows[0].branch;
     res.status(200).json({ message: "Experience details found", updatedData });
-    console.log({ message: "Experience details found", updatedData });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Something went wrong in this API" });

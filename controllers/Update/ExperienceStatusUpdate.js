@@ -48,7 +48,7 @@ const updateExperienceStatus = async (req, res) => {
 const updateExperienceStatusToResolve = async (req, res) => {
   try {
     const { experienceid, status } = req.body;
-    console.log(req.body);
+    console.log("experience update resolve", req.body);
 
     if (!experienceid || !status) {
       return res

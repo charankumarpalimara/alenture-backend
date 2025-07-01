@@ -180,13 +180,14 @@ const CmRegister = async (req, res) => {
       filename: imagePath || null,
         });
       console.log("User registered successfully with cmid:", finalCMid);
-
-      //   await sendMail({
-      //   to: email,
-      //   subject: 'CM Registration Successful',
-      //   text: `Hello ${firstname},\n\nYour CM has been registered successfully. Your CM ID is ${finalCMid}.`,
-      //   html: cmRegistrationTemplate({ firstname, email, extraind10 }),
-      // });
+       const resestlink = `https://cem.alantur.ai/reset-password/${email}`
+        const imagelink = `https://alantur-api.softplix.com/uploads/logo/alentur-logo.avif`; // Use the finalCRMid for the reset link
+        await sendMail({
+        to: email,
+        subject: 'CM Registration Successful',
+        text: `Hello ${firstname},\n\nYour CM has been registered successfully. Your CM ID is ${finalCMid}.`,
+        html: RegistrationTemplate({resestlink, imagelink, firstname, email, extraind10 }),
+      });
     } else {
       // Get the current cm indicator
       const [newid] = await mySqlpool.query(
@@ -287,7 +288,7 @@ const CmRegister = async (req, res) => {
       console.log("User registered successfully with cmid:", finalCMid);
 
        const resestlink = `https://cem.alantur.ai/reset-password/${email}`
-        const imagelink = `https://https://alantur-api.softplix.com/uploads/logo/alentur-logo.avif`; // Use the finalCRMid for the reset link
+        const imagelink = `https://alantur-api.softplix.com/uploads/logo/alentur-logo.avif`; // Use the finalCRMid for the reset link
       await sendMail({
         to: email,
         subject: "CM Registration Successful",

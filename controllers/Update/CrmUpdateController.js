@@ -29,7 +29,11 @@ const updateCustomerRelationshipManager = async (req, res) => {
             return res.status(404).json({ error: "crm not found or no changes made" });
         }
 
-
+        let crmfullname = firstname + " " + lastname;
+        let updateFields1 = [crmfullname];
+        let sql1 = `UPDATE assignedrelations SET firstname = ? `;
+        sql1 += ' WHERE crmid = ?';
+        updateFields1.push(crmid);
 
         // Construct imageUrl if image was updated, else fetch current image
         let imageUrl = null;

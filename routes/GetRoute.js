@@ -11,14 +11,17 @@ const { getHobById } = require('../controllers/Getdata/GetHobById');
 const { getAllCrm, getAllCrmid, getCrmName } = require('../controllers/Tables/CrmGetData');
 const { getAllHobs } = require('../controllers/Tables/HobGetData');
 const { getAllOrgs, getAllOrgId, GetOrganizationName, getOrgNamebyOrgId, getOrgDetailsById, getOrganizationBranchesByOrgid } = require('../controllers/Getdata/OrganizationGetData');
-const { getAllCm, getCmDataById } = require('../controllers/Tables/CmGetData');
+const { getAllCm, getCmDataById, getCmDataByCrmid } = require('../controllers/Tables/CmGetData');
 
 
 
 
-const { getAllTickets, getPendingTickets, getNewTickets, getResolvedTickets, getAllTicketsbyCrmid, getAllTicketsbyCmid, getPendingTicketsbyCrmid, getNewTicketsbyCrmid, getReslveTicketsbyCrmid, getPendingTicketsbyCmid, getNewTicketsbyCmid, getResolvedTicketsbyCmid } = require('../controllers/Tables/TicketDetailsGet');
-const { getAllExperiencesCountByCrmId, getResolvedExperiencesCountByCrmId, getNewExperiencesCountByCrmId, getPendingExperiencesCountByCrmId } = require('../controllers/Getdata/GetExperiencesCountByCrmId');
-const { getAllExperiencesCountByCmId, getResolvedExperiencesCountByCmId, getNewExperiencesCountByCmId, getPendingExperiencesCountByCmId } = require('../controllers/Getdata/GetExperiencesCountByCmId');
+const { getAllTickets, getPendingTickets, getNewTickets, getResolvedTickets, getAllTicketsbyCrmid, getPendingTicketsbyCrmid, getNewTicketsbyCrmid, getReslveTicketsbyCrmid, getAllTicketsbyCmid, getPendingTicketsbyCmid, getNewTicketsbyCmid, getResolvedTicketsbyCmid } = require('../controllers/Tables/TicketDetailsGet');
+
+const { AllExperiencesCountByCrmid } = require('../controllers/Getdata/GetExperiencesCountByCrmId');
+
+const { AllExperiencesCountByCmid } = require('../controllers/Getdata/GetExperiencesCountByCmId');
+
 const {getBranchbyOrganizationname} =require('../controllers/Tables/BrachGetData');
 const { getRelationsDataByCrmid } = require('../controllers/Relations/get/RelationsGetData');
 const { getCrmProfile } = require('../controllers/Profile/get/CrmProfileGet');
@@ -34,7 +37,7 @@ const { getTaskDataByExpId } = require('../controllers/Getdata/TaskDataGetByExpI
 // const { GetCrmNames } = require('../controllers/Getdata/GetCrmNames');
 // const { GetCmNames } = require('../controllers/Getdata/GetCmNames');
 
-const { AllExperiencesCount, ResolvedExperiencesCount, NewExperiencesCount, PendingExperiencesCount } = require('../controllers/Getdata/GetExperiencesCountAdminHob');
+const { AllExperiencesCount} = require('../controllers/Getdata/GetExperiencesCountAdminHob');
 
 
 
@@ -72,6 +75,7 @@ router.get('/GetCrmNames', GetCrmNames);
 
 router.post('/GetCmNames', GetCmNames);
 
+router.get('/getCmDataByCrmid/:crmid', getCmDataByCrmid);
 
 
 
@@ -133,28 +137,24 @@ router.get('/getRelationByCrmId/:crmid', getRelationByCrmId);
 
 router.get('/getAllExperienceCount', AllExperiencesCount);
 
-router.get('/getResolvedExperiencesCount', ResolvedExperiencesCount);
+// router.get('/getResolvedExperiencesCount', ResolvedExperiencesCount);
 
-router.get('/getNewExperiencesCount', NewExperiencesCount);
+// router.get('/getNewExperiencesCount', NewExperiencesCount);
 
-router.get('/getPendingExperiencesCount', PendingExperiencesCount);
+// router.get('/getPendingExperiencesCount', PendingExperiencesCount);
 
 
 
-router.get('/getAllExperiencesCountByCrmId/:crmid', getAllExperiencesCountByCrmId);
-router.get('/getResolvedExperiencesCountByCrmId/:crmid', getResolvedExperiencesCountByCrmId);
-router.get('/getNewExperiencesCountByCrmId/:crmid', getNewExperiencesCountByCrmId);
-router.get('/getPendingExperiencesCountByCrmId/:crmid', getPendingExperiencesCountByCrmId);
+router.get('/AllExperiencesCountByCrmid/:crmid', AllExperiencesCountByCrmid);
 
 
 
 
 
 
-router.get('/getAllExperiencesCountByCmId/:cmid', getAllExperiencesCountByCmId);
-router.get('/getResolvedExperiencesCountByCmId/:cmid', getResolvedExperiencesCountByCmId);
-router.get('/getNewExperiencesCountByCmId/:cmid', getNewExperiencesCountByCmId);
-router.get('/getPendingExperiencesCountByCmId/:cmid', getPendingTicketsbyCmid);
+//Cm Dashboard Counts
+router.get('/AllExperiencesCountByCmid/:cmid', AllExperiencesCountByCmid);
+
 
 
 

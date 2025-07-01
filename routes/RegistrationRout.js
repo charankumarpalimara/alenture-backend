@@ -2,10 +2,10 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 
-const { HobRegistration } = require('../controllers/Registration/HobRegistrationController');
-const { CrmRegister } = require('../controllers/Registration/CrmRegistrationController');
-const { CmRegister } = require('../controllers/Registration/CmRegistrationController');
-const { organizationRegister, organizationAdding } = require('../controllers/Registration/OrganizationRegisterController');
+const { HobRegistration, updateHob } = require('../controllers/Registration/HobRegistrationController');
+const { CrmRegister, updateCrm } = require('../controllers/Registration/CrmRegistrationController');
+const { CmRegister, updateCm } = require('../controllers/Registration/CmRegistrationController');
+const { organizationRegister, updateOrganization, organizationAdding } = require('../controllers/Registration/OrganizationRegisterController');
 const { TicketRegistration, updateTicket } = require('../controllers/Registration/TicketRegistrationController');
 const { noteRegister } = require('../controllers/Tables/notesController');
 const { TaskRegister } = require('../controllers/Registration/TaskRegisterController');
@@ -73,6 +73,20 @@ router.post('/createHob', multer({
     })
 }).single('hobimage'), HobRegistration);
 
+
+
+router.post('/updateHob', multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, path.join(__dirname, '../uploads/hob'));
+    },
+    filename: (req, file, cb) => {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+      cb(null, uniqueSuffix + path.extname(file.originalname));
+    }
+  })
+}).single('hobimage'), updateHob);
+
 // Create CRM
 
 
@@ -92,6 +106,34 @@ router.post('/createCrm', multer({
         }
     })
 }).single('crmimage'), CrmRegister);
+
+
+router.post('/updateCrm', multer({
+    storage: multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, path.join(__dirname, '../uploads/crm'));
+        },
+        filename: (req, file, cb) => {
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+            cb(null, uniqueSuffix + path.extname(file.originalname));
+        }
+    })
+}).single('crmimage'), updateCrm);
+
+
+
+
+router.post('/updateCm', multer({
+    storage: multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, path.join(__dirname, '../uploads/cm'));
+        },
+        filename: (req, file, cb) => {
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+            cb(null, uniqueSuffix + path.extname(file.originalname));
+        }
+    })
+}).single('cmimage'), updateCm);
 
 
 router.post('/createCm', multer({
@@ -139,7 +181,7 @@ router.post('/updateTicket', multer({
 
 
 
-
+router.post('/updateOrganization', upload.none(), updateOrganization);
 
 
 router.post('/organizationAdding', upload.none(), organizationAdding);

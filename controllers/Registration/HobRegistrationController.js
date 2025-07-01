@@ -115,6 +115,79 @@ const HobRegistration = async (req, res) => {
     }
 };
 
+
+
+const updateHob = async (req, res) => {
+  try {
+    const {
+      hobid,           // Make sure this is sent from frontend for update
+      firstname,
+      lastname,
+      designation,
+      street,
+      gender,
+      country,
+      state,
+      city,
+      email,
+      phonecode,
+      mobile,
+      username,
+      passwords,
+    } = req.body;
+    console.log("Received data for update:", req.body);
+
+    // Handle file upload (profile image)
+    let imagePath = "";
+    if (req.file) {
+      imagePath = req.file.filename;
+    }
+    
+    // Build the update query and parameters
+    const updateFields = [
+      firstname,
+      lastname,
+      gender,
+      country,
+      state,
+      city,
+      email,
+      phonecode,
+      mobile,
+      username,
+      passwords,
+    ];
+
+    
+
+    let query = `
+      UPDATE listofhob
+      SET firstname = ?, lastname = ?, extraind2 = ?, extraind3 = ?, extraind4 = ?, extraind5 = ?, email = ?, phonecode = ?, mobile = ?, username = ?, passwords = ?
+    `;
+
+    if (imagePath) {
+      query += `, extraind1 = ?`;
+      updateFields.push(imagePath);
+    }
+
+    query += ` WHERE hobid = ?`;
+    updateFields.push(hobid);
+
+    const [result] = await mySqlpool.query(query, updateFields);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "HOB not found" });
+    }
+
+    res.status(200).json({ message: "HOB updated successfully" });
+  } catch (error) {
+    console.error("Error updating HOB:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
+
 const getHobById = async (req, res) => {
     try {
         const userId = req.params.id
@@ -178,4 +251,4 @@ const getHobById = async (req, res) => {
 //     }
 // }
 
-module.exports = { getHobById, HobRegistration }
+module.exports = { getHobById, HobRegistration, updateHob }

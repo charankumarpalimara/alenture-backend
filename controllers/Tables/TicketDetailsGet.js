@@ -5,7 +5,7 @@ const express = require('express');
 
 const getAllTickets = async (req, res) => {
     try {
-        const [data] = await mySqlpool.query("SELECT * FROM experiences order by experienceid desc");
+        const [data] = await mySqlpool.query("SELECT * FROM experiences order by id desc");
         if (!data || data.length === 0) {
             return res.status(404).json({ error: "No Records Found" });
         }
@@ -29,7 +29,7 @@ const getAllTickets = async (req, res) => {
 
 const getPendingTickets = async (req, res) => {
     try {
-        const [data] = await mySqlpool.query("SELECT * FROM experiences WHERE status = 'Pending' order by experienceid desc");
+        const [data] = await mySqlpool.query("SELECT * FROM experiences WHERE status = 'Processing' order by id desc");
         if (!data || data.length === 0) {
             return res.status(404).json({ error: "No Records Found" });
         }
@@ -53,7 +53,7 @@ const getPendingTickets = async (req, res) => {
 
 const getNewTickets = async (req, res) => {
     try {
-        const [data] = await mySqlpool.query("SELECT * FROM experiences WHERE status = 'New' order by experienceid desc ");
+        const [data] = await mySqlpool.query("SELECT * FROM experiences WHERE status = 'New' order by id desc ");
         if (!data || data.length === 0) {
             return res.status(404).json({ error: "No Records Found" });
         }
@@ -77,7 +77,7 @@ const getNewTickets = async (req, res) => {
 
 const getResolvedTickets = async (req, res) => {
     try {
-        const [data] = await mySqlpool.query("SELECT * FROM experiences WHERE status = 'Resolved' order by experienceid desc ");
+        const [data] = await mySqlpool.query("SELECT * FROM experiences WHERE status = 'Resolved' order by id desc ");
         if (!data || data.length === 0) {
             return res.status(404).json({ error: "No Records Found" });
         }
@@ -121,7 +121,7 @@ const getAllTicketsbyCmid = async (req, res) => {
             imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
         }));
         // const branchDetails = rows[0].branch;
-        res.status(200).json({ message: "Experience details found", updatedData });
+        res.status(200).json({ message: "Experience details found",data: updatedData });
         console.log({ message: "Experience details found", updatedData });
 
     } catch (error) {
@@ -152,7 +152,7 @@ const getPendingTicketsbyCmid = async (req, res) => {
             imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
         }));
         // const branchDetails = rows[0].branch;
-        res.status(200).json({ message: "Experience details found", updatedData });
+        res.status(200).json({ message: "Experience details found",data: updatedData });
         console.log({ message: "Experience details found", updatedData });
 
     } catch (error) {
@@ -184,7 +184,7 @@ const getResolvedTicketsbyCmid = async (req, res) => {
             imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
         }));
         // const branchDetails = rows[0].branch;
-        res.status(200).json({ message: "Experience details found", updatedData });
+        res.status(200).json({ message: "Experience details found", data: updatedData });
         console.log({ message: "Experience details found", updatedData });
 
     } catch (error) {
@@ -215,7 +215,7 @@ const getNewTicketsbyCmid = async (req, res) => {
             imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
         }));
         // const branchDetails = rows[0].branch;
-        res.status(200).json({ message: "Experience details found", updatedData });
+        res.status(200).json({ message: "Experience details found",data: updatedData });
         console.log({ message: "Experience details found", updatedData });
 
     } catch (error) {
@@ -248,7 +248,7 @@ const getAllTicketsbyCrmid = async (req, res) => {
             imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
         }));
         // const branchDetails = rows[0].branch;
-        res.status(200).json({ message: "Experience details found", updatedData });
+        res.status(200).json({ message: "Experience details found",data: updatedData });
         console.log({ message: "Experience details found", updatedData });
 
     } catch (error) {
@@ -279,7 +279,7 @@ const getPendingTicketsbyCrmid = async (req, res) => {
             imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
         }));
         // const branchDetails = rows[0].branch;
-        res.status(200).json({ message: "Experience details found", updatedData });
+        res.status(200).json({ message: "Experience details found", data: updatedData });
         console.log({ message: "Experience details found", updatedData });
 
     } catch (error) {
@@ -310,7 +310,7 @@ const getNewTicketsbyCrmid = async (req, res) => {
             imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
         }));
         // const branchDetails = rows[0].branch;
-        res.status(200).json({ message: "Experience details found", updatedData });
+        res.status(200).json({ message: "Experience details found", data: updatedData });
         console.log({ message: "Experience details found", updatedData });
 
     } catch (error) {
@@ -340,7 +340,7 @@ const getReslveTicketsbyCrmid = async (req, res) => {
             imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
         }));
         // const branchDetails = rows[0].branch;
-        res.status(200).json({ message: "Experience details found", updatedData });
+        res.status(200).json({ message: "Experience details found", data: updatedData });
         console.log({ message: "Experience details found", updatedData });
 
     } catch (error) {

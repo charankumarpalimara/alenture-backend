@@ -14,7 +14,7 @@ const hobForgotPassword = async (req, res) => {
     // Check if the CM exists
     const [hob] = await mySqlpool.query("SELECT * FROM listofhob WHERE email = ?", [email]);
     if (!hob || hob.length === 0) {
-      return res.status(404).json({ error: "HOB not found" });
+      return res.status(404).json({ error: "User Not Found" });
     }
 
     const firstname = hob[0].firstname;

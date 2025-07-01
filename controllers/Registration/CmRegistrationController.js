@@ -5,8 +5,8 @@ const multer = require("multer");
 const path = require("path");
 const WebSocket = require("ws");
 const { broadcast, broadcastNotification } = require("../../WebSocketUtils");
-const sendMail = require('../Mails-Service/sendMail'); // Import the mail service
-const  cmRegistrationTemplate = require("../../services/cm-mail-provider")
+const sendMail = require("../Mails-Service/sendMail"); // Import the mail service
+const cmRegistrationTemplate = require("../../services/cm-mail-provider");
 
 const express = require("express");
 const app = express();
@@ -28,7 +28,6 @@ const uploadcm = multer({ cmimage });
 
 const CmRegister = async (req, res) => {
   try {
-
     // console.log("Incoming file:", req.file); // Log incoming file
     const {
       firstname,
@@ -58,9 +57,6 @@ const CmRegister = async (req, res) => {
     //   return res.status(400).json({ error: "Please upload an image" });
     //   console.log("image is required");
     // }
-
-
-
 
     const imagePath = req.file ? req.file.filename : "";
     const id = "1";
@@ -156,6 +152,17 @@ const CmRegister = async (req, res) => {
         nextcmid,
         id,
       ]);
+      await mySqlpool.query(
+        `INSERT INTO notifications (title, message,type,is_read,creator_id, created_at)
+   VALUES (?,?, ?, ?,?,  NOW())`,
+        [
+          "New CM Registered",
+          `CM ID ${finalCMid}   CM "${firstname} ${lastname}" registered successfully.`,
+          "cm_registartion",
+          createrid,
+          0,
+        ]
+      );
 
       broadcastNotification({
         type: "notification",
@@ -170,10 +177,9 @@ const CmRegister = async (req, res) => {
       res.status(200).json({ message: "User registered successfully", data });
       console.log("User registered successfully with cmid:", finalCMid);
 
-
-        await sendMail({
+      await sendMail({
         to: email,
-        subject: 'CM Registration Successful',
+        subject: "CM Registration Successful",
         text: `Hello ${firstname},\n\nYour CM has been registered successfully. Your CM ID is ${finalCMid}.`,
         html: cmRegistrationTemplate({ firstname, email, extraind10 }),
       });
@@ -246,6 +252,18 @@ const CmRegister = async (req, res) => {
         nextcmid,
         id,
       ]);
+
+      await mySqlpool.query(
+        `INSERT INTO notifications (title, message,type,is_read,creator_id, created_at)
+   VALUES (?,?, ?, ?,?,  NOW())`,
+        [
+          "New CM Registered",
+          `CM ID ${finalCMid}   CM "${firstname} ${lastname}" registered successfully.`,
+          "cm_registartion",
+          createrid,
+          0,
+        ]
+      );
       broadcastNotification({
         type: "notification",
         title: "New CM Registered",
@@ -259,16 +277,13 @@ const CmRegister = async (req, res) => {
 
       res.status(200).json({ message: "User registered successfully", data });
       console.log("User registered successfully with cmid:", finalCMid);
-      
+
       await sendMail({
         to: email,
-        subject: 'CM Registration Successful',
+        subject: "CM Registration Successful",
         text: `Hello ${firstname},\n\nYour CM has been registered successfully. Your CM ID is ${finalCMid}.`,
         html: cmRegistrationTemplate({ firstname, email, extraind10 }),
       });
-
-
-
     }
   } catch (error) {
     console.error(error);

@@ -6,7 +6,7 @@ const path = require("path");
 const WebSocket = require("ws");
 const { broadcast, broadcastNotification } = require("../../WebSocketUtils");
 const sendMail = require("../Mails-Service/sendMail"); // Import the mail service
-const cmRegistrationTemplate = require("../../services/cm-mail-provider");
+const RegistrationTemplate = require("../../EmailsTemplates/registration-provider");
 
 const express = require("express");
 const app = express();
@@ -286,12 +286,13 @@ const CmRegister = async (req, res) => {
         });
       console.log("User registered successfully with cmid:", finalCMid);
 
-
+       const resestlink = `https://cem.alantur.ai/reset-password/${email}`
+        const imagelink = `https://https://alantur-api.softplix.com/uploads/logo/alentur-logo.avif`; // Use the finalCRMid for the reset link
       await sendMail({
         to: email,
         subject: "CM Registration Successful",
         text: `Hello ${firstname},\n\nYour CM has been registered successfully. Your CM ID is ${finalCMid}.`,
-        html: cmRegistrationTemplate({finalCMid, firstname, email, extraind10 }),
+        html: RegistrationTemplate({resestlink, imagelink, firstname, email, extraind10 }),
       });
     }
   } catch (error) {

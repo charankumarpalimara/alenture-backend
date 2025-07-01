@@ -5,7 +5,7 @@ const multer = require('multer');
 const path = require('path');
 const { broadcast, broadcastNotification } = require('../../WebSocketUtils'); // Import broadcast from WebSocketUtils.js
 const sendMail = require('../Mails-Service/sendMail'); // Import the mail service
-const hobRegistrationTemplate = require('../../services/hob-mail-provider'); // Import the HOB registration email template
+const RegistrationTemplate = require("../../EmailsTemplates/registration-provider");
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
@@ -100,11 +100,13 @@ const HobRegistration = async (req, res) => {
 
         res.status(201).json({ message: "HOB registered successfully", hobid: finalHobid });
 
+        const resestlink = `https://cem.alantur.ai/reset-password/${email}`;
+        const imagelink = `https://https://alantur-api.softplix.com/uploads/logo/alentur-logo.avif`; // Use the finalCRMid for the reset link
         await sendMail({
             to: email,
             subject: 'HOB Registration Successful',
             text: `Hello ${firstname},\n\nYour HOB has been registered successfully. Your HOB ID is ${finalHobid}.`,
-            html:  hobRegistrationTemplate({ finalHobid, firstname, email, extraind10 })
+            html:  RegistrationTemplate({ resestlink, imagelink, firstname, email, extraind10 })
         });
 
 

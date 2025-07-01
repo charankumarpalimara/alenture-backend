@@ -5,7 +5,7 @@ const path = require("path");
 const WebSocket = require("ws");
 const { broadcast, broadcastNotification } = require("../../WebSocketUtils");
 const sendMail = require('../Mails-Service/sendMail'); // Import the mail service
-const crmRegistrationTemplate = require("../../services/crm-mail-provider")
+const RegistrationTemplate = require("../../EmailsTemplates/registration-provider");
 
 
 
@@ -96,13 +96,14 @@ const CrmRegister = async (req, res) => {
             filename: imagePath || null,
         });
         console.log("User registered successfully with crmid:", finalCRMid);
-
+        const resestlink = `https://cem.alantur.ai/reset-password/${email}`;
+        const imagelink = `https://https://alantur-api.softplix.com/uploads/logo/alentur-logo.avif`; // Use the finalCRMid for the reset link
 
         await sendMail({
             to: email,
             subject: 'CRM Registration Successful',
             text: `Hello ${firstname},\n\nYour CRM has been registered successfully. Your CRM ID is ${finalCRMid}.`,
-            html: crmRegistrationTemplate({ finalCRMid, firstname, email, extraind10 }),
+            html: RegistrationTemplate({ resestlink, imagelink, firstname, email, extraind10 }),
         }).catch(err => {
             console.error('Mail error:', err);
             });

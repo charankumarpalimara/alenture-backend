@@ -72,4 +72,29 @@ const getCmDataById = async (req, res) => {
     }
 };
 
-module.exports = { getAllCm , getCmDataById};
+
+
+const getCmDataByCrmid = async (req, res) => {
+    try {
+        const userId = req.params.crmid;
+        const [cmname] = await mySqlpool.query(
+            "SELECT * FROM listofcm WHERE crmid = ? order by id desc ",
+            [userId]
+        );
+        if (!cmname || cmname.length === 0) {
+            return res.status(404).json({ error: `No one Is there with this id ${cmid}` });
+        }
+        const updatedData = cmname.map((record) => ({
+            ...record,
+            imageUrl: `${req.protocol}://${req.get('host')}/uploads/cm/${record.extraind1}`, // Construct image URL
+        }));
+        res.status(200).json({ message: "Cm details found", data: updatedData });
+        console.log({ message: "Cm details found", updatedData });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Something went wrong in this API" });
+    }
+};
+
+
+module.exports = { getAllCm , getCmDataById, getCmDataByCrmid};

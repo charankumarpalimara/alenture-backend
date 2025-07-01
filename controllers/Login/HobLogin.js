@@ -15,6 +15,13 @@ const HobLogin = async (req, res) => {
             return res.status(400).json({ error: "Email and password are required" });
         }
 
+
+        const [data1] = await mySqlpool.query("SELECT * FROM listofhob WHERE email = ? ", [email]);
+        if (!data1 || data1.length === 0) {
+            return res.status(402).json({ error: "User not Found" });
+        }
+
+
         const [data] = await mySqlpool.query(
             "SELECT * FROM listofhob WHERE email = ? AND passwords = ?",
             [email, password]
@@ -22,7 +29,7 @@ const HobLogin = async (req, res) => {
 
         if (!data || data.length === 0) {
             return res.status(401).json({ error: "Invalid email or password" });
-        }
+        } 
 
         const token = jwt.sign(
             { id: data[0].id, email: data[0].email },
@@ -34,6 +41,7 @@ const HobLogin = async (req, res) => {
             ...record,
             imageUrl: `${req.protocol}://${req.get('host')}/uploads/hob/${record.extraind1}`,
         }));
+
 
         res.status(200).json({
             message: "Login successful",

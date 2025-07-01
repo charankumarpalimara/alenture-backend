@@ -255,13 +255,7 @@ function ForgotTemplate({ firstname, email, resetLink }) {
                 </ul>
             </div>
 
-            <div class="main-text">
-                If the button above doesn't work, you can copy and paste this link into your browser:
-            </div>
 
-            <div class="link-display">
-                ${resetLink}
-            </div>
 
             <div class="main-text">
                 If you continue to have problems, please contact our support team for assistance.

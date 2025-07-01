@@ -9,10 +9,16 @@ dotenv.config(); // Load environment variables
 const CrmLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
-
+     console.log("CrmLogin request body:", req.body);
     if (!email || !password) {
       return res.status(400).json({ error: "Email and password are required" });
     }
+
+
+      const [data1] = await mySqlpool.query("SELECT * FROM listofcrm WHERE email = ? ", [email]);
+        if (!data1 || data1.length === 0) {
+            return res.status(402).json({ error: "User not Found" });
+        }
 
     const [data] = await mySqlpool.query(
       "SELECT * FROM listofcrm WHERE email = ? AND passwords = ?",
@@ -36,6 +42,7 @@ const CrmLogin = async (req, res) => {
         record.extraind1
       }`, // Construct image URL
     }));
+
 
     res.status(200).json({
       message: "Login successful",

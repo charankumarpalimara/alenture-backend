@@ -14,7 +14,7 @@ const crmForgotPassword = async (req, res) => {
     // Check if the CM exists
     const [crm] = await mySqlpool.query("SELECT * FROM listofcrm WHERE email = ?", [email]);
     if (!crm || crm.length === 0) {
-      return res.status(404).json({ error: "CRM not found" });
+      return res.status(404).json({ error: "User Not Found" });
     }
 
     const firstname = crm[0].firstname;

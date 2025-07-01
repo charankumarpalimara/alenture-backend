@@ -13,81 +13,36 @@ function broadcastCount(type, crmid, count) {
     }
 }
 
-const getAllExperiencesCountByCrmId = async (req, res) => {
-    try{
+const AllExperiencesCountByCrmid = async (req, res) => {
+    try {
         const crmId = req.params.crmid;
-        if (!crmId) {
-            return res.status(400).json({ error: "CRM ID is required" });
-        }
-        const [data] = await mySqlpool.query("SELECT COUNT(experienceid) AS total FROM experiences WHERE extraind1 = ?", [crmId]);
-        if (!data || data.length === 0) {
-            return res.status(404).json({ error: "No Records Found" });
-        }
-        res.status(200).json({ message: "Total Experience Count for CRM ID", count: data[0].total });
-        broadcastCount('all', crmId, data[0].total);
-    }catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Internal server error" });
-    }
-}
+        const [total] = await mySqlpool.query("SELECT COUNT(experienceid) AS total FROM experiences WHERE extraind1 = ?", [crmId]);
+        const [resolved] = await mySqlpool.query("SELECT COUNT(experienceid) AS resolved FROM experiences WHERE extraind1 = ? AND status = 'Resolved'", [crmId]);
+        const [newCount] = await mySqlpool.query("SELECT COUNT(experienceid) AS newCount FROM experiences WHERE extraind1 = ? AND status = 'New'", [crmId]);
+        const [processing] = await mySqlpool.query("SELECT COUNT(experienceid) AS processing FROM experiences WHERE extraind1 = ? AND status = 'Processing'", [crmId]);
 
-const getResolvedExperiencesCountByCrmId = async (req, res) => {
-    try{
-        const crmId = req.params.crmid;
-        if (!crmId) {
-            return res.status(400).json({ error: "CRM ID is required" });
-        }
-        const [data] = await mySqlpool.query("SELECT COUNT(experienceid) AS totalResolved FROM experiences WHERE extraind1 = ? AND status = 'Resolved'", [crmId]);
-        if (!data || data.length === 0) {
-            return res.status(404).json({ error: "No Records Found" });
-        }
-        res.status(200).json({ message: "Resolved Experience Count for CRM ID", count: data[0].totalResolved });
-        broadcastCount('resolved', crmId, data[0].totalResolved);
-    }catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Internal server error" });
-    }
-}
+        const counts = {
+            total: total[0].total,
+            resolved: resolved[0].resolved,
+            new: newCount[0].newCount,
+            processing: processing[0].processing
+        };
 
-const getNewExperiencesCountByCrmId = async (req, res) => {
-    try{
-        const crmId = req.params.crmid;
-        if (!crmId) {
-            return res.status(400).json({ error: "CRM ID is required" });
-        }
-        const [data] = await mySqlpool.query("SELECT COUNT(experienceid) AS totalNew FROM experiences WHERE extraind1 = ? AND status = 'New'", [crmId]);
-        if (!data || data.length === 0) {
-            return res.status(404).json({ error: "No Records Found" });
-        }
-        res.status(200).json({ message: "New Experience Count for CRM ID", count: data[0].totalNew });
-        broadcastCount('new', crmId, data[0].totalNew);
-    }catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Internal server error" });
-    }
-}
+        res.status(200).json({
+            message: "Total Experience Count",
+            ...counts
+        });
 
-const getPendingExperiencesCountByCrmId = async (req, res) => {
-    try{
-        const crmId = req.params.crmid;
-        if (!crmId) {
-            return res.status(400).json({ error: "CRM ID is required" });
-        }
-        const [data] = await mySqlpool.query("SELECT COUNT(experienceid) AS totalPending FROM experiences WHERE extraind1 = ? AND status = 'Processing'", [crmId]);
-        if (!data || data.length === 0) {
-            return res.status(404).json({ error: "No Records Found" });
-        }
-        res.status(200).json({ message: "Pending Experience Count for CRM ID", count: data[0].totalPending });
-        broadcastCount('pending', crmId, data[0].totalPending);
-    }catch (error) {
+        // Broadcast all counts together
+        broadcastCount(crmId, counts);
+
+        console.log("Total Experience Count:", counts.total);
+    } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Internal server error" });
     }
-}
+};
 
 module.exports = {
-    getAllExperiencesCountByCrmId,
-    getResolvedExperiencesCountByCrmId,
-    getNewExperiencesCountByCrmId,
-    getPendingExperiencesCountByCrmId
+  AllExperiencesCountByCrmid
 };

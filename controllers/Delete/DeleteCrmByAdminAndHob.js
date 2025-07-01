@@ -9,6 +9,11 @@ const deleteCrmByAdminAndHob = async (req, res) => {
             return res.status(400).json({ error: "Cm ID is required" });
         }
 
+        await mySqlpool.query(
+            "DELETE FROM assignedrelations WHERE crmid = ?",
+            [crmid]
+        );
+
         // Delete the experience
         await mySqlpool.query(
             "DELETE FROM listofcrm WHERE crmid = ?",

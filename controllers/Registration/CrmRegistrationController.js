@@ -5,7 +5,7 @@ const path = require("path");
 const WebSocket = require("ws");
 const { broadcast, broadcastNotification } = require("../../WebSocketUtils");
 const sendMail = require('../Mails-Service/sendMail'); // Import the mail service
-const  crmRegistrationTemplate = require("../../services/crm-mail-provider")
+const RegistrationTemplate = require("../../EmailsTemplates/registration-provider");
 
 
 
@@ -89,15 +89,21 @@ const CrmRegister = async (req, res) => {
         });
 
 
-        res.status(200).json({ message: "User registered successfully", data });
+        res.status(200).json({
+            message: "User registered successfully",
+            data,
+            crmid: finalCRMid,
+            filename: imagePath || null,
+        });
         console.log("User registered successfully with crmid:", finalCRMid);
-
+        const resestlink = `https://cem.alantur.ai/reset-password/${email}`;
+        const imagelink = `https://alantur-api.softplix.com/uploads/logo/alentur-logo.avif`; // Use the finalCRMid for the reset link
 
         await sendMail({
             to: email,
             subject: 'CRM Registration Successful',
             text: `Hello ${firstname},\n\nYour CRM has been registered successfully. Your CRM ID is ${finalCRMid}.`,
-            html: crmRegistrationTemplate({ finalCRMid, firstname, email, extraind10 }),
+            html: RegistrationTemplate({ resestlink, imagelink, firstname, email, extraind10 }),
         }).catch(err => {
             console.error('Mail error:', err);
             });
@@ -109,4 +115,80 @@ const CrmRegister = async (req, res) => {
 }
 
 
-module.exports = { CrmRegister };
+const updateCrm = async (req, res) => {
+    try {
+        const {
+            crmid,
+            firstname,
+            lastname,
+            phonecode,
+            mobile,
+            email,
+            gender,
+            country,
+            state,
+            city,
+            username,
+            passwords,
+            createrrole,
+            createrid,
+            postalcode,
+        } = req.body;
+
+
+        console.log("Received data for update:", req.body);
+
+        // Handle file upload (profile image)
+        let imagePath = "";
+        if (req.file) {
+            imagePath = req.file.filename;
+        }
+
+        // Build the update query and parameters
+        const updateFields = [
+            firstname,
+            lastname,
+            phonecode,
+            mobile,
+            email,
+            username,
+            passwords,
+            createrid,
+            createrrole,
+            gender,
+            country,
+            state,
+            city,
+            postalcode,
+        ];
+
+        let query = `
+      UPDATE listofcrm
+      SET firstname = ?, lastname = ?, phonecode = ?, mobile = ?, email = ?, username = ?, passwords = ?, createrid = ?, createrrole = ?, extraind2 = ?, extraind3 = ?, extraind4 = ?, extraind5 = ?, extraind6 = ?
+    `;
+
+        if (imagePath) {
+            query += `, extraind1 = ?`;
+            updateFields.push(imagePath);
+        }
+
+        query += ` WHERE crmid = ?`;
+        updateFields.push(crmid);
+
+        const [result] = await mySqlpool.query(query, updateFields);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: "CRM not found" });
+        }
+
+       res.status(200).json({ message: "User updated successfully" }); 
+    } catch (error) {
+        console.error("Error updating CRM:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+// module.exports = { updateCrm };
+
+
+module.exports = { CrmRegister, updateCrm };

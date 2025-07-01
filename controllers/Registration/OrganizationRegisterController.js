@@ -119,7 +119,12 @@ const organizationRegister = async (req, res) => {
     //   html: `<p>Hello <b>${organizationname}</b>,</p><p>Your organization has been registered successfully.<br>Your Organization ID is <b>${finalOrgid}</b>.</p>`
     // });
 
-    res.status(201).json({ message: "Registration successful", data, finalOrgid });
+     res.status(201).json({
+        message: "Registration successful",
+        data,
+        orgid: finalOrgid,
+        organization: newOrgRows[0] || null,
+      });
     console.log("User registered successfully with orgid:", finalOrgid);
   } catch (error) {
     console.error("Error during user registration:", error);
@@ -128,6 +133,69 @@ const organizationRegister = async (req, res) => {
       .json({ error: "Internal server error", details: error.message });
   }
 };
+
+
+const updateOrganization = async (req, res) => {
+  try {
+    const {
+      organizationid,        // You should send this from frontend for update
+      organizationname,
+      branch,
+      phonecode,
+      mobile,
+      email,
+      username,
+      passwords,
+      country,
+      state,
+      district,
+      address,
+      postalcode,
+      createrid,
+      createrrole,
+    } = req.body;
+    console.log("Received data for update:", req.body);
+
+    // Build the update query and parameters
+    const updateFields = [
+      organizationname,
+      branch,
+      phonecode,
+      mobile,
+      email,
+      username,
+      passwords,
+      country,
+      state,
+      district,
+      address,
+      postalcode,
+      createrid,
+      createrrole,
+      organizationid,
+      // branch,
+    ];
+
+    const query = `
+      UPDATE listoforganizations
+      SET organizationname = ?, branch = ?, phonecode = ?, mobile = ?, email = ?, username = ?, passwords = ?, country = ?, state = ?, district = ?, address = ?, postalcode = ?, createrid = ?, createrrole = ?
+      WHERE organizationid = ? 
+    `;
+
+    const [result] = await mySqlpool.query(query, updateFields);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Organization not found" });
+    }
+
+    res.status(200).json({ message: "Organization updated successfully" });
+  } catch (error) {
+    console.error("Error updating organization:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
 
 const organizationAdding = async (req, res) => {
   try {
@@ -238,4 +306,4 @@ const organizationAdding = async (req, res) => {
   }
 };
 
-module.exports = { organizationRegister, organizationAdding };
+module.exports = { organizationRegister, updateOrganization, organizationAdding };

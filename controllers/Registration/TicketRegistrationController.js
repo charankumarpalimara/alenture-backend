@@ -223,6 +223,8 @@ const TicketRegistration = async (req, res) => {
       "User registered successfully with experienceid:",
       finalExperienceid
     );
+
+    // imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`,
     res.status(200).json({
       message: "User registered successfully",
       data,

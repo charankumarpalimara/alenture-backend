@@ -1,7 +1,6 @@
-const mySqlpool = require('../../db');
+const mySqlpool = require("../../db");
 // const db = require('./db');
-const express = require('express');
-
+const express = require("express");
 
 const getAllTickets = async (req, res) => {
     try {
@@ -26,7 +25,6 @@ const getAllTickets = async (req, res) => {
     }
 };
 
-
 const getPendingTickets = async (req, res) => {
     try {
         const [data] = await mySqlpool.query("SELECT * FROM experiences WHERE status = 'Processing' order by id desc");
@@ -49,7 +47,6 @@ const getPendingTickets = async (req, res) => {
         res.status(500).json({ error: "Error in Get All Students API" });
     }
 };
-
 
 const getNewTickets = async (req, res) => {
     try {
@@ -74,7 +71,6 @@ const getNewTickets = async (req, res) => {
     }
 };
 
-
 const getResolvedTickets = async (req, res) => {
     try {
         const [data] = await mySqlpool.query("SELECT * FROM experiences WHERE status = 'Resolved' order by id desc ");
@@ -97,8 +93,6 @@ const getResolvedTickets = async (req, res) => {
         res.status(500).json({ error: "Error in Get All Students API" });
     }
 };
-
-
 
 const getAllTicketsbyCmid = async (req, res) => {
     
@@ -130,11 +124,9 @@ const getAllTicketsbyCmid = async (req, res) => {
     }
 };
 
-
 const getPendingTicketsbyCmid = async (req, res) => {
-    
-    try {
-       const CmId = req.params.cmid;
+  try {
+    const CmId = req.params.cmid;
 
          if (!CmId) {
             return res.status(400).json({ error: "No organization name received" });
@@ -161,12 +153,9 @@ const getPendingTicketsbyCmid = async (req, res) => {
     }
 };
 
-
-
 const getResolvedTicketsbyCmid = async (req, res) => {
-    
-    try {
-       const CmId = req.params.cmid;
+  try {
+    const CmId = req.params.cmid;
 
          if (!CmId) {
             return res.status(400).json({ error: "No organization name received" });
@@ -193,11 +182,9 @@ const getResolvedTicketsbyCmid = async (req, res) => {
     }
 };
 
-
 const getNewTicketsbyCmid = async (req, res) => {
-    
-    try {
-       const CmId = req.params.cmid;
+  try {
+    const CmId = req.params.cmid;
 
          if (!CmId) {
             return res.status(400).json({ error: "No organization name received" });
@@ -224,13 +211,9 @@ const getNewTicketsbyCmid = async (req, res) => {
     }
 };
 
-
-
-
 const getAllTicketsbyCrmid = async (req, res) => {
-    
-    try {
-       const CrmId = req.params.crmid;
+  try {
+    const CrmId = req.params.crmid;
 
          if (!CrmId) {
             return res.status(400).json({ error: "No organization name received" });
@@ -257,11 +240,9 @@ const getAllTicketsbyCrmid = async (req, res) => {
     }
 };
 
-
 const getPendingTicketsbyCrmid = async (req, res) => {
-    
-    try {
-       const CrmId = req.params.crmid;
+  try {
+    const CrmId = req.params.crmid;
 
          if (!CrmId) {
             return res.status(400).json({ error: "No organization name received" });
@@ -288,11 +269,9 @@ const getPendingTicketsbyCrmid = async (req, res) => {
     }
 };
 
-
 const getNewTicketsbyCrmid = async (req, res) => {
-    
-    try {
-       const CrmId = req.params.crmid;
+  try {
+    const CrmId = req.params.crmid;
 
          if (!CrmId) {
             return res.status(400).json({ error: "No organization name received" });
@@ -320,9 +299,8 @@ const getNewTicketsbyCrmid = async (req, res) => {
 };
 
 const getReslveTicketsbyCrmid = async (req, res) => {
-    
-    try {
-       const CrmId = req.params.crmid;
+  try {
+    const CrmId = req.params.crmid;
 
          if (!CrmId) {
             return res.status(400).json({ error: "No organization name received" });
@@ -349,4 +327,17 @@ const getReslveTicketsbyCrmid = async (req, res) => {
     }
 };
 
-module.exports = { getAllTickets, getPendingTickets, getNewTickets, getResolvedTickets, getAllTicketsbyCrmid, getAllTicketsbyCmid, getPendingTicketsbyCmid, getNewTicketsbyCmid, getResolvedTicketsbyCmid, getPendingTicketsbyCrmid, getNewTicketsbyCrmid, getReslveTicketsbyCrmid };
+module.exports = {
+  getAllTickets,
+  getPendingTickets,
+  getNewTickets,
+  getResolvedTickets,
+  getAllTicketsbyCrmid,
+  getAllTicketsbyCmid,
+  getPendingTicketsbyCmid,
+  getNewTicketsbyCmid,
+  getResolvedTicketsbyCmid,
+  getPendingTicketsbyCrmid,
+  getNewTicketsbyCrmid,
+  getReslveTicketsbyCrmid,
+};

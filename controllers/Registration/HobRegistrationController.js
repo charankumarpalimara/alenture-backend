@@ -101,7 +101,7 @@ const HobRegistration = async (req, res) => {
         res.status(201).json({ message: "HOB registered successfully", hobid: finalHobid });
 
         const resestlink = `https://cem.alantur.ai/reset-password/${email}`;
-        const imagelink = `https://https://alantur-api.softplix.com/uploads/logo/alentur-logo.avif`; // Use the finalCRMid for the reset link
+        const imagelink = `https://alantur-api.softplix.com/uploads/logo/alentur-logo.avif`; // Use the finalCRMid for the reset link
         await sendMail({
             to: email,
             subject: 'HOB Registration Successful',

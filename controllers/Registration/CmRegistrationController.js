@@ -153,14 +153,14 @@ const CmRegister = async (req, res) => {
         id,
       ]);
       await mySqlpool.query(
-        `INSERT INTO notifications (title, message,type,is_read,creator_id, created_at)
-   VALUES (?,?, ?, ?,?,  NOW())`,
+        `INSERT INTO notifications (title, message, type, is_read, creator_id, created_at)
+   VALUES (?, ?, ?, ?, ?, NOW())`,
         [
           "New CM Registered",
-          `CM ID ${finalCMid}   CM "${firstname} ${lastname}" registered successfully.`,
+          `CM ID ${finalCMid} CM "${firstname} ${lastname}" registered successfully.`,
           "cm_registartion",
-          createrid,
           0,
+          createrid,
         ]
       );
 
@@ -254,14 +254,14 @@ const CmRegister = async (req, res) => {
       ]);
 
       await mySqlpool.query(
-        `INSERT INTO notifications (title, message,type,is_read,creator_id, created_at)
-   VALUES (?,?, ?, ?,?,  NOW())`,
+        `INSERT INTO notifications (title, message, type, is_read, creator_id, created_at)
+   VALUES (?, ?, ?, ?, ?, NOW())`,
         [
           "New CM Registered",
-          `CM ID ${finalCMid}   CM "${firstname} ${lastname}" registered successfully.`,
+          `CM ID ${finalCMid} CM "${firstname} ${lastname}" registered successfully.`,
           "cm_registartion",
-          createrid,
           0,
+          createrid,
         ]
       );
       broadcastNotification({

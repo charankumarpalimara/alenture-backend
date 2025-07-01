@@ -174,19 +174,28 @@ const CmRegister = async (req, res) => {
         title: "New CM Registered",
         message: `CM "${firstname} ${lastname}" registered successfully.`,
       });
-      res.status(200).json({ message: "User registered successfully",
-         data ,
-      cmid: finalCMid,
-      filename: imagePath || null,
+      res
+        .status(200)
+        .json({
+          message: "User registered successfully",
+          data,
+          cmid: finalCMid,
+          filename: imagePath || null,
         });
       console.log("User registered successfully with cmid:", finalCMid);
-       const resestlink = `https://cem.alantur.ai/reset-password/${email}`
-        const imagelink = `https://alantur-api.softplix.com/uploads/logo/alentur-logo.avif`; // Use the finalCRMid for the reset link
-        await sendMail({
+      const resestlink = `https://cem.alantur.ai/reset-password/${email}`;
+      const imagelink = `https://alantur-api.softplix.com/uploads/logo/logo.jpeg`;
+      await sendMail({
         to: email,
-        subject: 'CM Registration Successful',
+        subject: "CM Registration Successful",
         text: `Hello ${firstname},\n\nYour CM has been registered successfully. Your CM ID is ${finalCMid}.`,
-        html: RegistrationTemplate({resestlink, imagelink, firstname, email, extraind10 }),
+        html: RegistrationTemplate({
+          resestlink,
+          imagelink,
+          firstname,
+          email,
+          extraind10,
+        }),
       });
     } else {
       // Get the current cm indicator
@@ -280,20 +289,29 @@ const CmRegister = async (req, res) => {
         message: `CM "${firstname} ${lastname}" registered successfully.`,
       });
 
-      res.status(200).json({ message: "User registered successfully",
-         data ,
-      cmid: finalCMid,
-      filename: imagePath || null,
+      res
+        .status(200)
+        .json({
+          message: "User registered successfully",
+          data,
+          cmid: finalCMid,
+          filename: imagePath || null,
         });
       console.log("User registered successfully with cmid:", finalCMid);
 
-       const resestlink = `https://cem.alantur.ai/reset-password/${email}`
-        const imagelink = `https://alantur-api.softplix.com/uploads/logo/alentur-logo.avif`; // Use the finalCRMid for the reset link
+      const resestlink = `https://cem.alantur.ai/reset-password/${email}`;
+      const imagelink = `https://alantur-api.softplix.com/uploads/logo/alentur-logo.avif`; // Use the finalCRMid for the reset link
       await sendMail({
         to: email,
         subject: "CM Registration Successful",
         text: `Hello ${firstname},\n\nYour CM has been registered successfully. Your CM ID is ${finalCMid}.`,
-        html: RegistrationTemplate({resestlink, imagelink, firstname, email, extraind10 }),
+        html: RegistrationTemplate({
+          resestlink,
+          imagelink,
+          firstname,
+          email,
+          extraind10,
+        }),
       });
     }
   } catch (error) {
@@ -301,8 +319,6 @@ const CmRegister = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
-
 
 const updateCm = async (req, res) => {
   try {
@@ -325,7 +341,6 @@ const updateCm = async (req, res) => {
       createrrole,
     } = req.body;
 
-
     console.log("Incoming body for update:", req.body); // Log incoming text fields
     // If you handle file upload (profile image)
     let imagePath = "";
@@ -347,7 +362,6 @@ const updateCm = async (req, res) => {
         organizationname = org[0].organizationname;
       }
     }
-
 
     // Build the update query
     const updateFields = [
@@ -406,15 +420,11 @@ const updateCm = async (req, res) => {
 
     const [result1] = await mySqlpool.query(query1, updateFields1);
 
-    
-
     res.status(200).json({ message: "CM updated successfully" });
   } catch (error) {
     console.error("Error updating CM:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
-
 
 module.exports = { CmRegister, updateCm };

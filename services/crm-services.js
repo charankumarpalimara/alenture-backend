@@ -11,7 +11,10 @@ const getCrmNotifications = async (crmId) => {
     }
     mySqlpool
       .query(
-        `SELECT * FROM notifications WHERE crmid = ? ORDER BY created_at DESC LIMIT 50`,
+        `SELECT * FROM notifications 
+   WHERE crmid = ? AND type = 'experience_registration' 
+   ORDER BY created_at DESC 
+   LIMIT 50`,
         [crmId]
       )
       .then(([rows]) => {

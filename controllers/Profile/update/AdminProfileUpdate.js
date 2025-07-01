@@ -10,7 +10,7 @@ const updateAdminProfile = async (req, res) => {
         const { adminid, firstName,lastName, password, email, PhoneNo, gender } = req.body;
         console.log("Received data:", req.body);
         let updateFields = [firstName, lastName, email, PhoneNo, gender, password];
-        let sql = `UPDATE admin SET firstname = ?, lastname = ?,  email = ?, mobile = ?, extraind2 = ?, password = ?`;
+        let sql = `UPDATE admin SET firstname = ?, lastname = ?,  email = ?, mobile = ?, extraind2 = ?, passwords = ?`;
         // If file is present, update extraind1 (profile image)
         if (req.file && req.file.filename) {
             sql += ', extraind1 = ?';

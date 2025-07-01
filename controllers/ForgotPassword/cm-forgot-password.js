@@ -14,7 +14,7 @@ const cmForgotPassword = async (req, res) => {
     // Check if the CM exists
     const [cm] = await mySqlpool.query("SELECT * FROM listofcm WHERE email = ?", [email]);
     if (!cm || cm.length === 0) {
-      return res.status(404).json({ error: "CM not found" });
+      return res.status(404).json({ error: "User Not Found" });
     }
 
     const firstname = cm[0].firstname;

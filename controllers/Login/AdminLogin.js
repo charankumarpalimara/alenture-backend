@@ -33,6 +33,7 @@ const userTypes = [
 const AdminLogin = async (req, res) => {
     try {
         const { email, password } = req.body;
+        console.log("Login request received with email:",req.body);
         if (!email || !password) {
             return res.status(400).json({ error: "Please provide username and password" });
         }

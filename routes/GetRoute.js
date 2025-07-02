@@ -28,7 +28,7 @@ const { getCrmProfile } = require('../controllers/Profile/get/CrmProfileGet');
 const { getCmProfile } = require('../controllers/Profile/get/CmProfileGet');
 const { noteGetByid } = require('../controllers/Tables/notesController');
 
-const { GetCrmNames } = require('../controllers/Getdata/GetCrmNames');
+const { GetCrmNames,getCrmNamesByExperienceid } = require('../controllers/Getdata/GetCrmNames');
 const { GetCmNames } = require('../controllers/Getdata/GetCmNames');
 
 
@@ -72,6 +72,8 @@ router.get('/getCmProfile/:cmid', getCmProfile);
 router.get('/getHob/:id', getHobById);
 
 router.get('/GetCrmNames', GetCrmNames);
+
+router.get('/getCrmNamesByExperienceid/:experienceid', getCrmNamesByExperienceid);
 
 router.post('/GetCmNames', GetCmNames);
 

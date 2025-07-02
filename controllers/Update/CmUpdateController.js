@@ -15,6 +15,8 @@ const updateCustomerManager = async (req, res) => {
         // Fix: updateFields should match SQL order and cmid only at the end
         let updateFields = [firstname, lastname, email, phoneCode, mobile, gender, status,  crmid, crmname];
         let sql = `UPDATE listofcm SET firstname = ?, lastname = ?, email = ?, phonecode = ?, mobile = ?, extraind2 = ?, extraind3 = ?,  crmid = ?, crmname = ?`;
+
+
         // If file is present, update extraind1 (profile image)
         if (req.file && req.file.filename) {
             sql += ', extraind1 = ?';
@@ -29,6 +31,7 @@ const updateCustomerManager = async (req, res) => {
             return res.status(404).json({ error: "cm not found or no changes made" });
         }
 
+        
 
 
         // Construct imageUrl if image was updated, else fetch current image

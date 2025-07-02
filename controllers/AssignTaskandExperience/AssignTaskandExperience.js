@@ -4,6 +4,7 @@ const mySqlpool = require('../../db');
 const AssignTaskandExperience = async (req, res) => {
     try {
         const { crmid, experienceid, existcrmid, crmname } = req.body;
+        console.log("Received data:", req.body);
 
         if (!crmid || !experienceid || !existcrmid || !crmname) {
             return res.status(400).json({ error: "All fields are required" });
@@ -14,9 +15,9 @@ const AssignTaskandExperience = async (req, res) => {
             'SELECT * FROM experiencetasks WHERE experienceid = ? AND crmid = ?',
             [experienceid, existcrmid]
         );
-        if (!experienceDetailsGet || experienceDetailsGet.length === 0) {
-            return res.status(404).json({ error: "No experience tasks found for this experience ID" });
-        }
+        // if (!experienceDetailsGet || experienceDetailsGet.length === 0) {
+        //     return res.status(404).json({ error: "No experience tasks found for this experience ID" });
+        // }
 
         const currentDate = new Date();
         const date = currentDate.toISOString().split('T')[0];

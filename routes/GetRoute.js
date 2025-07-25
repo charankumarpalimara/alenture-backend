@@ -16,7 +16,7 @@ const { getAllCm, getCmDataById, getCmDataByCrmid } = require('../controllers/Ta
 
 
 
-const { getAllTickets, getPendingTickets, getNewTickets, getResolvedTickets, getAllTicketsbyCrmid, getPendingTicketsbyCrmid, getNewTicketsbyCrmid, getReslveTicketsbyCrmid, getAllTicketsbyCmid, getPendingTicketsbyCmid, getNewTicketsbyCmid, getResolvedTicketsbyCmid } = require('../controllers/Tables/TicketDetailsGet');
+const { getAllTickets, getPendingTickets, getNewTickets, getResolvedTickets, getAllTicketsbyCrmid, getPendingTicketsbyCrmid, getNewTicketsbyCrmid, getReslveTicketsbyCrmid, getAllTicketsbyCmid, getPendingTicketsbyCmid, getNewTicketsbyCmid, getResolvedTicketsbyCmid, experienceDetailsGet } = require('../controllers/Tables/TicketDetailsGet');
 
 const { AllExperiencesCountByCrmid } = require('../controllers/Getdata/GetExperiencesCountByCrmId');
 
@@ -39,6 +39,15 @@ const { getTaskDataByExpId } = require('../controllers/Getdata/TaskDataGetByExpI
 
 const { AllExperiencesCount} = require('../controllers/Getdata/GetExperiencesCountAdminHob');
 
+ const { cmDetailsGet } = require('../controllers/Getdata/GetCmDetailsById');
+ const { crmDetailsGet } = require('../controllers/Getdata/GetCrmDetailsById');
+ const { hobDetailsGet } = require('../controllers/Getdata/GetHobDetailsById');
+
+ const { GetCmFunction } = require('../controllers/Getdata/CmFunctionGet');
+
+ const { GetCmInterest } = require('../controllers/Getdata/CmInterestsGet');
+
+ const { GetOrganizationIndustries } = require('../controllers/Getdata/OrganizationIndustryGet');
 
 
 
@@ -178,6 +187,19 @@ router.get('/getRelationsDataByCrmid/:crmid', getRelationsDataByCrmid);
 
 router.post('/getTaskDataByExpId', getTaskDataByExpId);
 
+router.get('/experienceDetailsGet/:experienceId', experienceDetailsGet);
+
+router.get('/cmDetailsGet/:cmid', cmDetailsGet);
+
+router.get('/crmDetailsGet/:crmid', crmDetailsGet);
+
+router.get('/hobDetailsGet/:hobid', hobDetailsGet);
+
+router.get('/GetCmFunction', GetCmFunction);
+
+router.get('/GetCmInterest', GetCmInterest);
+
+router.get('/GetOrganizationIndustries', GetOrganizationIndustries);
 
 
 module.exports = router;

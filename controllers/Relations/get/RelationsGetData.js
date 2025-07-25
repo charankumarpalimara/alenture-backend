@@ -14,7 +14,7 @@ const getRelationsDataByCrmid = async (req, res) => {
         }
 
         res.status(200).json({ message: "Relations Data Retrieved Successfully", data: data });
-        console.log("Relations data retrieved successfully for CRM ID:", crmid);
+        // console.log("Relations data retrieved successfully for CRM ID:", crmid);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Error in Get Relations Data API" });

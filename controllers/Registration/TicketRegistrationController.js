@@ -68,6 +68,39 @@ async function broadcastExperienceCounts(mySqlpool, cmid, crmid) {
   }
 }
 
+
+
+
+
+
+
+function generateRandomId(length = 6) {
+  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+} 
+
+// Helper to get a unique experienceid
+async function getUniqueExperienceId(pool) {
+  let unique = false;
+  let randomId = '';
+  while (!unique) {
+    randomId = generateRandomId();
+    const [rows] = await pool.query(
+      'SELECT experienceid FROM experiences WHERE experienceid = ?',
+      [randomId]
+    );
+    if (!rows || rows.length === 0) {
+      unique = true;
+    }
+  }
+  return randomId;
+}
+
+
 const TicketRegistration = async (req, res) => {
   try {
     const {
@@ -82,6 +115,8 @@ const TicketRegistration = async (req, res) => {
       impact,
       priority,
       status,
+      date,
+      time
     } = req.body;
     console.log("Received data:", req.body);
     console.log("Received file:", req.file);
@@ -111,29 +146,19 @@ const TicketRegistration = async (req, res) => {
         .json({ error: "Please provide all required fields." });
     }
 
-    const id = "1";
-    const [newid] = await mySqlpool.query(
-      "SELECT * FROM indicators WHERE id = ?",
-      [id]
-    );
-    if (!newid || newid.length === 0) {
-      console.log({ error: "id does not exist" });
-      return res.status(404).json({ error: "id does not exist" });
-    }
 
-    const Experienceid = parseInt(newid[0].experience, 10) || 0;
-    const nextExperienceid = Experienceid + 1;
-    const finalExperienceid =
-      "EXP_" + String(nextExperienceid).padStart(3, "0");
+    // Generate a unique random experienceid
+    const finalExperienceid = await getUniqueExperienceId(mySqlpool);
 
-    const currentDate = new Date();
-    const date = currentDate.toISOString().split("T")[0];
-    const time = currentDate.toTimeString().split(" ")[0];
 
     const [crmDetails] = await mySqlpool.query(
       "SELECT * FROM assignedrelations WHERE cmid = ? ",
       [cmid]
     );
+
+    if (!crmDetails || crmDetails.length === 0) {
+      return res.status(407).json({ error: "Not Assigned to any CRM." });
+    }
 
     let data;
 
@@ -191,10 +216,10 @@ const TicketRegistration = async (req, res) => {
       );
     }
 
-    await mySqlpool.query(`UPDATE indicators SET experience = ? WHERE id = ?`, [
-      nextExperienceid,
-      id,
-    ]);
+    // await mySqlpool.query(`UPDATE indicators SET experience = ? WHERE id = ?`, [
+    //   nextExperienceid,
+    //   id,
+    // ]);
 
     const crmid = crmDetails && crmDetails[0] ? crmDetails[0].crmid : null;
     await broadcastExperienceCounts(mySqlpool, cmid, crmid);

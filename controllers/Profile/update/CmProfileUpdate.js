@@ -8,6 +8,8 @@ const updateCmProfile = async (req, res) => {
   try {
     const { cmid, firstName, password, lastName, PhoneNo, email, gender } =
       req.body;
+      console.log("Received request to update CM profile:", req.body);
+      console.log("Received file:", req.file);
     let updateFields = [firstName, lastName, email, PhoneNo, gender, password];
     let sql = `UPDATE listofcm SET firstname = ?, lastname = ?,  email = ?, mobile = ?, extraind2 = ?, passwords = ?`;
     // If file is present, update extraind1 (profile image)

@@ -33,14 +33,13 @@ const userTypes = [
 const AdminLogin = async (req, res) => {
     try {
         const { email, password } = req.body;
-        console.log("Login request received with email:",req.body);
         if (!email || !password) {
             return res.status(400).json({ error: "Please provide username and password" });
         }
 
         for (const userType of userTypes) {
             const [users] = await mySqlpool.query(
-                `SELECT * FROM ${userType.table} WHERE email = ? AND passwords = ?`,
+                `SELECT * FROM ${userType.table} WHERE email = ? AND BINARY passwords = ?`,
                 [email, password]
             );
             if (users && users.length > 0) {
@@ -62,6 +61,7 @@ const AdminLogin = async (req, res) => {
                     data: userWithImage,
                     extraind10: userType,
                 });
+
             }
         }
 

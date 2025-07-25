@@ -5,7 +5,7 @@ const mySqlpool = require('../../db');
 const GetCmNames = async (req, res) => {
     try {
         const { orgName, branch } = req.body;
-        console.log("Received data:", req.body);
+        // console.log("Received data:", req.body);
         if (!orgName || !branch) {
             return res.status(400).json({ error: "Organization name and branch are required" });
         }
@@ -21,7 +21,7 @@ const GetCmNames = async (req, res) => {
         }));
 
         res.status(200).json({ message: "CM Names Retrieved Successfully", data: fullNames });
-        console.log("CM Names retrieved successfully:", fullNames);
+        // console.log("CM Names retrieved successfully:", fullNames);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Error in Get CM Names API" });

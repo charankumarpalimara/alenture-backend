@@ -15,7 +15,7 @@ const GetCrmNames = async (req, res) => {
         crmid: crm.crmid
         }));
         res.status(200).json({ message: "CRM Names Retrieved Successfully", data: fullNames });
-        console.log("CRM Names retrieved successfully:", fullNames);
+        // console.log("CRM Names retrieved successfully:", fullNames);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Error in Get CRM Names API" });
@@ -37,7 +37,7 @@ const getCrmNamesByExperienceid = async (req, res) => {
         crmid: crm.crmid
         }));
         res.status(200).json({ message: "CRM Names Retrieved Successfully", data: fullNames });
-        console.log("CRM Names retrieved successfully:", fullNames);
+        // console.log("CRM Names retrieved successfully:", fullNames);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Error in Get CRM Names API" });

@@ -5,7 +5,7 @@ const multer = require("multer");
 const path = require("path");
 const { broadcast, broadcastNotification } = require("../../WebSocketUtils"); // Import broadcast from WebSocketUtils.js
 const sendMail = require("../Mails-Service/sendMail"); // Import the mail service
-const RegistrationTemplate = require("../../EmailsTemplates/registration-provider");
+const HobRegistrationTemplate = require("../../EmailsTemplates/hob-registration-provider");
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
@@ -22,9 +22,6 @@ const upload = multer({ storage });
 
 const HobRegistration = async (req, res) => {
   try {
-    console.log("Incoming body:", req.body); // Log incoming text fields
-    console.log("Incoming file:", req.file); // Log incoming file
-
     const {
       firstname,
       lastname,
@@ -80,26 +77,8 @@ const HobRegistration = async (req, res) => {
     const finalHobid = "HOB_" + String(nexthobid).padStart(3, "0");
 
     const currentDate = new Date();
-    const date = currentDate.toISOString().split("T")[0];
-    const time = currentDate.toTimeString().split(" ")[0];
-
-    console.log("Executing query with values:", [
-      finalHobid,
-      firstname,
-      lastname,
-      phonecode,
-      mobile,
-      email,
-      username,
-      passwords,
-      date,
-      time,
-      imagePath,
-      country,
-      state,
-      city,
-      gender,
-    ]);
+    const date = currentDate.toLocaleDateString('en-US'); // e.g., "07/04/2025"
+    const time = currentDate.toLocaleTimeString('en-US', { hour12: true }); // e.g., "3:45:12 PM"
 
     const data = await mySqlpool.query(
       `INSERT INTO listofhob (hobid, firstname, lastname, organizationid, organizationname, phonecode, mobile, email, username, passwords, createrid, createrrole, date, time, extraind1, extraind2, extraind3, extraind4, extraind5, extraind6, extraind7, extraind8, extraind9, extraind10) 
@@ -155,6 +134,18 @@ const HobRegistration = async (req, res) => {
     };
     broadcast(newHob); // Use broadcast to send updates
 
+    await mySqlpool.query(
+      `INSERT INTO notifications (title, message, type, is_read, creator_id, created_at)
+   VALUES (?, ?, ?, ?, ?, NOW())`,
+      [
+        "New HOB Registered",
+        `HOB ID ${finalHobid} HOB "${firstname} ${lastname}" registered successfully.`,
+        "hob_registration",
+        0,
+        createrid,
+      ]
+    );
+
     broadcastNotification({
       type: "notification",
       title: "New HOB Registered",
@@ -167,12 +158,12 @@ const HobRegistration = async (req, res) => {
       .json({ message: "HOB registered successfully", hobid: finalHobid });
 
     const resestlink = `https://cem.alantur.ai/reset-password/${email}`;
-    const imagelink = `https://alantur-api.softplix.com/uploads/logo/logo.jpeg`; // Use the finalCRMid for the reset link
+    const imagelink = `https://alantur-api.softplix.com/uploads/logo/alentur-logo.png`; // Use the finalCRMid for the reset link
     await sendMail({
       to: email,
       subject: "HOB Registration Successful",
       text: `Hello ${firstname},\n\nYour HOB has been registered successfully. Your HOB ID is ${finalHobid}.`,
-      html: RegistrationTemplate({
+      html: HobRegistrationTemplate({
         resestlink,
         imagelink,
         firstname,
@@ -206,7 +197,6 @@ const updateHob = async (req, res) => {
       username,
       passwords,
     } = req.body;
-    console.log("Received data for update:", req.body);
 
     // Handle file upload (profile image)
     let imagePath = "";
@@ -269,7 +259,6 @@ const getHobById = async (req, res) => {
       return res.status(404).json({ error: "No user found" });
     }
     res.status(200).json({ messege: "user details is ", HobDetails: data[0] });
-    console.log({ messege: "user details is ", HobDetails: data[0] });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Somthing Wrong in this API" });

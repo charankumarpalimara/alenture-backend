@@ -5,6 +5,7 @@ const mySqlpool = mysql.createPool({
   user: "alanadmin",
   password: "Alantur@123",
   database: "alantur",
+  charset: 'utf8mb4', // 🔥 Important for characters like ā
 });
 
 module.exports = mySqlpool;

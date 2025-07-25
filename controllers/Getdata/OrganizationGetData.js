@@ -5,7 +5,7 @@ const express = require('express');
 
 const getAllOrgs = async (req, res) => {
     try {
-        const [data] = await mySqlpool.query("SELECT * FROM listoforganizations WHERE branchtype = 'Parent' order by id desc ");
+        const [data] = await mySqlpool.query("SELECT organizationid, organizationname, branchtype FROM listoforganizations WHERE branchtype = 'Parent' order by id desc ");
         if (!data || data.length === 0) {
             return res.status(404).json({ error: "No Records Found" });
         }
@@ -17,8 +17,8 @@ const getAllOrgs = async (req, res) => {
         // }));
 
         res.status(200).json({ message: "All User Records", data: data });
-        console.log("All students get successfully");
-        console.log(data);
+        // console.log("All students get successfully");
+        // console.log(data);
 
     } catch (error) {
         console.error(error);
@@ -44,8 +44,8 @@ const getAllOrgId = async (req, res) => {
         // }));
 
         res.status(200).json({ message: "All User Records", data: data });
-        console.log("All students get successfully");
-        console.log(data);
+        // console.log("All students get successfully");
+        // console.log(data);
 
     } catch (error) {
         console.error(error);
@@ -66,8 +66,8 @@ const GetOrganizationName = async(req, res) => {
         }));
         
         res.status(200).json({ message: "All User Records", data: OrganizationDetails });
-        console.log("All students get successfully");
-        console.log(data);
+        // console.log("All students get successfully");
+        // console.log(data);
 
     } catch (error) {
         console.error(error);
@@ -114,7 +114,7 @@ const getOrgNamebyOrgId = async (req, res) => {
         }
         const Organizationnames = rows[0].organizationname;
         res.status(200).json({ message: "Branch details found", Organizationnames });
-        console.log({ message: "Branch details found", Organizationnames });
+        // console.log({ message: "Branch details found", Organizationnames });
 
     } catch (error) {
         console.error(error);
@@ -141,7 +141,7 @@ const getOrgDetailsById = async (req, res) => {
         }
         const Organizationnames = rows[0].organizationname;
         res.status(200).json({ message: "Branch details found", Organizationnames });
-        console.log({ message: "Branch details found", Organizationnames });
+        // console.log({ message: "Branch details found", Organizationnames });
 
     } catch (error) {
         console.error(error);
@@ -171,7 +171,7 @@ const getOrganizationBranchesByOrgid = async (req, res) => {
         }
      
         res.status(200).json({ message: "Branch details found", rows });
-        console.log({ message: "Branch details found", rows });
+        // console.log({ message: "Branch details found", rows });
 
     } catch (error) {
         console.error(error);

@@ -4,8 +4,9 @@ const { broadcastNotification } = require("../../WebSocketUtils");
 
 const updateExperienceStatus = async (req, res) => {
   try {
-    const { experienceid } = req.body;
-    if (!experienceid) {
+    const { experienceid, date, time } = req.body;
+    console.log("experinec data :", req.body)
+    if (!experienceid || !date || !time ) {
       return res.status(400).json({ error: "Experience ID is required" });
     }
 
@@ -27,10 +28,11 @@ const updateExperienceStatus = async (req, res) => {
         .json({ message: "Status is not 'New', so no update performed." });
     }
 
+
     // Update to Processing
     const [result] = await mySqlpool.query(
-      "UPDATE experiences SET status = ? WHERE experienceid = ?",
-      ["Processing", experienceid]
+      "UPDATE experiences SET status = ?, extraind3 = ?, extraind4 = ? WHERE experienceid = ?",
+      ["Processing", time, date, experienceid]
     );
 
     if (result.affectedRows === 0) {
@@ -46,9 +48,11 @@ const updateExperienceStatus = async (req, res) => {
   }
 };
 
+
+
 const updateExperienceStatusToResolve = async (req, res) => {
   try {
-    const { experienceid, status } = req.body;
+    const { experienceid, status, date, time } = req.body;
     console.log("experience update resolve", req.body);
 
     if (!experienceid || !status) {
@@ -57,14 +61,31 @@ const updateExperienceStatusToResolve = async (req, res) => {
         .json({ error: "Experience ID and status are required" });
     }
 
+    // const currentDate = new Date();
+    // const resolvedDate = currentDate.toLocaleDateString('en-US'); // e.g., "07/04/2025"
+    // const resolvedTime = currentDate.toLocaleTimeString('en-US', { hour12: true }); // e.g., "3:45:12 PM"
+
     const [existingstatus] = await mySqlpool.query(
       "SELECT * FROM experiences WHERE experienceid = ?",
       [experienceid]
     );
 
+    const [existingTasks] = await mySqlpool.query(
+      "SELECT * FROM experiencetasks WHERE experienceid = ? AND (status = 'New' OR status = 'In Progress')",
+      [experienceid]
+    );
+
+    if (existingTasks.length > 0) {
+      return res.status(402).json({
+        error: "Task Should Complete First",
+      });
+    }
+
+
+
     const [result] = await mySqlpool.query(
-      "UPDATE experiences SET status = ? WHERE experienceid = ?",
-      [status, experienceid]
+      "UPDATE experiences SET status = ?, extraind5 = ?, extraind6 = ? WHERE experienceid = ?",
+      [status, time, date, experienceid]
     );
 
     if (result.affectedRows === 0) {

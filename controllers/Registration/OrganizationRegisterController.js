@@ -8,6 +8,7 @@ const organizationRegister = async (req, res) => {
     console.log("Incoming body:", req.body); // Log incoming text fields
     const {
       organizationname,
+      industry,
       branch,
       phonecode,
       mobile,
@@ -62,11 +63,11 @@ const organizationRegister = async (req, res) => {
     const nextorgid = orgid + 1;
     const finalOrgid = "ORG_" + String(nextorgid).padStart(3, "0");
     const currentDate = new Date();
-    const date = currentDate.toISOString().split("T")[0];
-    const time = currentDate.toTimeString().split(" ")[0];
+    const date = currentDate.toLocaleDateString('en-US'); // e.g., "07/04/2025"
+    const time = currentDate.toLocaleTimeString('en-US', { hour12: true }); // e.g., "3:45:12 PM"
 
     const [data] = await mySqlpool.query(
-      "INSERT INTO listoforganizations (organizationid, organizationname, branch, branchtype, phonecode, mobile, email, username, passwords, country, state, district, address, postalcode, createrid, createrrole, date, time, extraind1, extraind2, extraind3, extraind4, extraind5, extraind6, extraind7, extraind8, extraind9, extraind10) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', '', '', '', '', '', '', '', '', '')",
+      "INSERT INTO listoforganizations (organizationid, organizationname, branch, branchtype, phonecode, mobile, email, username, passwords, country, state, district, address, postalcode, createrid, createrrole, date, time, extraind1, extraind2, extraind3, extraind4, extraind5, extraind6, extraind7, extraind8, extraind9, extraind10) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', '', '', '', '', '', '', '', '')",
       [
         finalOrgid,
         organizationname,
@@ -86,6 +87,7 @@ const organizationRegister = async (req, res) => {
         createrrole,
         date,
         time,
+        industry
       ]
     );
 
@@ -119,18 +121,17 @@ const organizationRegister = async (req, res) => {
     //   html: `<p>Hello <b>${organizationname}</b>,</p><p>Your organization has been registered successfully.<br>Your Organization ID is <b>${finalOrgid}</b>.</p>`
     // });
 
-     res.status(201).json({
-        message: "Registration successful",
-        data,
-        orgid: finalOrgid,
-        organization: newOrgRows[0] || null,
-      });
+    res.status(201).json({
+      message: "Registration successful",
+      data,
+      orgid: finalOrgid,
+      brach: branch,
+      organization: newOrgRows[0] || null,
+    });
     console.log("User registered successfully with orgid:", finalOrgid);
   } catch (error) {
     console.error("Error during user registration:", error);
-    res
-      .status(500)
-      .json({ error: "Internal server error", details: error.message });
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -153,6 +154,7 @@ const updateOrganization = async (req, res) => {
       postalcode,
       createrid,
       createrrole,
+      // industry
     } = req.body;
     console.log("Received data for update:", req.body);
 
@@ -173,6 +175,7 @@ const updateOrganization = async (req, res) => {
       createrid,
       createrrole,
       organizationid,
+      // industry
       // branch,
     ];
 
@@ -199,7 +202,7 @@ const updateOrganization = async (req, res) => {
 
 const organizationAdding = async (req, res) => {
   try {
-    console.log("Incoming body:", req.body); // Log incoming text fields
+    // console.log("Incoming body:", req.body); // Log incoming text fields
     const {
       organizationid,
       organizationname,
@@ -217,6 +220,7 @@ const organizationAdding = async (req, res) => {
       postalcode,
       createrid,
       createrrole,
+      industry
     } = req.body;
     console.log("Received data:", req.body); // Log incoming text fieldss
     if (
@@ -250,11 +254,12 @@ const organizationAdding = async (req, res) => {
     }
 
     const currentDate = new Date();
-    const date = currentDate.toISOString().split("T")[0];
-    const time = currentDate.toTimeString().split(" ")[0];
+    const date = currentDate.toLocaleDateString('en-US'); // e.g., "07/04/2025"
+    const time = currentDate.toLocaleTimeString('en-US', { hour12: true }); // e.g., "3:45:12 PM"
+    // const address = '';
 
     const [data] = await mySqlpool.query(
-      "INSERT INTO listoforganizations (organizationid, organizationname, branch, branchtype, phonecode, mobile, email, username, passwords, country, state, district, address, postalcode, createrid, createrrole, date, time, extraind1, extraind2, extraind3, extraind4, extraind5, extraind6, extraind7, extraind8, extraind9, extraind10) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', '', '', '', '', '', '', '', '', '')",
+      "INSERT INTO listoforganizations (organizationid, organizationname, branch, branchtype, phonecode, mobile, email, username, passwords, country, state, district, address, postalcode, createrid, createrrole, date, time, extraind1, extraind2, extraind3, extraind4, extraind5, extraind6, extraind7, extraind8, extraind9, extraind10) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', '', '', '', '', '', '', '', '')",
       [
         organizationid,
         organizationname,
@@ -274,6 +279,8 @@ const organizationAdding = async (req, res) => {
         createrrole,
         date,
         time,
+        industry
+
       ]
     );
 
@@ -300,9 +307,7 @@ const organizationAdding = async (req, res) => {
     console.log("User registered successfully with orgid:", organizationid);
   } catch (error) {
     console.error("Error during user registration:", error);
-    res
-      .status(500)
-      .json({ error: "Internal server error", details: error.message });
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 

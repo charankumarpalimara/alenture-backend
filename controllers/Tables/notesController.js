@@ -4,7 +4,6 @@ const mySqlpool = require("../../db");
 const noteRegister = async (req, res) => {
   try {
     const { createrid, createrrole, name, description } = req.body;
-    console.log("Received data:", req.body);
     // Validate required fields
     // if (!createrid || !name || !description) {
     //   return res
@@ -27,7 +26,6 @@ const noteRegister = async (req, res) => {
     }
 
     return res.status(201).json({ message: "Note created successfully", data });
-    console.log("Note created successfully", data);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
@@ -57,7 +55,6 @@ const noteGetByid = async (req, res) => {
     }
 
     res.status(200).json({ message: "Notes details found", notes });
-    console.log({ message: "Notes details found", notes });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });

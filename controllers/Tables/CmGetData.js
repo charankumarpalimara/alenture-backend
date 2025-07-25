@@ -28,7 +28,7 @@ const express = require('express');
 
 const getAllCm = async (req, res) => {
     try {
-        const [data] = await mySqlpool.query("SELECT * FROM listofcm order by cmid desc");
+        const [data] = await mySqlpool.query("SELECT cmid, firstname, lastname, email, phonecode, mobile, extraind1 FROM listofcm order by cmid desc");
         if (!data || data.length === 0) {
             return res.status(404).json({ error: "No Records Found" });
         }
@@ -36,11 +36,11 @@ const getAllCm = async (req, res) => {
         // Add image URL to each record
         const updatedData = data.map((record) => ({
             ...record,
-            imageUrl: `${req.protocol}://${req.get('host')}/uploads/cm/${record.extraind1}`, // Construct image URL
+            imageUrl: record.extraind1 ? `${req.protocol}://${req.get('host')}/uploads/cm/${record.extraind1}` : null,
         }));
 
         res.status(200).json({ message: "All User Records", data: updatedData });
-        console.log("All students get successfully");
+        // console.log("All students get successfully");
         // console.log(updatedData);
 
     } catch (error) {
@@ -54,7 +54,7 @@ const getCmDataById = async (req, res) => {
     try {
         const userId = req.params.cmid;
         const [cmname] = await mySqlpool.query(
-            "SELECT * FROM listofcm WHERE cmid = ? order by id desc ",
+            "SELECT cmid, firstname, lastname, email, phonecode, mobile, extraind1 FROM listofcm WHERE cmid = ? order by id desc ",
             [userId]
         );
         if (!cmname || cmname.length === 0) {
@@ -62,10 +62,10 @@ const getCmDataById = async (req, res) => {
         }
         const updatedData = cmname.map((record) => ({
             ...record,
-            imageUrl: `${req.protocol}://${req.get('host')}/uploads/cm/${record.extraind1}`, // Construct image URL
+            imageUrl: record.extraind1 ? `${req.protocol}://${req.get('host')}/uploads/cm/${record.extraind1}` : null,
         }));
         res.status(200).json({ message: "Cm details found", updatedData });
-        console.log({ message: "Cm details found", updatedData });
+        // console.log({ message: "Cm details found", updatedData });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Something went wrong in this API" });
@@ -78,7 +78,7 @@ const getCmDataByCrmid = async (req, res) => {
     try {
         const userId = req.params.crmid;
         const [cmname] = await mySqlpool.query(
-            "SELECT * FROM listofcm WHERE crmid = ? order by id desc ",
+            "SELECT cmid, firstname, lastname, email, phonecode, mobile, extraind1 FROM listofcm WHERE crmid = ? order by id desc ",
             [userId]
         );
         if (!cmname || cmname.length === 0) {
@@ -86,10 +86,10 @@ const getCmDataByCrmid = async (req, res) => {
         }
         const updatedData = cmname.map((record) => ({
             ...record,
-            imageUrl: `${req.protocol}://${req.get('host')}/uploads/cm/${record.extraind1}`, // Construct image URL
+            imageUrl: record.extraind1 ? `${req.protocol}://${req.get('host')}/uploads/cm/${record.extraind1}` : null,
         }));
         res.status(200).json({ message: "Cm details found", data: updatedData });
-        console.log({ message: "Cm details found", updatedData });
+        // console.log({ message: "Cm details found", updatedData });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Something went wrong in this API" });

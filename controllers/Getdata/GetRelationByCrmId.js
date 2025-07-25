@@ -16,30 +16,33 @@ const getRelationByCrmId = async (req, res) => {
             return res.status(404).json({ error: "No records found for the given CRM ID" });
         }
 
-        // For each assigned relation, fetch and attach CM details
-        const combinedData = await Promise.all(data.map(async (relation) => {
-            const [cmDetails] = await mySqlpool.query(
-                "SELECT firstname, lastname, email, phonecode, mobile, extraind2, extraind3, extraind1, passwords FROM listofcm WHERE cmid = ? order by id desc ", 
-                [relation.cmid]
+        // Optimization: Fetch all required CM details in a single query
+        const cmIds = data.map(relation => relation.cmid);
+        let cmDetailsMap = {};
+        if (cmIds.length > 0) {
+            const [cmDetailsRows] = await mySqlpool.query(
+                `SELECT cmid, firstname, lastname, email, phonecode, mobile, extraind2, extraind3, extraind1, passwords FROM listofcm WHERE cmid IN (${cmIds.map(() => '?').join(',')}) order by id desc`,
+                cmIds
             );
-            if (cmDetails && cmDetails.length > 0) {
-                return {
-                    ...relation,
-                    cmDetails: {
-                        ...cmDetails[0],
-                        imageUrl: `${req.protocol}://${req.get('host')}/uploads/cm/${cmDetails[0].extraind1}`
-                    }
+            cmDetailsMap = cmDetailsRows.reduce((acc, cm) => {
+                acc[cm.cmid] = {
+                    ...cm,
+                    imageUrl: cm.extraind1 ? `${req.protocol}://${req.get('host')}/uploads/cm/${cm.extraind1}` : null
                 };
-            } else {
-                return { ...relation, cmDetails: null };
-            }
+                return acc;
+            }, {});
+        }
+
+        const combinedData = data.map(relation => ({
+            ...relation,
+            cmDetails: cmDetailsMap[relation.cmid] || null
         }));
 
         res.status(200).json({ 
             message: "CRM relation retrieved successfully", 
             data: combinedData 
         });
-        console.log("CRM relation retrieved successfully", combinedData);
+        // console.log("CRM relation retrieved successfully", combinedData);
 
     } catch (error) {
         console.error(error);

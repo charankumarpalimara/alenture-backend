@@ -6,7 +6,7 @@ const path = require("path");
 const WebSocket = require("ws");
 const { broadcast, broadcastNotification } = require("../../WebSocketUtils");
 const sendMail = require("../Mails-Service/sendMail"); // Import the mail service
-const RegistrationTemplate = require("../../EmailsTemplates/registration-provider");
+const CmRegistrationTemplate = require("../../EmailsTemplates/cm-registration-provider");
 
 const express = require("express");
 const app = express();
@@ -39,6 +39,8 @@ const CmRegister = async (req, res) => {
       designation,
       organization,
       branch,
+      functionValue,
+      interests,
       username,
       passwords,
       crmId,
@@ -46,7 +48,7 @@ const CmRegister = async (req, res) => {
       createrid,
       createrrole,
     } = req.body;
-    console.log("Incoming body:", req.body); // Log incoming text fields
+    // console.log("Incoming body:", req.body); // Log incoming text fields
 
     // Validate required fields
     // if (!firstname || !lastname || !phonecode || !mobile || !email || !gender || !designation || !organization || !branch || !username || !passwords || !createrid || !createrrole) {
@@ -75,17 +77,15 @@ const CmRegister = async (req, res) => {
       if (newid) {
         const cmColumnName = Object.keys(newid[0])[3];
         const cmColumnValue = newid[0][cmColumnName];
-        console.log("third column name:", cmColumnName);
-        console.log("third column value:", cmColumnValue);
       }
 
       const cmid = parseInt(newid[0].cm, 10) || 0;
       const nextcmid = cmid + 1;
       const finalCMid = "CM_" + String(nextcmid).padStart(3, "0");
       // Get current date and time
-      const currentDate = new Date();
-      const date = currentDate.toISOString().split("T")[0];
-      const time = currentDate.toTimeString().split(" ")[0];
+const currentDate = new Date();
+const date = currentDate.toLocaleDateString('en-US'); // e.g., "07/04/2025"
+const time = currentDate.toLocaleTimeString('en-US', { hour12: true }); // e.g., "3:45:12 PM"
 
       const [existingOrganization] = await mySqlpool.query(
         "SELECT * FROM listoforganizations WHERE organizationname = ? ",
@@ -98,7 +98,7 @@ const CmRegister = async (req, res) => {
       const organizationname = existingOrganization[0].organizationname;
       // Insert the new CM
       const [data] = await mySqlpool.query(
-        "INSERT INTO listofcm (id, cmid, firstname, lastname, organizationid, organizationname, branch, crmid, crmname, phonecode, mobile, email, username, passwords, createrid, createrrole, date, time, extraind1, extraind2, extraind3, extraind4, extraind5, extraind6, extraind7, extraind8, extraind9, extraind10) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', '', '', '', '', '', ?)",
+        "INSERT INTO listofcm (id, cmid, firstname, lastname, organizationid, organizationname, branch, crmid, crmname, phonecode, mobile, email, username, passwords, createrid, createrrole, date, time, extraind1, extraind2, extraind3, extraind4, extraind5, extraind6, extraind7, extraind8, extraind9, extraind10) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', '', '', '', ?)",
         [
           finalCMid,
           firstname,
@@ -120,6 +120,8 @@ const CmRegister = async (req, res) => {
           imagePath,
           gender,
           extraind3,
+          functionValue,
+          interests,
           extraind10,
         ]
       );
@@ -158,7 +160,7 @@ const CmRegister = async (req, res) => {
         [
           "New CM Registered",
           `CM ID ${finalCMid} CM "${firstname} ${lastname}" registered successfully.`,
-          "cm_registartion",
+          "cm_registration",
           0,
           createrid,
         ]
@@ -167,12 +169,12 @@ const CmRegister = async (req, res) => {
       broadcastNotification({
         type: "notification",
         title: "New CM Registered",
-        message: `CM "${firstname} ${lastname}" registered successfully.`,
+        message: `CM ID ${finalCMid}   CM "${firstname} ${lastname}" registered successfully.`,
         timestamp: new Date().toISOString(),
       });
       broadcast({
         title: "New CM Registered",
-        message: `CM "${firstname} ${lastname}" registered successfully.`,
+        message: `CM ID ${finalCMid}   CM "${firstname} ${lastname}" registered successfully.`,
       });
       res
         .status(200)
@@ -182,14 +184,13 @@ const CmRegister = async (req, res) => {
           cmid: finalCMid,
           filename: imagePath || null,
         });
-      console.log("User registered successfully with cmid:", finalCMid);
       const resestlink = `https://cem.alantur.ai/reset-password/${email}`;
-      const imagelink = `https://alantur-api.softplix.com/uploads/logo/logo.jpeg`;
+      const imagelink = `https://alantur-api.softplix.com/uploads/logo/alentur-logo.png`;
       await sendMail({
         to: email,
         subject: "CM Registration Successful",
         text: `Hello ${firstname},\n\nYour CM has been registered successfully. Your CM ID is ${finalCMid}.`,
-        html: RegistrationTemplate({
+        html: CmRegistrationTemplate({
           resestlink,
           imagelink,
           firstname,
@@ -209,8 +210,6 @@ const CmRegister = async (req, res) => {
       if (newid) {
         const cmColumnName = Object.keys(newid[0])[3];
         const cmColumnValue = newid[0][cmColumnName];
-        console.log("third column name:", cmColumnName);
-        console.log("third column value:", cmColumnValue);
       }
 
       const cmid = parseInt(newid[0].cm, 10) || 0;
@@ -232,7 +231,7 @@ const CmRegister = async (req, res) => {
       const organizationname = existingOrganization[0].organizationname;
       // Insert the new CM
       const [data] = await mySqlpool.query(
-        "INSERT INTO listofcm (id, cmid, firstname, lastname, organizationid, organizationname, branch, crmid, crmname, phonecode, mobile, email, username, passwords, createrid, createrrole, date, time, extraind1, extraind2, extraind3, extraind4, extraind5, extraind6, extraind7, extraind8, extraind9, extraind10) VALUES (NULL, ?, ?, ?, ?, ?, ?, '', '', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', '', '', '', '', '', ?)",
+        "INSERT INTO listofcm (id, cmid, firstname, lastname, organizationid, organizationname, branch, crmid, crmname, phonecode, mobile, email, username, passwords, createrid, createrrole, date, time, extraind1, extraind2, extraind3, extraind4, extraind5, extraind6, extraind7, extraind8, extraind9, extraind10) VALUES (NULL, ?, ?, ?, ?, ?, ?, '', '', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', '', '', '', ?)",
         [
           finalCMid,
           firstname,
@@ -254,6 +253,8 @@ const CmRegister = async (req, res) => {
           imagePath,
           gender,
           extraind3,
+          functionValue,
+          interests,
           extraind10,
         ]
       );
@@ -297,15 +298,13 @@ const CmRegister = async (req, res) => {
           cmid: finalCMid,
           filename: imagePath || null,
         });
-      console.log("User registered successfully with cmid:", finalCMid);
-
       const resestlink = `https://cem.alantur.ai/reset-password/${email}`;
-      const imagelink = `https://alantur-api.softplix.com/uploads/logo/alentur-logo.avif`; // Use the finalCRMid for the reset link
+      const imagelink = `https://alantur-api.softplix.com/uploads/logo/alentur-logo.png`; // Use the finalCRMid for the reset link
       await sendMail({
         to: email,
         subject: "CM Registration Successful",
         text: `Hello ${firstname},\n\nYour CM has been registered successfully. Your CM ID is ${finalCMid}.`,
-        html: RegistrationTemplate({
+        html: CmRegistrationTemplate({
           resestlink,
           imagelink,
           firstname,
@@ -341,7 +340,7 @@ const updateCm = async (req, res) => {
       createrrole,
     } = req.body;
 
-    console.log("Incoming body for update:", req.body); // Log incoming text fields
+    // console.log("Incoming body for update:", req.body); // Log incoming text fields
     // If you handle file upload (profile image)
     let imagePath = "";
     if (req.file) {

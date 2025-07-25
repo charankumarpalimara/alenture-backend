@@ -17,6 +17,7 @@ const assignedrelationsRoutes = require("./routes/AssisgnRelationRoute");
 const routes = require("./routes/routes");
 const passwordResetRoutes = require("./routes/ResetPasswordRoute");
 const forgotPasswordRoutes = require("./routes/ForgotPasswordRoute");
+const calenderRoutes = require("./routes/Calender");
 
 const cors = require("cors");
 const multer = require("multer");
@@ -95,7 +96,35 @@ const { setWebSocketServer } = require("./WebSocketUtils");
 app.use(express.json());
 
 // Serve static files from 'uploads' folder
-app.use("/uploads/", express.static(path.join(__dirname, "uploads")));
+
+app.use(
+  "/uploads/",
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:3001",
+      "http://161.35.54.196",
+      "https://161.35.54.196",
+      "http://161.35.54.196:3000",
+      "https://161.35.54.196:3000",
+      "http://161.35.54.196:3001",
+      "https://161.35.54.196:3001",
+      "http://147.182.163.213:4000",
+      "https://147.182.163.213:4000",
+      "http://147.182.163.213:5000",
+      "https://147.182.163.213:5000",
+      "http://147.182.163.213:9000",
+      "https://147.182.163.213:9000",
+      "http://147.182.163.213",
+      "https://147.182.163.213",
+      "https://cem.alantur.ai",
+      "http://localhost:5173", // add any others you use
+      "*",
+    ],
+    credentials: true,
+  }),
+  express.static(path.join(__dirname, "uploads"))
+);
 
 // Register API routes
 app.use("/v1", registrationRoutes);
@@ -109,6 +138,7 @@ app.use("/v1", assignedrelationsRoutes);
 app.use("/v1", routes);
 app.use("/v1", passwordResetRoutes);
 app.use("/v1", forgotPasswordRoutes);
+app.use("/v1", calenderRoutes);
 
 
 // Default landing route

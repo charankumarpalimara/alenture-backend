@@ -19,32 +19,32 @@ const AssignTaskandExperience = async (req, res) => {
         //     return res.status(404).json({ error: "No experience tasks found for this experience ID" });
         // }
 
-        const currentDate = new Date();
-        const date = currentDate.toISOString().split('T')[0];
-        const time = currentDate.toTimeString().split(' ')[0];
-
-        // Insert each row with new crmid and crmname
-        for (const task of experienceDetailsGet) {
+        // Insert each row with new crmid and crmname (optimized: bulk insert)
+        if (experienceDetailsGet.length > 0) {
+            const currentDate = new Date();
+            const date = currentDate.toISOString().split('T')[0];
+            const time = currentDate.toTimeString().split(' ')[0];
+            const values = experienceDetailsGet.map(task => [
+                task.experienceid,
+                crmid,
+                task.cmid,
+                task.taskid,
+                task.taskname,
+                task.taskownername,
+                task.description,
+                task.status,
+                task.priority,
+                date,
+                time,
+                task.extraind1,
+                task.extraind2,
+                task.extraind3,
+                task.extraind4,
+                task.extraind5
+            ]);
             await mySqlpool.query(
-                "INSERT INTO experiencetasks (experienceid, crmid, cmid, taskid, taskname, taskownername, description, status, priority, date, time, extraind1, extraind2, extraind3, extraind4, extraind5) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                [
-                    task.experienceid,
-                    crmid,
-                    task.cmid,
-                    task.taskid,
-                    task.taskname,
-                    task.taskownername,
-                    task.description,
-                    task.status,
-                    task.priority,
-                    date,
-                    time,
-                    task.extraind1,
-                    task.extraind2,
-                    task.extraind3,
-                    task.extraind4,
-                    task.extraind5
-                ]
+                `INSERT INTO experiencetasks (experienceid, crmid, cmid, taskid, taskname, taskownername, description, status, priority, date, time, extraind1, extraind2, extraind3, extraind4, extraind5) VALUES ${values.map(() => '(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)').join(', ')}`,
+                values.flat()
             );
         }
 

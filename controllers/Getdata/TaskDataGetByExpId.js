@@ -5,7 +5,7 @@ const getTaskDataByExpId = async (req, res) => {
     
     try {
         const {experienceId, crmid} = req.body;
-        console.log("Received request to get tasks for Experience ID:", experienceId, "and CRM ID:", crmid);
+        // console.log("Received request to get tasks for Experience ID:", experienceId, "and CRM ID:", crmid);
         if (!experienceId || !crmid) {
             return res.status(400).json({ error: "Experience ID is required" });
         }
@@ -28,7 +28,7 @@ const getTaskDataByExpId = async (req, res) => {
             message: "Tasks retrieved successfully", 
             data: updatedData 
         });
-        console.log("Tasks retrieved successfully", updatedData);
+        // console.log("Tasks retrieved successfully", updatedData);
 
     } catch (error) {
         console.error(error);

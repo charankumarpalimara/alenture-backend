@@ -4,7 +4,7 @@ const mySqlpool = require('../../db');
 const deleteTask = async (req, res) => {
     try {
       const taskId = req.params.id;
-
+    console.log("Delete Task request received with ID:", taskId);
         if (!taskId) {
             return res.status(400).json({ error: "taskId is required" });
         }

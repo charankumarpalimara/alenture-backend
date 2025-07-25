@@ -5,7 +5,7 @@ const path = require("path");
 const WebSocket = require("ws");
 const { broadcast, broadcastNotification } = require("../../WebSocketUtils");
 const sendMail = require("../Mails-Service/sendMail"); // Import the mail service
-const RegistrationTemplate = require("../../EmailsTemplates/registration-provider");
+const CrmRegistrationTemplate = require("../../EmailsTemplates/crm-registration-provider");
 
 const CrmRegister = async (req, res) => {
   try {
@@ -48,7 +48,6 @@ const CrmRegister = async (req, res) => {
           error:
             "Please provide firstname, lastname, and other required fields",
         });
-      console.log("error to data insert");
     }
     // if (!req.file) {
     //     return res.status(400).json({ error: "Please upload an image" });
@@ -69,17 +68,15 @@ const CrmRegister = async (req, res) => {
 
     const secondColumnName = Object.keys(newid[0])[2]; // Get the second column name
     const secondColumnValue = newid[0][secondColumnName]; // Get the second column value
-    console.log("third column name:", secondColumnName);
-    console.log("third column value:", secondColumnValue);
 
     const crmid = parseInt(newid[0].crm, 10) || 0; // Safely parse customerid
     const nextcrmid = crmid + 1;
-    const finalCRMid = "CRM_" + String(nextcrmid).padStart(3, "0"); // Generate ID like STR_001
+    const finalCRMid = "RM_" + String(nextcrmid).padStart(3, "0"); // Generate ID like STR_001
 
     // Get current date and time
     const currentDate = new Date();
-    const date = currentDate.toISOString().split("T")[0]; // Format: YYYY-MM-DD
-    const time = currentDate.toTimeString().split(" ")[0]; // Format: HH:MM:SS
+    const date = currentDate.toLocaleDateString('en-US'); // e.g., "07/04/2025"
+    const time = currentDate.toLocaleTimeString('en-US', { hour12: true }); // e.g., "3:45:12 PM"
 
     const [data] = await mySqlpool.query(
       `INSERT INTO listofcrm (crmid, firstname, lastname, phonecode, mobile, email, username, passwords, createrid, createrrole, date, time, extraind1, extraind2, extraind3, extraind4, extraind5, extraind6, extraind7, extraind8, extraind9, extraind10) 
@@ -109,7 +106,6 @@ const CrmRegister = async (req, res) => {
     );
 
     if (!data || data.affectedRows === 0) {
-      console.log("crm insert failed");
       return res
         .status(500)
         .json({ error: "Error inserting data into the database" });
@@ -119,6 +115,28 @@ const CrmRegister = async (req, res) => {
       `UPDATE indicators SET crm = ? WHERE id = ?`,
       [nextcrmid, id]
     );
+
+
+    await mySqlpool.query(
+      `INSERT INTO notifications (title, message, type, is_read, creator_id, created_at)
+   VALUES (?, ?, ?, ?, ?, NOW())`,
+      [
+        "New Relationship Manager Registered",
+        `Relationship Manager ID ${finalCRMid} Relationship Manager "${firstname} ${lastname}" registered successfully.`,
+        "crm_registration",
+        0,
+        createrid,
+      ]
+    );
+
+
+    broadcastNotification({
+      type: "notification",
+      title: "New CRM Registered",
+      message: `CRM ID ${finalCRMid} CRM "${firstname} ${lastname}" registered successfully.`,
+      timestamp: new Date().toISOString(),
+    });
+
     const newCrm = {
       crmid: finalCRMid,
       firstname,
@@ -137,12 +155,7 @@ const CrmRegister = async (req, res) => {
     };
     broadcast(newCrm); // Use broadcast to send updates
 
-    broadcastNotification({
-      type: "notification",
-      title: "New CRM Registered",
-      message: `CRM ID ${finalCRMid} CRM "${firstname} ${lastname}" registered successfully.`,
-      timestamp: new Date().toISOString(),
-    });
+
     broadcast({
       title: "New CRM Registered",
       message: `CRM "${firstname} ${lastname}" registered successfully.`,
@@ -154,15 +167,14 @@ const CrmRegister = async (req, res) => {
       crmid: finalCRMid,
       filename: imagePath || null,
     });
-    console.log("User registered successfully with crmid:", finalCRMid);
     const resestlink = `https://cem.alantur.ai/reset-password/${email}`;
-    const imagelink = `https://alantur-api.softplix.com/uploads/logo/logo.jpeg`; // Use the finalCRMid for the reset link
+    const imagelink = `https://alantur-api.softplix.com/uploads/logo/alentur-logo.png`; // Use the finalCRMid for the reset link
 
     await sendMail({
       to: email,
       subject: "CRM Registration Successful",
       text: `Hello ${firstname},\n\nYour CRM has been registered successfully. Your CRM ID is ${finalCRMid}.`,
-      html: RegistrationTemplate({
+      html: CrmRegistrationTemplate({
         resestlink,
         imagelink,
         firstname,
@@ -197,8 +209,6 @@ const updateCrm = async (req, res) => {
       createrid,
       postalcode,
     } = req.body;
-
-    console.log("Received data for update:", req.body);
 
     // Handle file upload (profile image)
     let imagePath = "";

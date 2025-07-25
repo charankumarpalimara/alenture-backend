@@ -1,4 +1,4 @@
-function RegistrationTemplate({ resestlink, imagelink, firstname, email, extraind10 }) {
+function CmRegistrationTemplate({ resestlink, imagelink, firstname, email, extraind10 }) {
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,7 +42,7 @@ function RegistrationTemplate({ resestlink, imagelink, firstname, email, extrain
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-color: #fff;
             padding: 30px 20px;
             text-align: center;
             color: white;
@@ -50,6 +50,7 @@ function RegistrationTemplate({ resestlink, imagelink, firstname, email, extrain
 
         .header h1 {
             margin: 0;
+            color: #3e4396;
             font-size: 28px;
             font-weight: 600;
         }
@@ -207,7 +208,7 @@ function RegistrationTemplate({ resestlink, imagelink, firstname, email, extrain
     <div class="email-container">
         <!-- Header -->
 <div class="header">
-    <img src="${imagelink}" alt="Alantur Logo" style="max-width: 180px; margin-bottom: 15px;" />
+<img src="${imagelink}" alt="Alantur Logo" style="max-width: 300px; width: 100%; height: auto; margin-bottom: 15px;" />
     <h1>Welcome to Alantur</h1>
 </div>
 
@@ -305,4 +306,4 @@ function RegistrationTemplate({ resestlink, imagelink, firstname, email, extrain
 `
 
 }
-module.exports = RegistrationTemplate;
+module.exports = CmRegistrationTemplate;

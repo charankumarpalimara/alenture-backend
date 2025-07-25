@@ -16,7 +16,7 @@ const getBranchbyOrganizationname = async (req, res) => {
         }
         const branchDetails = rows;
         res.status(200).json({ message: "Branch details found", branchDetails });
-        console.log({ message: "Branch details found", branchDetails });
+        // console.log({ message: "Branch details found", branchDetails });
 
     } catch (error) {
         console.error(error);

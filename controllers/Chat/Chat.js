@@ -18,7 +18,7 @@ const ChatInsert = async (req, res) => {
             "INSERT INTO chat (cmid, crmid, experienceid, messege, sender, time, date, extraind1, extraind2, extraind3, extraind4, extraind5) VALUES (?, ?, ?, ?, ?, ?, ?, ?, '', '', '', '')",
             [cmid, crmid, experienceid, message, sender, time, date, crmname ]
         );
-
+        console.log("Message inserted successfully");
         res.status(201).json({ message: "Message sent successfully" });
     } catch (error) {
         console.error(error);

@@ -4,7 +4,7 @@ const express = require("express");
 
 const getAllTickets = async (req, res) => {
     try {
-        const [data] = await mySqlpool.query("SELECT * FROM experiences order by id desc");
+        const [data] = await mySqlpool.query("SELECT id, experienceid, subject, filename, cmid, cmname, organizationid, organizationname, branch, date, time, status FROM experiences order by id desc");
         if (!data || data.length === 0) {
             return res.status(404).json({ error: "No Records Found" });
         }
@@ -12,11 +12,11 @@ const getAllTickets = async (req, res) => {
         // Add image URL to each record
         const updatedData = data.map((record) => ({
             ...record,
-            imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
+            imageUrl: record.filename ? `https://alantur-api.softplix.com/uploads/experience/${record.filename}` : null,
         }));
 
         res.status(200).json({ message: "All User Records", data: updatedData });
-        console.log({message: "All Experiences get successfully", data: updatedData  });
+        // console.log({message: "All Experiences get successfully", data: updatedData  });
         // console.log(updatedData);
 
     } catch (error) {
@@ -35,11 +35,11 @@ const getPendingTickets = async (req, res) => {
         // Add image URL to each record
         const updatedData = data.map((record) => ({
             ...record,
-            imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
+         imageUrl: `https://alantur-api.softplix.com/uploads/experience/${record.filename}`,
         }));
 
         res.status(200).json({ message: "All User Records", data: updatedData });
-        console.log({message: "All Experiences get successfully", data: updatedData  });
+        // console.log({message: "All Experiences get successfully", data: updatedData  });
         // console.log(updatedData);
 
     } catch (error) {
@@ -50,7 +50,7 @@ const getPendingTickets = async (req, res) => {
 
 const getNewTickets = async (req, res) => {
     try {
-        const [data] = await mySqlpool.query("SELECT * FROM experiences WHERE status = 'New' order by id desc ");
+        const [data] = await mySqlpool.query("SELECT id, experienceid, subject, filename, cmid, cmname, organizationid, organizationname, branch, date, time, status FROM experiences WHERE status = 'New' order by id desc ");
         if (!data || data.length === 0) {
             return res.status(404).json({ error: "No Records Found" });
         }
@@ -58,11 +58,11 @@ const getNewTickets = async (req, res) => {
         // Add image URL to each record
         const updatedData = data.map((record) => ({
             ...record,
-            imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
+            imageUrl: record.filename ? `https://alantur-api.softplix.com/uploads/experience/${record.filename}` : null,
         }));
 
         res.status(200).json({ message: "All User Records", data: updatedData });
-        console.log({message: "All Experiences get successfully", data: updatedData  });
+        // console.log({message: "All Experiences get successfully", data: updatedData  });
         // console.log(updatedData);
 
     } catch (error) {
@@ -81,11 +81,11 @@ const getResolvedTickets = async (req, res) => {
         // Add image URL to each record
         const updatedData = data.map((record) => ({
             ...record,
-            imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
+         imageUrl: `https://alantur-api.softplix.com/uploads/experience/${record.filename}`,
         }));
 
         res.status(200).json({ message: "All User Records", data: updatedData });
-        console.log({message: "All Experiences get successfully", updatedData  });
+        // console.log({message: "All Experiences get successfully", updatedData  });
         // console.log(updatedData);
 
     } catch (error) {
@@ -112,11 +112,11 @@ const getAllTicketsbyCmid = async (req, res) => {
         }
         const updatedData = rows.map((record) => ({
             ...record,
-            imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
+         imageUrl: `https://alantur-api.softplix.com/uploads/experience/${record.filename}`,
         }));
         // const branchDetails = rows[0].branch;
         res.status(200).json({ message: "Experience details found",data: updatedData });
-        console.log({ message: "Experience details found", updatedData });
+        // console.log({ message: "Experience details found", updatedData });
 
     } catch (error) {
         console.error(error);
@@ -141,11 +141,11 @@ const getPendingTicketsbyCmid = async (req, res) => {
         }
         const updatedData = rows.map((record) => ({
             ...record,
-            imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
+         imageUrl: `https://alantur-api.softplix.com/uploads/experience/${record.filename}`,
         }));
         // const branchDetails = rows[0].branch;
         res.status(200).json({ message: "Experience details found",data: updatedData });
-        console.log({ message: "Experience details found", updatedData });
+        // console.log({ message: "Experience details found", updatedData });
 
     } catch (error) {
         console.error(error);
@@ -170,11 +170,11 @@ const getResolvedTicketsbyCmid = async (req, res) => {
         }
         const updatedData = rows.map((record) => ({
             ...record,
-            imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
+         imageUrl: `https://alantur-api.softplix.com/uploads/experience/${record.filename}`,
         }));
         // const branchDetails = rows[0].branch;
         res.status(200).json({ message: "Experience details found", data: updatedData });
-        console.log({ message: "Experience details found", updatedData });
+        // console.log({ message: "Experience details found", updatedData });
 
     } catch (error) {
         console.error(error);
@@ -199,11 +199,11 @@ const getNewTicketsbyCmid = async (req, res) => {
         }
         const updatedData = rows.map((record) => ({
             ...record,
-            imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
+         imageUrl: `https://alantur-api.softplix.com/uploads/experience/${record.filename}`,
         }));
         // const branchDetails = rows[0].branch;
         res.status(200).json({ message: "Experience details found",data: updatedData });
-        console.log({ message: "Experience details found", updatedData });
+        // console.log({ message: "Experience details found", updatedData });
 
     } catch (error) {
         console.error(error);
@@ -228,11 +228,11 @@ const getAllTicketsbyCrmid = async (req, res) => {
         }
         const updatedData = rows.map((record) => ({
             ...record,
-            imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
+         imageUrl: `https://alantur-api.softplix.com/uploads/experience/${record.filename}`,
         }));
         // const branchDetails = rows[0].branch;
         res.status(200).json({ message: "Experience details found",data: updatedData });
-        console.log({ message: "Experience details found", updatedData });
+        // console.log({ message: "Experience details found", updatedData });
 
     } catch (error) {
         console.error(error);
@@ -257,11 +257,11 @@ const getPendingTicketsbyCrmid = async (req, res) => {
         }
         const updatedData = rows.map((record) => ({
             ...record,
-            imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
+         imageUrl: `https://alantur-api.softplix.com/uploads/experience/${record.filename}`,
         }));
         // const branchDetails = rows[0].branch;
         res.status(200).json({ message: "Experience details found", data: updatedData });
-        console.log({ message: "Experience details found", updatedData });
+        // console.log({ message: "Experience details found", updatedData });
 
     } catch (error) {
         console.error(error);
@@ -286,11 +286,11 @@ const getNewTicketsbyCrmid = async (req, res) => {
         }
         const updatedData = rows.map((record) => ({
             ...record,
-            imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
+         imageUrl: `https://alantur-api.softplix.com/uploads/experience/${record.filename}`,
         }));
         // const branchDetails = rows[0].branch;
         res.status(200).json({ message: "Experience details found", data: updatedData });
-        console.log({ message: "Experience details found", updatedData });
+        // console.log({ message: "Experience details found", updatedData });
 
     } catch (error) {
         console.error(error);
@@ -315,17 +315,54 @@ const getReslveTicketsbyCrmid = async (req, res) => {
         }
         const updatedData = rows.map((record) => ({
             ...record,
-            imageUrl: `${req.protocol}://${req.get('host')}/uploads/experience/${record.filename}`, // Construct image URL
+         imageUrl: `https://alantur-api.softplix.com/uploads/experience/${record.filename}`,
         }));
         // const branchDetails = rows[0].branch;
         res.status(200).json({ message: "Experience details found", data: updatedData });
-        console.log({ message: "Experience details found", updatedData });
+        // console.log({ message: "Experience details found", updatedData });
 
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Something went wrong in this API" });
     }
 };
+
+
+
+const experienceDetailsGet = async (req, res) => {
+    try {
+        const { experienceId } = req.params;
+        console.log("Fetching experience details for ID:", experienceId);
+
+        // Fetch experience details from the database
+        const [experienceDetails] = await mySqlpool.query(
+            "SELECT * FROM experiences WHERE experienceid = ?",
+            [experienceId]
+        );
+
+        if (!experienceDetails || experienceDetails.length === 0) {
+            console.error("Experience not found for ID:", experienceId);
+            return res.status(404).json({ error: "Experience not found" });
+        }
+
+        // Map all records to include imageUrl
+        const updatedData = experienceDetails.map((record) => ({
+            ...record,
+         imageUrl: `https://alantur-api.softplix.com/uploads/experience/${record.filename}`,
+        }));
+
+        const message =
+          updatedData.length === 1
+            ? "Experience details found"
+            : "Multiple experience records found for this ID";
+
+        res.status(200).json({ message, data: updatedData });
+        console.log("Experience details fetched successfully", updatedData);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
 
 module.exports = {
   getAllTickets,
@@ -340,4 +377,5 @@ module.exports = {
   getPendingTicketsbyCrmid,
   getNewTicketsbyCrmid,
   getReslveTicketsbyCrmid,
+  experienceDetailsGet
 };

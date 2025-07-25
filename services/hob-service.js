@@ -5,7 +5,7 @@ const getHobNotifications = async () => {
     mySqlpool
       .query(
         `SELECT * FROM notifications 
-   WHERE type = 'cm_registration' OR type = 'crm_registration' OR type = 'hob_registration'
+   WHERE type = 'cm_registration' OR type = 'crm_registration'
    ORDER BY created_at DESC 
    LIMIT 50`
       )

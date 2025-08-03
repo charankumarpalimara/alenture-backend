@@ -8,10 +8,9 @@ const updateCustomerRelationshipManager = async (req, res) => {
         const { crmid, firstname, lastname, email, phoneCode, mobile, status, gender, createrrole, createrid } = req.body;
 
         if (!crmid) {
-           return res.status(400).json({ error: "cmid is required" });
-           console.error("cmid is required");
-       }
-
+            console.error("cmid is required");
+            return res.status(400).json({ error: "cmid is required" });
+        }
         // Fix: updateFields should match SQL order and cmid only at the end
         let updateFields = [firstname, lastname, email, phoneCode, mobile, gender, status];
         let sql = `UPDATE listofcrm SET firstname = ?, lastname = ?, email = ?, phonecode = ?, mobile = ?, extraind2 = ?, extraind7 = ?`;
@@ -45,13 +44,9 @@ const updateCustomerRelationshipManager = async (req, res) => {
                 imageFile = rows[0].extraind1;
             }
         }
-
-
         if (imageFile) {
             imageUrl = `${req.protocol}://${req.get('host')}/uploads/crm/${imageFile}`;
         };
-
-
 
         res.status(200).json({ message: "crm profile updated successfully", imageUrl: imageUrl });
         console.log("crm profile updated successfully", imageUrl);

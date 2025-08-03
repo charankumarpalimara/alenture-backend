@@ -49,6 +49,7 @@ const { AllExperiencesCount} = require('../controllers/Getdata/GetExperiencesCou
 
  const { GetOrganizationIndustries } = require('../controllers/Getdata/OrganizationIndustryGet');
 
+ const { CmDataGetByBranches } = require('../controllers/Getdata/cmDataGetByBranches')
 
 
 
@@ -201,6 +202,8 @@ router.get('/GetCmInterest', GetCmInterest);
 
 router.get('/GetOrganizationIndustries', GetOrganizationIndustries);
 
+
+router.post('/getCmDataOrganiozations', CmDataGetByBranches)
 
 module.exports = router;
 

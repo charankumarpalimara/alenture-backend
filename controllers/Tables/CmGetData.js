@@ -28,7 +28,7 @@ const express = require('express');
 
 const getAllCm = async (req, res) => {
     try {
-        const [data] = await mySqlpool.query("SELECT cmid, firstname, lastname, email, phonecode, mobile, extraind1 FROM listofcm order by cmid desc");
+        const [data] = await mySqlpool.query("SELECT * FROM listofcm order by cmid desc");
         if (!data || data.length === 0) {
             return res.status(404).json({ error: "No Records Found" });
         }

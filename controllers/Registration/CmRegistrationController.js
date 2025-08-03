@@ -48,7 +48,7 @@ const CmRegister = async (req, res) => {
       createrid,
       createrrole,
     } = req.body;
-    // console.log("Incoming body:", req.body); // Log incoming text fields
+    console.log("Incoming body:", req.body); // Log incoming text fields
 
     // Validate required fields
     // if (!firstname || !lastname || !phonecode || !mobile || !email || !gender || !designation || !organization || !branch || !username || !passwords || !createrid || !createrrole) {
@@ -61,6 +61,7 @@ const CmRegister = async (req, res) => {
     // }
 
     const imagePath = req.file ? req.file.filename : "";
+    console.log("imagePath:", imagePath);
     const id = "1";
     const extraind10 = "cm";
     const extraind3 = "Active";

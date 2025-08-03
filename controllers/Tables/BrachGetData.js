@@ -6,10 +6,12 @@ const getBranchbyOrganizationname = async (req, res) => {
         if (!orgName) {
             return res.status(400).json({ error: "No organization name received" });
         }
+        let branchtype = 'Branch';
+
 
         const [rows] = await mySqlpool.query(
-            "SELECT branch FROM listoforganizations WHERE organizationname = ? order by id desc ",
-            [orgName]
+            "SELECT branch FROM listoforganizations WHERE organizationname = ? AND branchtype = ? order by id desc ",
+            [orgName, branchtype]
         );
         if (!rows || rows.length === 0) {
             return res.status(404).json({ error: "No organization found" });

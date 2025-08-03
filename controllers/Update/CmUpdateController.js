@@ -8,9 +8,20 @@ const updateCustomerManager = async (req, res) => {
         const { cmid, firstname, lastname, email, phoneCode, mobile, status, gender, organizationid, organizationname, branch,  crmid, crmname, createrrole, createrid } = req.body;
 
         if (!cmid) {
+            console.error("cmid is required");
            return res.status(400).json({ error: "cmid is required" });
-           console.error("cmid is required");
+        
        }
+
+
+    //    const [rows] = await mySqlpool.query('SELECT * FROM listofcm WHERE cmid = ?', [cmid]);
+
+    //        ExistingEmail = rows[0].email;
+    //        if (ExistingEmail !== email) {
+    //         // return res.status(400).json({ error: "Email already exists" });
+    //        }
+           
+
 
         // Fix: updateFields should match SQL order and cmid only at the end
         let updateFields = [firstname, lastname, email, phoneCode, mobile, gender, status,  crmid, crmname];
@@ -44,6 +55,10 @@ const updateCustomerManager = async (req, res) => {
                 imageFile = rows[0].extraind1;
             }
         }
+
+
+
+
 
 
         if (imageFile) {

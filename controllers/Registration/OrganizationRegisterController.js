@@ -10,9 +10,9 @@ const organizationRegister = async (req, res) => {
       organizationname,
       industry,
       branch,
-      phonecode,
-      mobile,
-      email,
+      // phonecode,
+      // mobile,
+      // address,
       username,
       passwords,
       country,
@@ -67,15 +67,15 @@ const organizationRegister = async (req, res) => {
     const time = currentDate.toLocaleTimeString('en-US', { hour12: true }); // e.g., "3:45:12 PM"
 
     const [data] = await mySqlpool.query(
-      "INSERT INTO listoforganizations (organizationid, organizationname, branch, branchtype, phonecode, mobile, email, username, passwords, country, state, district, address, postalcode, createrid, createrrole, date, time, extraind1, extraind2, extraind3, extraind4, extraind5, extraind6, extraind7, extraind8, extraind9, extraind10) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', '', '', '', '', '', '', '', '')",
+      "INSERT INTO listoforganizations (organizationid, organizationname, branch, branchtype, phonecode, mobile, email, username, passwords, country, state, district, address, postalcode, createrid, createrrole, date, time, extraind1, extraind2, extraind3, extraind4, extraind5, extraind6, extraind7, extraind8, extraind9, extraind10) VALUES (?, ?, ?, ?, '', '', '', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', '', '', '', '', '', '', '', '')",
       [
         finalOrgid,
         organizationname,
         branch,
         branchtype,
-        phonecode,
-        mobile,
-        email,
+        // phonecode,
+        // mobile,
+        // email,
         username,
         passwords,
         country,
@@ -220,7 +220,7 @@ const organizationAdding = async (req, res) => {
       postalcode,
       createrid,
       createrrole,
-      industry
+      // industry
     } = req.body;
     console.log("Received data:", req.body); // Log incoming text fieldss
     if (
@@ -252,6 +252,14 @@ const organizationAdding = async (req, res) => {
         .status(409)
         .json({ error: "Branch Already Exicist", branch: branch });
     }
+
+    // Get industry from parent organization (any existing branch of this organization)
+    const [parentOrg] = await mySqlpool.query(
+      "SELECT extraind1 FROM listoforganizations WHERE organizationid = ? LIMIT 1",
+      [organizationid]
+    );
+    const industry = parentOrg.length > 0 ? parentOrg[0].extraind1 : '';
+
 
     const currentDate = new Date();
     const date = currentDate.toLocaleDateString('en-US'); // e.g., "07/04/2025"

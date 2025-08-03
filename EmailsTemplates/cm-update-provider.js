@@ -1,10 +1,10 @@
-function CmRegistrationTemplate({ resestlink, imagelink, firstname, email, extraind10 }) {
+function CmUpdateTemplate({ imagelink, firstname, email, extraind10, updateDetails }) {
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Alantur</title>
+    <title>Profile Updated - Alantur</title>
     <style>
         /* Reset styles for email clients */
         body, table, td, p, a, li, blockquote {
@@ -51,7 +51,7 @@ function CmRegistrationTemplate({ resestlink, imagelink, firstname, email, extra
 
         .header h1 {
             margin: 0;
-            color: #3e4396;
+            color: #27ae60;
             font-size: 28px;
             font-weight: 600;
         }
@@ -79,9 +79,53 @@ function CmRegistrationTemplate({ resestlink, imagelink, firstname, email, extra
             color: #555555;
         }
 
+        .success-message {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            padding: 20px;
+            border-radius: 6px;
+            margin: 25px 0;
+            color: #155724;
+        }
+
+        .success-message h3 {
+            margin-top: 0;
+            color: #155724;
+            font-size: 18px;
+        }
+
+        .update-details {
+            background-color: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 25px 0;
+            border-left: 4px solid #27ae60;
+        }
+
+        .update-details h3 {
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .detail-item .icon {
+            color: #27ae60;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
         .cta-button {
             display: inline-block;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
             color: white !important;
             padding: 15px 30px;
             text-decoration: none;
@@ -94,34 +138,6 @@ function CmRegistrationTemplate({ resestlink, imagelink, firstname, email, extra
 
         .cta-button:hover {
             transform: translateY(-2px);
-        }
-
-        .features-list {
-            background-color: #f8f9fa;
-            padding: 25px;
-            border-radius: 8px;
-            margin: 25px 0;
-        }
-
-        .features-list h3 {
-            color: #2c3e50;
-            margin-top: 0;
-            margin-bottom: 15px;
-            font-size: 18px;
-        }
-
-        .feature-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 12px;
-            font-size: 15px;
-        }
-
-        .feature-item .checkmark {
-            color: #27ae60;
-            font-weight: bold;
-            margin-right: 10px;
-            font-size: 16px;
         }
 
         .role-specific {
@@ -165,15 +181,14 @@ function CmRegistrationTemplate({ resestlink, imagelink, firstname, email, extra
             color: #856404;
         }
 
-        .expiry-notice {
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
+        .timestamp {
+            background-color: #f8f9fa;
             padding: 15px;
             border-radius: 6px;
             margin: 20px 0;
             font-size: 14px;
-            color: #721c24;
-            font-weight: 500;
+            color: #6c757d;
+            text-align: center;
         }
 
         /* Responsive design */
@@ -208,94 +223,81 @@ function CmRegistrationTemplate({ resestlink, imagelink, firstname, email, extra
 <body>
     <div class="email-container">
         <!-- Header -->
-<div class="header">
-<img src="${imagelink}" alt="Alantur Logo" style="max-width: 300px; width: 100%; height: auto; margin-bottom: 15px;" />
-    <h1>Welcome to Alantur</h1>
-</div>
+        <div class="header">
+            <img src="${imagelink}" alt="Alantur Logo" style="max-width: 300px; width: 100%; height: auto; margin-bottom: 15px;" />
+            <h1>✅ Profile Updated Successfully</h1>
+        </div>
 
         <!-- Content -->
         <div class="content">
-<div class="greeting">
-    Hi <strong>${firstname}</strong>,
-</div>
+            <div class="greeting">
+                Hi <strong>${firstname}</strong>,
+            </div>
 
-<div class="main-text">
-    Welcome to <strong>Alantur</strong> – we're excited to have you on board!
-    <br><br>
-    Your login username is: <strong>${email}</strong>
-</div>
-
-            <div class="main-text">
-                Your account has been successfully created, and you've just taken the first step toward transforming your business operations.
+            <div class="success-message">
+                <h3>🎉 Your profile has been updated successfully!</h3>
+                <p>We've received and processed your profile update request. Your information has been updated in our system.</p>
             </div>
 
             <div class="main-text">
-                Before you dive in, please take a moment to set up your password:
+                Your login credentials remain the same:
+                <br><strong>Username:</strong> ${email}
+            </div>
+
+            <div class="update-details">
+                <h3>📝 Update Summary</h3>
+                ${updateDetails ? updateDetails.map(detail => `
+                    <div class="detail-item">
+                        <span class="icon">✓</span>
+                        <span>${detail}</span>
+                    </div>
+                `).join('') : `
+                    <div class="detail-item">
+                        <span class="icon">✓</span>
+                        <span>Profile information has been updated</span>
+                    </div>
+                `}
             </div>
 
             <div style="text-align: center;">
-                <a href="${resestlink}" class="cta-button">
-                    🔐 Set Your Password Now
+                <a href="https://www.alantur.ai/login" class="cta-button">
+                    🔐 Access Your Account
                 </a>
             </div>
 
-            <div class="features-list">
-                <h3>Once that's done, you'll be ready to:</h3>
-                <div class="feature-item">
-                    <span class="checkmark">✅</span>
-                    <span>Log in to your account</span>
-                </div>
-                <div class="feature-item">
-                    <span class="checkmark">✅</span>
-                    <span>Personalize your profile</span>
-                </div>
-                <div class="feature-item">
-                    <span class="checkmark">✅</span>
-                    <span>Explore everything we've built just for you</span>
-                </div>
-            </div>
-
             <div class="role-specific">
-                <h4>What's next for you:</h4>
-                <p>As a <strong>${extraind10}</strong>, you can:</p>
-                
-                 <!-- Head of Business Role 
-                // <div class="feature-item" data-role="hob">
-                //     <span class="checkmark">✅</span>
-                //     <span><strong>Head of Business</strong> – Oversee business performance, access key reports, and manage high-level strategy</span>
-                // </div> -->
-                
-                <!-- CRM Role 
-                // <div class="feature-item" data-role="crm">
-                //     <span class="checkmark">✅</span>
-                //     <span><strong>CRM</strong> – Track customer interactions, manage leads, and build stronger relationships</span>
-                // </div> -->
-                
-                 <!-- Admin Role 
-                // <div class="feature-item" data-role="admin">
-                //     <span class="checkmark">✅</span>
-                //     <span><strong>Admin</strong> – Control user permissions, manage platform settings, and maintain security</span>
-                // </div> -->
-                
-                <!-- Customer Manager Role -->
-                <div class="feature-item" data-role="cm">
-                    <span class="checkmark">✅</span>
-                    <span><strong>Customer Manager</strong> – Submit customer feedback and manage customer experiences</span>
+                <h4>Your Role: <strong>${extraind10}</strong></h4>
+                <p>As a Customer Manager, you can continue to:</p>
+                <div class="detail-item">
+                    <span class="icon">✅</span>
+                    <span>Submit customer feedback and experiences</span>
+                </div>
+                <div class="detail-item">
+                    <span class="icon">✅</span>
+                    <span>Manage customer interactions</span>
+                </div>
+                <div class="detail-item">
+                    <span class="icon">✅</span>
+                    <span>Track customer satisfaction</span>
                 </div>
             </div>
 
             <div class="main-text">
-                Need help getting started? Our support team is here to help—just hit reply or visit our <a href="https://www.alantur.ai/" style="color: #3498db;">Help Center</a>.
+                If you didn't make these changes or have any questions, please contact our support team immediately.
             </div>
 
             <div class="main-text">
-                We're excited to have you with us. Let's make something great happen!
+                Thank you for keeping your profile up to date!
+            </div>
+
+            <div class="timestamp">
+                <strong>Update completed:</strong> ${new Date().toLocaleString()}
             </div>
         </div>
 
         <!-- Footer -->
         <div class="footer">
-            <p>Warm regards,</p>
+            <p>Best regards,</p>
             <p><span class="company-name">Alantur Inc</span></p>
             <p style="font-size: 12px; margin-top: 15px; opacity: 0.8;">
                 This email was sent to ${email}. If you have any questions, please contact our support team.
@@ -305,6 +307,6 @@ function CmRegistrationTemplate({ resestlink, imagelink, firstname, email, extra
 </body>
 </html>
 `
-
 }
-module.exports = CmRegistrationTemplate;
+
+module.exports = CmUpdateTemplate;

@@ -43,6 +43,7 @@ function CrmRegistrationTemplate({ resestlink, imagelink, firstname, email, extr
 
         .header {
            background-color: #fff;
+           background: #fff;
             padding: 30px 20px;
             text-align: center;
             color: white;

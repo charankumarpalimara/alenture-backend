@@ -5,6 +5,7 @@ const mySqlpool = require('../../db');
 const deleteCmByAdminAndHob = async (req, res) => {
     try {
         const { cmid } = req.body;
+        console.log("Received request to delete CM by Admin and Hob:", req.body);
         if (!cmid) {
             return res.status(400).json({ error: "Cm ID is required" });
         }

@@ -70,9 +70,11 @@ const updateCmProfileByAdminHob = async (req, res) => {
       organizationid,
       organizationname,
       branch,
+      functionValue, 
       status,
       createrid,
-      createrrole
+      createrrole,
+      interests
     } = req.body;
     console.log("Received request to update CM profile by Admin:", req.body);
     let updateFields = [
@@ -88,8 +90,10 @@ const updateCmProfileByAdminHob = async (req, res) => {
       password,
       crmid,
       crmname,
+      functionValue,
+      interests
     ];
-    let sql = `UPDATE listofcm SET firstname = ?, lastname = ?,  email = ?, mobile = ?, organizationid = ?, organizationname = ?, branch = ?, extraind3 = ?, extraind2 = ?, passwords = ?, crmid = ?, crmname = ?`;
+    let sql = `UPDATE listofcm SET firstname = ?, lastname = ?,  email = ?, mobile = ?, organizationid = ?, organizationname = ?, branch = ?, extraind3 = ?, extraind2 = ?, passwords = ?, crmid = ?, crmname = ?, extraind4 = ?, extraind5 = ?`;
 
 
     // If file is present, update extraind1 (profile image)
@@ -165,5 +169,85 @@ if (result2.affectedRows === 0) {
   }
 };
 
-module.exports = { updateCmProfile, updateCmProfileByAdminHob };
+
+
+
+
+
+
+
+const updateCmProfileByAdminHobV2 = async (req, res) => {
+  try {
+    const {
+      id, cmid, firstname, lastname, organizationid, organizationname,
+      branch, crmid, crmname, phonecode, mobile, email, username,
+      passwords, createrid, createrrole, date, time,
+      extraind1, extraind2, extraind3, extraind4, extraind5
+    } = req.body;
+
+    console.log("Received request to update CM profile by Admin V2:", req.body);
+    console.log("Received file:", req.file);
+
+    let updateFields = [
+      cmid, firstname, lastname, organizationid, organizationname,
+      branch, crmid, crmname, phonecode, mobile, email, username,
+      passwords, createrid, createrrole, date, time, extraind2 || '',
+       extraind3 || '', extraind4 || '', extraind5 || ''
+    ];
+
+    let sql = `
+      UPDATE listofcm 
+      SET 
+        cmid = ?, firstname = ?, lastname = ?, organizationid = ?,
+        organizationname = ?, branch = ?, crmid = ?, crmname = ?,
+        phonecode = ?, mobile = ?, email = ?, username = ?,
+        passwords = ?, createrid = ?, createrrole = ?, date = ?,
+        time = ?, extraind2 = ?, extraind3 = ?,
+        extraind4 = ?, extraind5 = ?
+    `;
+
+    // If file is present, update extraind1 (profile image)
+    if (req.file && req.file.filename) {
+      updateFields[17] = req.file.filename; // Update extraind1 position (index 17)
+    }
+
+    sql += ' WHERE id = ?';
+    updateFields.push(id);
+
+    const [result] = await mySqlpool.query(sql, updateFields);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Customer Manager not found or no changes made" });
+    }
+
+    // Construct imageUrl if image was updated, else fetch current image
+    let imageUrl = null;
+    let imageFile = req.file && req.file.filename ? req.file.filename : null;
+    if (!imageFile) {
+      // Fetch current image filename from DB
+      const [rows] = await mySqlpool.query(
+        "SELECT extraind1 FROM listofcm WHERE id = ?",
+        [id]
+      );
+      if (rows && rows[0] && rows[0].extraind1) {
+        imageFile = rows[0].extraind1;
+      }
+    }
+    if (imageFile) {
+      imageUrl = `${req.protocol}://${req.get("host")}/uploads/cm/${imageFile}`;
+    }
+
+    res.status(200).json({ 
+      message: "Customer Manager profile updated successfully", 
+      imageUrl: imageUrl 
+    });
+    console.log("Customer Manager profile updated successfully", imageUrl);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+module.exports = { updateCmProfile, updateCmProfileByAdminHob, updateCmProfileByAdminHobV2 };
 

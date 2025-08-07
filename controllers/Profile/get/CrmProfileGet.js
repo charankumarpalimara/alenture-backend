@@ -20,7 +20,7 @@ const getCrmProfile = async (req, res) => {
         // Construct image URL if profile image exists
         let imageUrl = null;
         if (crmProfile.extraind1) {
-            imageUrl = `${req.protocol}://${req.get('host')}/uploads/crm/${crmProfile.extraind1}`;
+            imageUrl = `https://alantur-api.softplix.com/uploads/crm/${crmProfile.extraind1}`;
         }
 
         res.status(200).json({

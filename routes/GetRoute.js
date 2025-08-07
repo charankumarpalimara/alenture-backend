@@ -43,6 +43,8 @@ const { AllExperiencesCount} = require('../controllers/Getdata/GetExperiencesCou
  const { crmDetailsGet } = require('../controllers/Getdata/GetCrmDetailsById');
  const { hobDetailsGet } = require('../controllers/Getdata/GetHobDetailsById');
 
+ const { getHobProfile } = require('../controllers/Profile/get/HobProfile');
+
  const { GetCmFunction } = require('../controllers/Getdata/CmFunctionGet');
 
  const { GetCmInterest } = require('../controllers/Getdata/CmInterestsGet');
@@ -50,6 +52,7 @@ const { AllExperiencesCount} = require('../controllers/Getdata/GetExperiencesCou
  const { GetOrganizationIndustries } = require('../controllers/Getdata/OrganizationIndustryGet');
 
  const { CmDataGetByBranches } = require('../controllers/Getdata/cmDataGetByBranches')
+
 
 
 
@@ -195,6 +198,8 @@ router.get('/cmDetailsGet/:cmid', cmDetailsGet);
 router.get('/crmDetailsGet/:crmid', crmDetailsGet);
 
 router.get('/hobDetailsGet/:hobid', hobDetailsGet);
+
+router.get('/getHobProfile/:hobid', getHobProfile);
 
 router.get('/GetCmFunction', GetCmFunction);
 

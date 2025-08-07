@@ -32,6 +32,7 @@ const HobRegistration = async (req, res) => {
       country,
       state,
       city,
+      extraind7,
       username,
       passwords,
     } = req.body;
@@ -82,7 +83,7 @@ const HobRegistration = async (req, res) => {
 
     const data = await mySqlpool.query(
       `INSERT INTO listofhob (hobid, firstname, lastname, organizationid, organizationname, phonecode, mobile, email, username, passwords, createrid, createrrole, date, time, extraind1, extraind2, extraind3, extraind4, extraind5, extraind6, extraind7, extraind8, extraind9, extraind10) 
-            VALUES (?, ?, ?, '', '', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', '', '', ?)`,
+            VALUES (?, ?, ?, '', '', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '', '', ?)`,
       [
         finalHobid,
         firstname,
@@ -102,6 +103,7 @@ const HobRegistration = async (req, res) => {
         state,
         city,
         extraind6,
+        extraind7,
         extraind10,
       ]
     );

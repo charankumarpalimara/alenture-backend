@@ -8,6 +8,7 @@ const { broadcast, broadcastNotification } = require("../../WebSocketUtils");
 const sendMail = require("../Mails-Service/sendMail"); // Import the mail service
 const CmRegistrationTemplate = require("../../EmailsTemplates/cm-registration-provider");
 
+
 const express = require("express");
 const app = express();
 
@@ -49,7 +50,7 @@ const CmRegister = async (req, res) => {
       createrrole,
     } = req.body;
     console.log("Incoming body:", req.body); // Log incoming text fields
-
+   console
     // Validate required fields
     // if (!firstname || !lastname || !phonecode || !mobile || !email || !gender || !designation || !organization || !branch || !username || !passwords || !createrid || !createrrole) {
     //     return res.status(400).json({ error: "Please provide firstname, lastname, and other required fields" });

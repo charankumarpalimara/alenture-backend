@@ -5,10 +5,10 @@ const mySqlpool = require('../../../db');
 
 const RelationCreate = async (req, res) => {
     try {
-                console.log("Received data:", req.body);
+                
  const { organization, branch, cmid, cmname, crmid, crmname, createrid, createrrole } = req.body;
 
-        
+ console.log("Received data:", req.body);
         if (!organization || !branch || !cmid || !cmname || !crmid || !crmname || !createrid || !createrrole) {
             return res.status(400).json({ error: "All fields are required" });
         }

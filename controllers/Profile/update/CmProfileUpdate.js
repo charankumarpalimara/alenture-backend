@@ -1,17 +1,35 @@
 
 const express = require("express");
 const mySqlpool = require("../../../db");
-
+const sendMail = require("../../Mails-Service/sendMail"); // Import the mail service
+const PasswordUpdateTemplate = require("../../../EmailsTemplates/password-update-confirmation");
 // updateCmProfile
 
 const updateCmProfile = async (req, res) => {
   try {
-    const { cmid, firstName, password, lastName, PhoneNo, email, gender } =
+    const { cmid, firstName, password, lastName, phonecode, PhoneNo, email, gender } =
       req.body;
       console.log("Received request to update CM profile:", req.body);
       console.log("Received file:", req.file);
-    let updateFields = [firstName, lastName, email, PhoneNo, gender, password];
-    let sql = `UPDATE listofcm SET firstname = ?, lastname = ?,  email = ?, mobile = ?, extraind2 = ?, passwords = ?`;
+      const [rows] = await mySqlpool.query('SELECT * FROM listofcm WHERE cmid = ?', [cmid]);
+      const oldEmail = rows[0].email;
+      const userRole = rows[0].extraind10;
+
+    let updateFields = [firstName, lastName, email, phonecode, PhoneNo, gender, password];
+    let sql = `UPDATE listofcm SET firstname = ?, lastname = ?,  email = ?, phonecode = ?, mobile = ?, extraind2 = ?, passwords = ?`;
+
+    const cmFullName = firstName + " " + lastName;
+
+    let sql1 = `UPDATE experiences SET cmname = ? WHERE cmid = ?`;
+    let updateFields1 = [cmFullName, cmid];
+    const [result1] = await mySqlpool.query(sql1, updateFields1);
+
+
+    let sql3 = `UPDATE assignedrelations SET cmname = ? WHERE cmid = ?`;
+    let updateFields3 = [cmFullName, cmid];
+    const [result3] = await mySqlpool.query(sql3, updateFields3);
+
+
     // If file is present, update extraind1 (profile image)
     if (req.file && req.file.filename) {
       sql += ", extraind1 = ?";
@@ -43,6 +61,19 @@ const updateCmProfile = async (req, res) => {
       .status(200)
       .json({ message: "Cm profile updated successfully", imageUrl: imageUrl });
     console.log("Cm profile updated successfully", imageUrl);
+
+    const firstname = firstName;
+    const currentDate = new Date();
+    const date = currentDate.toLocaleString();
+
+    if (oldEmail !== email && email) {
+      const emailTemplate = PasswordUpdateTemplate({ firstname, email, oldEmail, newEmail: email, updateTime: date, role: userRole });
+      await sendMail({
+        to: email,
+        subject: 'Account Updated Successfully - Alantur',
+        html: emailTemplate
+      });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
@@ -77,6 +108,12 @@ const updateCmProfileByAdminHob = async (req, res) => {
       interests
     } = req.body;
     console.log("Received request to update CM profile by Admin:", req.body);
+
+
+    const [rows] = await mySqlpool.query('SELECT * FROM listofcm WHERE cmid = ?', [cmid]);
+    const oldEmail = rows[0].email;
+    const userRole = rows[0].extraind10;
+
     let updateFields = [
       firstName,
       lastName,
@@ -123,6 +160,17 @@ const updateCmProfileByAdminHob = async (req, res) => {
   let sql2 = `UPDATE assignedrelations SET crmid = ?, crmname = ? WHERE cmid = ?`;
   const [result2] = await mySqlpool.query(sql2, updateFields2);
 
+
+  let sql1 = `UPDATE experiences SET cmname = ? WHERE cmid = ?`;
+  let updateFields1 = [CmFullName, cmid];
+
+  const [result1] = await mySqlpool.query(sql2, updateFields2);
+
+  let sql3 = `UPDATE assignedrelations SET cmname = ? WHERE cmid = ?`;
+  let updateFields3 = [CmFullName, cmid];
+  const [result3] = await mySqlpool.query(sql3, updateFields3);
+
+
 if (result2.affectedRows === 0) {
     const [result3] = await mySqlpool.query(
         `INSERT INTO assignedrelations (id, crmid, crmname, cmid, cmname, organizationid, organizationname, branch, phonecode, mobile, email, username, passwords, createrid, createrrole, date, time, extraind1, extraind2, extraind3, extraind4, extraind5, extraind6, extraind7, extraind8, extraind9, extraind10)
@@ -163,6 +211,16 @@ if (result2.affectedRows === 0) {
       .status(200)
       .json({ message: "Cm profile updated successfully", imageUrl: imageUrl });
     console.log("Cm profile updated successfully", imageUrl);
+    const firstname = firstName;
+
+    if (oldEmail !== email && email) {
+      const emailTemplate = PasswordUpdateTemplate({ firstname, email, oldEmail, newEmail: email, updateTime: date, role: userRole });
+      await sendMail({
+        to: email,
+        subject: 'Account Updated Successfully - Alantur',
+        html: emailTemplate
+      });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
@@ -187,6 +245,12 @@ const updateCmProfileByAdminHobV2 = async (req, res) => {
 
     console.log("Received request to update CM profile by Admin V2:", req.body);
     console.log("Received file:", req.file);
+
+    const [rows] = await mySqlpool.query('SELECT * FROM listofcm WHERE cmid = ?', [cmid]);
+    const oldEmail = rows[0].email;
+    const userRole = rows[0].extraind10;
+
+
 
     let updateFields = [
       cmid, firstname, lastname, organizationid, organizationname,
@@ -220,6 +284,28 @@ const updateCmProfileByAdminHobV2 = async (req, res) => {
       return res.status(404).json({ error: "Customer Manager not found or no changes made" });
     }
 
+    const cmFullName = firstname + " " + lastname;
+
+      let sql2 = `UPDATE experiences SET cmname = ? WHERE cmid = ?`;
+      let updateFields2 = [cmFullName, cmid];
+
+      const [result1] = await mySqlpool.query(sql2, updateFields2);
+
+
+
+      let sql3 = `UPDATE experiences SET cmname = ? WHERE cmid = ?`;
+      let updateFields3 = [cmFullName, cmid];
+    
+      const [result3] = await mySqlpool.query(sql3, updateFields3);
+    
+      let sql4 = `UPDATE assignedrelations SET cmname = ? WHERE cmid = ?`;
+      let updateFields4 = [cmFullName, cmid];
+      const [result4] = await mySqlpool.query(sql4, updateFields4);
+
+
+
+
+
     // Construct imageUrl if image was updated, else fetch current image
     let imageUrl = null;
     let imageFile = req.file && req.file.filename ? req.file.filename : null;
@@ -234,15 +320,25 @@ const updateCmProfileByAdminHobV2 = async (req, res) => {
       }
     }
     if (imageFile) {
-      imageUrl = `${req.protocol}://${req.get("host")}/uploads/cm/${imageFile}`;
+      imageUrl = `https://alantur-api.softplix.com/uploads/cm/${imageFile}`;
     }
+
 
     res.status(200).json({ 
       message: "Customer Manager profile updated successfully", 
       imageUrl: imageUrl 
     });
     console.log("Customer Manager profile updated successfully", imageUrl);
+    // const firstname = firstName;
 
+    if (oldEmail !== email && email) {
+      const emailTemplate = PasswordUpdateTemplate({ firstname, email, oldEmail, newEmail: email, updateTime: date, role: userRole });
+      await sendMail({
+        to: email,
+        subject: 'Account Updated Successfully - Alantur',
+        html: emailTemplate
+      });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });

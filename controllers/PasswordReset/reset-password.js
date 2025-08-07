@@ -1,7 +1,7 @@
 const mySqlpool = require('../../db');
 
 const userTypes = [
-    { table: 'admin', emailField: 'email', passwordField: 'password' },
+    { table: 'admin', emailField: 'email', passwordField: 'passwords' },
     { table: 'listofhob', emailField: 'email', passwordField: 'passwords' },
     { table: 'listofcrm', emailField: 'email', passwordField: 'passwords' },
     { table: 'listofcm', emailField: 'email', passwordField: 'passwords' },
@@ -10,6 +10,7 @@ const userTypes = [
 const resetPassword = async (req, res) => {
     try {
         const { email, password } = req.body;
+        console.log("Received data:", req.body);
         if (!email || !password) {
             return res.status(400).json({ error: "Email and password are required" });
         }

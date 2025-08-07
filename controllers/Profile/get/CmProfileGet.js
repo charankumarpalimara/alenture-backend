@@ -16,16 +16,16 @@ const getCmProfile = async (req, res) => {
             return res.status(404).json({ error: "CM profile not found" });
         }
 
-        const crmProfile = rows[0];
+        const cmProfile = rows[0];
         // Construct image URL if profile image exists
         let imageUrl = null;
         if (cmProfile.extraind1) {
-            imageUrl = `${req.protocol}://${req.get('host')}/uploads/cm/${crmProfile.extraind1}`;
+            imageUrl = `https://alantur-api.softplix.com/uploads/cm/${cmProfile.extraind1}`;
         }
 
         res.status(200).json({
             message: "CM profile retrieved successfully",
-            data: { ...crmProfile, imageUrl }
+            data: { ...cmProfile, imageUrl }
         });
         console.log("CM profile retrieved successfully", { ...cmProfile, imageUrl });
 

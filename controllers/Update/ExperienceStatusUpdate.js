@@ -6,7 +6,7 @@ const updateExperienceStatus = async (req, res) => {
   try {
     const { experienceid, date, time } = req.body;
     console.log("experinec data :", req.body)
-    if (!experienceid || !date || !time ) {
+    if (!experienceid || !date || !time) {
       return res.status(400).json({ error: "Experience ID is required" });
     }
 
@@ -103,8 +103,8 @@ const updateExperienceStatusToResolve = async (req, res) => {
       console.log("row in experience resolve", rows[0]);
 
       await mySqlpool.query(
-        `INSERT INTO notifications (finalExperienceid,title, message, crmid, cmid,type,is_read, created_at)
-   VALUES (?,?, ?, ?, ?,?,  ?, NOW())`,
+        `INSERT INTO notifications (finalExperienceid, title, message, crmid, cmid, type,is_read, created_at)
+   VALUES (?,?, ?, ?, ?,?, ?, NOW())`,
         [
           rows[0].experienceid,
           "Experience Resolved",

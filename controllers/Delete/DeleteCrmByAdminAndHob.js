@@ -4,14 +4,14 @@ const mySqlpool = require('../../db');
 
 const deleteCrmByAdminAndHob = async (req, res) => {
     try {
-        const { id, crmid } = req.body;
-        if (!crmid || !id) {
+        const { crmid } = req.body;
+        if (!crmid) {
             return res.status(400).json({ error: "Cm ID is required" });
         }
 
         await mySqlpool.query(
-            "DELETE FROM assignedrelations WHERE id = ?",
-            [id]
+            "DELETE FROM assignedrelations WHERE crmid = ?",
+            [crmid]
         );
 
         // Delete the experience
